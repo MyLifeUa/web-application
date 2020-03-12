@@ -2,9 +2,9 @@ import React from 'react';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 
-// import layouts
-import Home from './layouts/Home';
-import Login from './layouts/Login';
+// import views
+import Home from './views/Home';
+import Login from './views/Login';
 
 function App() {
     const hist = createBrowserHistory();
