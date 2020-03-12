@@ -1,3 +1,4 @@
+![./assets/banner.png](./assets/banner.png)
 # MyLife - Web application
 
 Repository to develop the web applications of MyLife monitoring system, using React.
