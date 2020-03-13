@@ -1213,13 +1213,14 @@ h1, h2, h3, h4, h5, h6 {
   padding: 50px 0;
   color: #7f7f7f;
   position: relative;
+  background-color: #23272d;
 }
 #footer .gotop {
   position: absolute;
   top: -20px;
   left: 50%;
   margin-left: -40px;
-  background: #fff;
+  background: #23272d;
   z-index: 8;
   width: 80px;
   height: 80px;
