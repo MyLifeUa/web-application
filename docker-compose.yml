@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+  django:
+    image: registry.gitlab.com/my-life-ua/rest-api
+    env_file: django.env
+    # ports:
+    #   - "8000:8000"
+    depends_on:
+      - postgres
+  react:
+    build: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - django
