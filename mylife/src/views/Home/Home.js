@@ -18,10 +18,9 @@ function Home() {
             <Header />
             <HomeSection />
             <Intro />
-            <Work />
-            <Testimonials />
             <Services />
             <About />
+            <Work />
             <Counters />
             <Contacts />
             <Footer />

@@ -12,9 +12,8 @@ function Intro() {
                             <div class="overlay"></div>
                             <div class="fh5co-text">
                                 <i class="fh5co-intro-icon icon-bulb"></i>
-                                <h2>Plan</h2>
-                                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                                <p><a href="#" class="btn btn-primary">Get In Touch</a></p>
+                                <h2>Nutrition</h2>
+                                <p>We will use computer vision and a set of Machine Learning algorithms to recognise basic elements on a plate.<br />We will also display important information about the food intaked by the user, like calories, macronutrients.</p>
                             </div>
                         </div>
                         <div class="fh5co-block to-animate" >
@@ -22,9 +21,8 @@ function Intro() {
                             <div class="overlay"></div>
                             <div class="fh5co-text">
                                 <i class="fh5co-intro-icon icon-wrench"></i>
-                                <h2>Develop</h2>
-                                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                                <p><a href="#" class="btn btn-primary">Click Me</a></p>
+                                <h2>Crossfit plan</h2>
+                                <p>Through motion detection using OpenPose, we intend to detect a set of recommended exercises to the user.</p>
                             </div>
                         </div>
                         <div class="fh5co-block to-animate">
@@ -37,10 +35,6 @@ function Intro() {
                                 <p><a href="#" class="btn btn-primary">Why Us?</a></p>
                             </div>
                         </div>
-                    </div>
-                    <div class="row watch-video text-center to-animate">
-                        <span>Watch the video</span>
-                        <a href="https://vimeo.com/channels/staffpicks/93951774" class="popup-vimeo btn-video"><i class="icon-play2"></i></a>
                     </div>
                 </div>
             </section>
