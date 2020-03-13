@@ -13,6 +13,10 @@ npx create-react-app mylife
 cd mylife
 npm start
 ```
+You can also run the application in a docker image through docker-compose:
+```bash
+docker-compose up
+```
 
 After that, the web application will be running on [http://localhost:3000](http://localhost:3000).
 To start developing, just edit **App.js** file.
