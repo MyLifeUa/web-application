@@ -3,8 +3,8 @@ import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 
 // import views
-import Home from './views/Home';
-import Login from './views/Login';
+import Home from './views/Home/Home';
+import Login from './views/Login/Login';
 
 function App() {
     const hist = createBrowserHistory();
