@@ -19,7 +19,7 @@ lint:
     - cd mylife/
     - npm install -g --only=dev
     - npm install eslint-plugin-react@latest
-    - eslint --fix --max-warnings 20 src/ ; echo "Skipping errors for now..."
+    - eslint --fix --max-warnings 20 src/ || echo "Skipping errors for now..."
 
 test:
   stage: Test
