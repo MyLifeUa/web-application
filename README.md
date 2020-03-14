@@ -33,3 +33,4 @@ List with interesting templates for the web applications:
 * [http://html.codedthemes.com/datta-able/bootstrap/default/index.html#!](http://html.codedthemes.com/datta-able/bootstrap/default/index.html#!)
 * [http://html.codedthemes.com/datta-able/bootstrap/light/](http://html.codedthemes.com/datta-able/bootstrap/light/)
 * [http://lite.codedthemes.com/datta-able/bootstrap/](http://lite.codedthemes.com/datta-able/bootstrap/)
+* [https://uxplanet.org/top-50-dashboard-ui-kits-and-templates-in-2019-8583e41b775d](https://uxplanet.org/top-50-dashboard-ui-kits-and-templates-in-2019-8583e41b775d)
