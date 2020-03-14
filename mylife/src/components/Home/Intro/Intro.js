@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 function Intro() {
 
@@ -38,9 +38,7 @@ function Intro() {
                 </div>
             </section>
         </div>
-      </section>
-    </div>
-  )
+    );
 }
 
-export default Intro
+export default Intro;
