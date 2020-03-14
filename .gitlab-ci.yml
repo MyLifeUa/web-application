@@ -17,7 +17,7 @@ lint:
   script:
     - npm install eslint -g
     - cd mylife/
-    - npm install -g
+    - npm install -g --only=dev
     - eslint --fix --max-warnings 10 src/
 
 test:
