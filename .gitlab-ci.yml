@@ -18,6 +18,7 @@ lint:
     - npm install eslint -g
     - cd mylife/
     - npm install -g --only=dev
+    - npm install eslint-plugin-react@latest
     - eslint --fix --max-warnings 10 src/
 
 test:
