@@ -30,3 +30,6 @@ List with interesting templates for the web applications:
 * [https://colorlib.com/wp/free-admin-templates/](https://colorlib.com/wp/free-admin-templates/)
 * [https://colorlib.com/polygon/admindek/default/](https://colorlib.com/polygon/admindek/default/)
 * [https://colorlib.com/polygon/cooladmin/](https://colorlib.com/polygon/cooladmin/)
+* [http://html.codedthemes.com/datta-able/bootstrap/default/index.html#!](http://html.codedthemes.com/datta-able/bootstrap/default/index.html#!)
+* [http://html.codedthemes.com/datta-able/bootstrap/light/](http://html.codedthemes.com/datta-able/bootstrap/light/)
+* [http://lite.codedthemes.com/datta-able/bootstrap/](http://lite.codedthemes.com/datta-able/bootstrap/)
