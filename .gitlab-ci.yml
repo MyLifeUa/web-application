@@ -17,7 +17,6 @@ lint:
   script:
     - npm install eslint -g
     - cd mylife/
-    - eslint --init # load config file for lint
     - eslint /app/mylife/src/
 
 test:
