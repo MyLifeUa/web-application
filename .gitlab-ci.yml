@@ -1,3 +1,6 @@
+
+image: node:latest
+
 stages:
   - Lint
   - Test
@@ -9,28 +12,18 @@ cache:
   paths:
     - ~/.cache/
 
-format:
-  stage: Lint
-  image: python:latest
-  script:
-    - pip install black
-    - black .
-
 lint:
   stage: Lint
-  image: node:latest
   script:
     - npm install eslint -g
+    - cd /app/mylife
+    - eslint --init # load config file for lint
     - eslint /app/mylife/src/
 
 test:
   stage: Test
-  # variables:
-  #   DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/$POSTGRES_DB"
-  <<: *build
   script:
-    - source set_env_vars_ci.sh
-    - python manage.py test
+    - echo "Testing..."
 
 docker:
   stage: Deploy
