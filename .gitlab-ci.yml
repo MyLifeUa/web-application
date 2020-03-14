@@ -19,7 +19,9 @@ lint:
     - cd mylife/
     - npm install -g --only=dev
     - npm install eslint-plugin-react@latest
-    - eslint --fix --max-warnings 20 src/; exit 0
+    - eslint --fix --max-warnings 20 src/
+  after_script:
+    - exit 0 # force 0 exit code
 
 test:
   stage: Test
