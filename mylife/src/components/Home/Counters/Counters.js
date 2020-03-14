@@ -17,29 +17,29 @@ function Counters() {
                         <div class="col-md-3 col-sm-6 col-xs-12">
                             <div class="fh5co-counter to-animate">
                                 <i class="fh5co-counter-icon icon-briefcase to-animate-2"></i>
-                                <span class="fh5co-counter-number js-counter" data-from="0" data-to="89" data-speed="5000" data-refresh-interval="50">89</span>
-                                <span class="fh5co-counter-label">Finished projects</span>
+                                <span class="fh5co-counter-number js-counter" data-from="0" data-to="9" data-speed="5000" data-refresh-interval="50">9</span>
+                                <span class="fh5co-counter-label">Gitlab repositories</span>
                             </div>
                         </div>
                         <div class="col-md-3 col-sm-6 col-xs-12">
                             <div class="fh5co-counter to-animate">
                                 <i class="fh5co-counter-icon icon-code to-animate-2"></i>
                                 <span class="fh5co-counter-number js-counter" data-from="0" data-to="2343409" data-speed="5000" data-refresh-interval="50">2343409</span>
-                                <span class="fh5co-counter-label">Line of codes</span>
+                                <span class="fh5co-counter-label">Lines of codes</span>
                             </div>
                         </div>
                         <div class="col-md-3 col-sm-6 col-xs-12">
                             <div class="fh5co-counter to-animate">
                                 <i class="fh5co-counter-icon icon-cup to-animate-2"></i>
-                                <span class="fh5co-counter-number js-counter" data-from="0" data-to="1302" data-speed="5000" data-refresh-interval="50">1302</span>
-                                <span class="fh5co-counter-label">Cup of coffees</span>
+                                <span class="fh5co-counter-number js-counter" data-from="0" data-to="500" data-speed="5000" data-refresh-interval="50">500</span>
+                                <span class="fh5co-counter-label">Working hours</span>
                             </div>
                         </div>
                         <div class="col-md-3 col-sm-6 col-xs-12">
                             <div class="fh5co-counter to-animate">
                                 <i class="fh5co-counter-icon icon-people to-animate-2"></i>
-                                <span class="fh5co-counter-number js-counter" data-from="0" data-to="52" data-speed="5000" data-refresh-interval="50">52</span>
-                                <span class="fh5co-counter-label">Happy clients</span>
+                                <span class="fh5co-counter-number js-counter" data-from="0" data-to="77" data-speed="5000" data-refresh-interval="50">77</span>
+                                <span class="fh5co-counter-label">Days left</span>
                             </div>
                         </div>
                     </div>

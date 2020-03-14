@@ -8,15 +8,14 @@ function Footer() {
                 <div class="container">
                     <div class="">
                         <div class="col-md-12 text-center">
-                            <p>&copy; Elate Free HTML5. All Rights Reserved. <br />Created by <a href="http://freehtml5.co/" target="_blank">FREEHTML5.co</a> Images: <a href="http://pexels.com/" target="_blank">Pexels</a>, <a href="http://plmd.me/" target="_blank">plmd.me</a></p>
+                            <p><strong>MyLife 2020 &copy;</strong>  All Rights Reserved. <br /><a href="https://www.ua.pt/deti/">Universidade de Aveiro - DETI</a></p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12 text-center">
                             <ul class="social social-circle">
-                                <li><a href="#"><i class="icon-twitter"></i></a></li>
-                                <li><a href="#"><i class="icon-facebook"></i></a></li>
-                                <li><a href="#"><i class="icon-youtube"></i></a></li>
+                                <li><a href="/"><i class="icon-globe"></i></a></li>
+                                <li><a href="https://gitlab.com/groups/my-life-ua/"><i class="fab fa-gitlab"></i></a></li>
                             </ul>
                         </div>
                     </div>

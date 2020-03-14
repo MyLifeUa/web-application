@@ -10,7 +10,7 @@ function Contacts() {
                             <h2 class="to-animate">Get In Touch</h2>
                             <div class="row">
                                 <div class="col-md-8 col-md-offset-2 subtext to-animate">
-                                    <h3>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</h3>
+                                    <h3>You can contact our team through any of the following options:</h3>
                                 </div>
                             </div>
                         </div>
@@ -21,14 +21,13 @@ function Contacts() {
                             <ul class="fh5co-contact-info">
                                 <li class="fh5co-contact-address ">
                                     <i class="icon-home"></i>
-                                    5555 Love Paradise 56 New Clity 5655, <br />Excel Tower United Kingdom
+                                    IEETA - Instituto de Engenharia Electrónica e Telemática de Aveiro <br />Universidade de Aveiro - Aveiro, Portugal
 						</li>
-                                <li><i class="icon-phone"></i> (123) 465-6789</li>
-                                <li><i class="icon-envelope"></i>info@freehtml5.co</li>
-                                <li><i class="icon-globe"></i> <a href="http://freehtml5.co/" target="_blank">freehtml5.co</a></li>
+                                <li><i class="icon-phone"></i> (+351) 965 380 346</li>
+                                <li><i class="icon-envelope"></i>vascoalramos@ua.pt</li>
+                                <li><i class="icon-globe"></i> <a href="my-life-ua.gitlab.io" target="_blank">my-life-ua.gitlab.io</a></li>
                             </ul>
                         </div>
-
                         <div class="col-md-6 to-animate">
                             <h3>Contact Form</h3>
                             <div class="form-group ">
