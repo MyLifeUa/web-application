@@ -14,7 +14,7 @@ cache:
 
 lint:
   stage: Lint
-  scipt:
+  script:
     - npm install eslint -g
     - cd mylife/
     - npm install -g --only=dev
