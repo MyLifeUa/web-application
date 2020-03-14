@@ -1,6 +1,6 @@
-import React from 'react';
+import React from 'react'
 
-import fullImage from '../../../assets/home/full_image_1.jpg';
+import fullImage from '../../../assets/home/full_image_1.jpg'
 
 function Counters() {
     return (
@@ -46,7 +46,9 @@ function Counters() {
                 </div>
             </section>
         </div>
-    );
+      </section>
+    </div>
+  )
 }
 
-export default Counters;
+export default Counters

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 // import works
 import work01 from '../../../assets/home/work/work01.png';
@@ -66,7 +66,7 @@ function Work() {
                             </a>
                         </div>
 
-                        <div class="clearfix visible-sm-block"></div>
+            <div className="clearfix visible-sm-block"></div>
 
                         <div class="col-md-4 col-sm-6 col-xxs-12">
                             <a href={work05} class="fh5co-project-item image-popup to-animate">
@@ -87,7 +87,7 @@ function Work() {
                             </a>
                         </div>
 
-                        <div class="clearfix visible-sm-block"></div>
+            <div className="clearfix visible-sm-block"></div>
 
                         <div class="col-md-4 col-sm-6 col-xxs-12">
                             <a href={work07} class="fh5co-project-item image-popup to-animate">
@@ -120,9 +120,13 @@ function Work() {
                         </div>
                     </div>
                 </div>
-            </section>
+              </a>
+            </div>
+          </div>
         </div>
-    );
+      </section>
+    </div>
+  )
 }
 
-export default Work;
+export default Work
