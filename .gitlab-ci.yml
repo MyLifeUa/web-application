@@ -16,7 +16,9 @@ lint:
   stage: Lint
   script:
     - npm install eslint -g
-    - eslint mylife/src/
+    - cd mylife/
+    - npm install -g
+    - eslint --fix --max-warnings 10 src/
 
 test:
   stage: Test
