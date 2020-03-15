@@ -2,10 +2,8 @@ import React from 'react';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 
-// import views
-import Home from './views/Home/Home';
-import Login from './views/Login/Login';
-import PatientApp from './views/Patient/index';
+// import views router
+import viewsRouter from './routers/viewsRouter';
 
 function App() {
     const hist = createBrowserHistory();
@@ -14,9 +12,9 @@ function App() {
         <div id="app">
             <Router history={hist}>
                 <Switch>
-                    <Route path="/user" component={PatientApp} />
-                    <Route path="/login" component={Login}/>
-                    <Route path="/" component={Home}/>
+                    {viewsRouter.map((page) => {
+                        return <Route path={page.path} component={page.component} />
+                    })}
                 </Switch>
             </Router>
         </div>
