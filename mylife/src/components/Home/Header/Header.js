@@ -1,6 +1,22 @@
 import React from 'react';
 
+import { Router, Link, Redirect, useHistory } from 'react-router-dom';
+import { Button } from "reactstrap";
+
+
+
 function Header() {
+
+    let history = useHistory();
+
+    const signIn = () => {
+        history.push("/signin");
+    }
+
+    const signUp = () => {
+        history.push("/sign");
+    }
+
     return (
         <div id="header">
             <header role="banner" id="fh5co-header">
@@ -17,6 +33,8 @@ function Header() {
                                 <li><a href="#" data-nav-section="about"><span>About</span></a></li>
                                 <li><a href="#" data-nav-section="work"><span>Work</span></a></li>
                                 <li><a href="#" data-nav-section="contact"><span>Contact</span></a></li>
+                                <li style={{marginLeft: "10px", marginTop: "5px"}}><Button onClick={signIn} color="primary">Sign In</Button></li>
+                                <li style={{marginLeft: "10px", marginTop: "5px"}}><Button onClick={signUp} color="info">Sign Up</Button></li>
                             </ul>
                         </div>
                     </nav>
@@ -24,6 +42,7 @@ function Header() {
             </header>
         </div>
     );
+
 }
 
 export default Header;

@@ -1,6 +1,8 @@
 import React from 'react';
 
 import whiteLogo from '../../../assets/home/white-logo.png'
+import { Link } from "react-router-dom"
+import { Button } from "reactstrap";
 
 function HomeSection() {
     return (
