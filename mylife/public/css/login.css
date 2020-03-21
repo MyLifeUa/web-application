@@ -119,6 +119,20 @@ iframe {
     color: #4ca2d1;
 }
 
+.login-forget-pw {
+    text-align: right;
+    font-size: 0.9em;
+    margin-top: 2px;
+}
+
+.login-forget-pw a {
+    color: #4ca2d1;
+}
+.login-forget-pw a:hover {
+    color: white;
+    text-decoration: none;
+}
+
 
 /*[ FONT SIZE ]
 ///////////////////////////////////////////////////////////
