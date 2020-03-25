@@ -109,7 +109,7 @@ iframe {
 
 .wrap-login100 {
     width: 390px;
-    background: #292929;
+    background: white;
     border-radius: 10px;
     position: relative;
 }
@@ -127,10 +127,21 @@ iframe {
 
 .login-forget-pw a {
     color: #4ca2d1;
+    font-family: "Source Sans Pro", Arial, sans-serif;
+    font-weight: 400;
 }
+
 .login-forget-pw a:hover {
-    color: white;
+    color: #292929;
     text-decoration: none;
+}
+
+.error-message {
+    padding-top: 10px;
+    color: #FF3227;
+    font-family: "Source Sans Pro", Arial, sans-serif;
+    font-weight: 400;
+    text-align: center;
 }
 
 

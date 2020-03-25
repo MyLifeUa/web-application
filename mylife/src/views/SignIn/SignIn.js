@@ -70,6 +70,11 @@ class SignIn extends React.Component {
                                         <div class="col-sm-10 login-forget-pw"><a href="#">Forgot password?</a></div>
                                         <div class="col-sm-1"></div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-sm-1"></div>
+                                        <div class="col-sm-10 error-message"><span><i class="fas fa-exclamation-circle"></i> Invalid login credentials!</span></div>
+                                        <div class="col-sm-1"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
