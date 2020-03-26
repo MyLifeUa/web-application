@@ -75,8 +75,6 @@ class SignIn extends React.Component {
                 console.log("Fetch error: " + error);
                 document.getElementById("errorMessage").style.visibility = "";
             })
-
-
     }
 
     inputStyle = {
@@ -87,7 +85,7 @@ class SignIn extends React.Component {
     render() {
         if (this.state.redirect) {
             if(this.state.currentUser === "client")
-                return (<Redirect to="/user" />);
+                return (<Redirect to="/client" />);
             else if(this.state.currentUser === "doctor")
                 return (<Redirect to="/doctor" />)
             else if(this.state.currentUser === "admin")

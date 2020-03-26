@@ -9,12 +9,11 @@ class Loading extends React.Component {
     constructor() {
         super();
         this.state = {loaded: false, currentUser: null}
-        
     }
 
     componentDidMount() {
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.setState({loaded:false, currentUser: currentUser.role})
+        this.setState({loaded:false, currentUser: currentUser})
         setInterval( () => {
             this.setState({loaded: true, currentUser: this.state.currentUser})
         }, 2000);
@@ -22,11 +21,11 @@ class Loading extends React.Component {
 
     render() {
         if(this.state.loaded) {
-            if(this.state.currentUser === "client")
-                return <Redirect to="/user/dashboard" />
-            else if(this.state.currentUser === "doctor")
+            if(this.state.currentUser.role === "client")
+                return <Redirect to="/client/dashboard" />
+            else if(this.state.currentUser.role === "doctor")
                 return <Redirect to="/doctor/dashboard" />
-            else if(this.state.currentUser === "admin")
+            else if(this.state.currentUser.role === "admin")
                 return <Redirect to="/admin/dashboard" />
         }
             

@@ -14,8 +14,8 @@ export default [
     { path: '/admin', component: Loading },
     { path: '/doctor/dashboard', component: DoctorDashboard},
     { path: '/doctor', component: Loading },
-    { path: '/user/dashboard', component: ClientDashboard },
-    { path: '/user', component: Loading },
+    { path: '/client/dashboard', component: ClientDashboard },
+    { path: '/client', component: Loading },
     { path: '/signup', component: SignUp },
     { path: '/signin', component: SignIn },
     { path: '/', component: Home }
