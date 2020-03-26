@@ -8,13 +8,13 @@ import viewsRouter from './routers/viewsRouter';
 function App() {
     const hist = createBrowserHistory();
 
+    console.log(viewsRouter);
     return (
         <div id="app">
             <Router history={hist}>
                 <Switch>
                     {viewsRouter.map((page) => {
-
-                        return <Route path={page.path} component={page.component} />
+                        return page.component
                     })}
                 </Switch>
             </Router>
