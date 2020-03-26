@@ -46,18 +46,23 @@ class SignIn extends React.Component {
         fetch(baseURIs.restApi.baseURI + baseURIs.restApi.login, {
             method: "POST",
             headers: {
+                "Accept": "application/json",
                 "Content-Type": "application/json"
-            }
+            },
+            body: JSON.stringify({username: username, password: password})
         })
             .then(response => {
-                return ""
-                /*
+                
                 if (!response.ok) throw new Error(response.status);
                 else return response.json();
-                */
+                
             })
             .then(data => {
                 document.getElementById("errorMessage").style.visibility = "none";
+
+                var loggedUser = {"role": data.role, "userInfo": data.data, "token": data.token}
+                
+                localStorage.setItem('loggedUser', JSON.stringify(loggedUser))
 
                 this.setState({
                     redirect: true
