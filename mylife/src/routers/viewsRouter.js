@@ -3,10 +3,17 @@ import SignIn from '../views/SignIn/SignIn';
 import Fitbit from '../views/Fitbit/Fitbit';
 import SignUp from '../views/SignUp/SignUp';
 
-import Loading from '../views/Client/Loading';
+import Loading from '../components/Loading/Loading';
+
 import ClientDashboard from '../views/Client/Dashboard/Dashboard';
+import DoctorDashboard from '../views/Doctor/Dashboard/Dashboard';
+import AdminDashboard from '../views/Admin/Dashboard/Dashboard';
 
 export default [
+    { path: '/admin/dashboard', component: AdminDashboard},
+    { path: '/admin', component: Loading },
+    { path: '/doctor/dashboard', component: DoctorDashboard},
+    { path: '/doctor', component: Loading },
     { path: '/user/dashboard', component: ClientDashboard },
     { path: '/user', component: Loading },
     { path: '/signup', component: SignUp },

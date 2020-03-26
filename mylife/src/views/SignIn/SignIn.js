@@ -29,7 +29,8 @@ class SignIn extends React.Component {
         super();
 
         this.state = {
-            redirect: false
+            redirect: false,
+            currentUser: false
         }
 
         this.clickLogin = this.clickLogin.bind(this);
@@ -60,12 +61,13 @@ class SignIn extends React.Component {
             .then(data => {
                 document.getElementById("errorMessage").style.visibility = "none";
 
-                var loggedUser = {"role": data.role, "userInfo": data.data, "token": data.token}
+                var currentUser = {"role": data.role, "userInfo": data.data, "token": data.token}
                 
-                localStorage.setItem('loggedUser', JSON.stringify(loggedUser))
+                localStorage.setItem('currentUser', JSON.stringify(currentUser))
 
                 this.setState({
-                    redirect: true
+                    redirect: true,
+                    currentUser: JSON.parse(localStorage.getItem('currentUser')).role
                 })
 
             })
@@ -83,7 +85,15 @@ class SignIn extends React.Component {
     }
 
     render() {
-        if (this.state.redirect) return (<Redirect to="/user" />);
+        if (this.state.redirect) {
+            if(this.state.currentUser === "client")
+                return (<Redirect to="/user" />);
+            else if(this.state.currentUser === "doctor")
+                return (<Redirect to="/doctor" />)
+            else if(this.state.currentUser === "admin")
+                return (<Redirect to="/admin" />)
+
+        } 
         else
             return (
                 <div>
