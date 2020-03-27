@@ -13,7 +13,12 @@ ENV PATH /app/node_modules/.bin:$PATH
 RUN npm install --silent
 RUN npm install react-scripts@3.0.1 -g --silent
 
+RUN npm install -g serve
+
 WORKDIR /app/mylife
 
+RUN npm run build # compile
+
 # start app
-CMD ["npm", "start"]
+# CMD ["npm", "start"]
+CMD serve -s build -l tcp://0.0.0.0:3000
