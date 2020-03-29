@@ -100,15 +100,13 @@ class SignIn extends React.Component {
                         <div class="gradient">
                             <div class="limiter">
                                 <div class="container-login100">
-                                    <div class="wrap-login100 p-t-50 p-b-90">
+                                    <div class="wrap-login100 p-t-50 p-b-50">
                                         <h1 class="h1-title"><i class="fas fa-heartbeat"></i><br />Sign In</h1>
                                         <Form>
                                             <Row>
                                                 <Col sm="1"></Col>
                                                 <Col sm="10">
-                                                    <FormGroup>
-                                                        <Input id="email" style={this.inputStyle} placeholder="Email" type="email" />
-                                                    </FormGroup>
+                                                    <input id="email" class="form-input" placeholder="Email" type="email" />
                                                 </Col>
                                                 <Col sm="1"></Col>
                                             </Row>
@@ -116,7 +114,7 @@ class SignIn extends React.Component {
                                                 <Col sm="1"></Col>
                                                 <Col sm="10">
                                                     <FormGroup>
-                                                        <Input id="password" style={this.inputStyle} placeholder="Password" type="password" />
+                                                        <input id="password" class="form-input" placeholder="Password" type="password" />
                                                     </FormGroup>
                                                 </Col>
                                                 <Col sm="1"></Col>
