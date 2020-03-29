@@ -14,7 +14,7 @@ function Header() {
     }
 
     const signUp = () => {
-        history.push("/sign");
+        history.push("/signup");
     }
 
     return (
