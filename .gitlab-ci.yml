@@ -1,9 +1,9 @@
-
 image: node:latest
 
 stages:
   - Lint
   - Test
+  - Docker
   - Deploy
 
 # This folder is cached between builds
@@ -27,7 +27,7 @@ test:
     - echo "Testing..."
 
 docker:
-  stage: Deploy
+  stage: Docker
   image: docker:stable
   only:
     - master
