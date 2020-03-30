@@ -26,7 +26,7 @@ function PrivateRoute(props) {
 
 
 export default [
-    { path: '/admin/dashboard', component: <PrivateRoute path='/doctor/dashboard' component={AdminDashboard} />},
+    { path: '/admin/dashboard', component: <PrivateRoute path='/admin/dashboard' component={AdminDashboard} />},
     { path: '/admin', component: <PrivateRoute path='/admin' component={Loading} /> },
     { path: '/doctor/dashboard', component: <PrivateRoute path='/doctor/dashboard' component={DoctorDashboard} /> },
     { path: '/doctor', component: <PrivateRoute path='/doctor' component={Loading} /> },

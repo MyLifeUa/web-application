@@ -22,14 +22,7 @@ class SignOut extends React.Component {
     render() {
         if (this.state.loaded) return <Redirect to="/signin" />
 
-        return (
-            <div class="signout-container">
-
-                <div class="row">
-                    <h1>Signing out...</h1>
-                </div>
-            </div>
-        );
+        return <div class="loading-container"><img class="loader" src={MyLifeLogo} /></div>
     }
 }
 

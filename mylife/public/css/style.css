@@ -1484,33 +1484,38 @@ h1, h2, h3, h4, h5, h6 {
   100% { transform: scale(0.5); }
 }
 
-.signout-container {
+.form-input {
   width: 100%;
-  min-height: 100vh;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  padding: 15px;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-color: #69c8f3
-  ;
+  box-sizing: border-box;
+  border: 2px solid #4ca2d1;
+  border-radius: 4px;
+  font-size: 20px;
+  background-color: white;
+  padding: 6px 6px 6px 12px;
+  margin-bottom: 12px;
+  color: #4ca2d1;
+  font-weight: 500;
 }
 
-.signout-loader {
-  width: 120px;
-  height: 120px;
-  animation: spin 1.5s ease-in-out infinite;
+.form-input-error {
+  width: 100%;
+  box-sizing: border-box;
+  border: 2px solid #ff393a;
+  border-radius: 4px;
+  font-size: 20px;
+  background-color: white;
+  padding: 6px 6px 6px 12px;
+  margin-bottom: 12px;
+  color: #4ca2d1;
+  font-weight: 500;
+}
+/*
+.form-input:focus {}
+*/
+
+.input-title {
+  color: #4ca2d1;
+  font-family: "Source Sans Pro", Arial, sans-serif;
+  font-weight: 400;
 }
 
-@keyframes spin {
-  0% { transform: scale(0.5); }
-  50% {transform: scale(1.5);}
-  100% { transform: scale(0.5); }
-}
