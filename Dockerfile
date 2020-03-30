@@ -11,7 +11,7 @@ ENV PATH /app/node_modules/.bin:$PATH
 RUN ls -la /app
 
 RUN yarn install 
-RUN yarn install -g serve
+RUN yarn global add serve
 
 RUN yarn run build # compile
 
