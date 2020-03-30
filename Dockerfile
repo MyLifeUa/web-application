@@ -10,10 +10,10 @@ ENV PATH /app/node_modules/.bin:$PATH
 
 RUN ls -la /app
 
-RUN npm install --silent -g
-RUN npm install -g serve
+RUN yarn install 
+RUN yarn install -g serve
 
-RUN npm run build # compile
+RUN yarn run build # compile
 
 # start app
 # CMD ["npm", "start"]
