@@ -39,6 +39,7 @@ const switchRoutes = (
 
 const useStyles = makeStyles(styles);
 
+// Admin view
 export default function Admin({ ...rest }) {
   // styles
   const classes = useStyles();
