@@ -5,6 +5,8 @@ import myLifeLogo from 'assets/img/mylife-logo.png'
 
 import baseURI from "variables/baseURI.js";
 
+
+
 class Auth extends React.Component {
 
     constructor() {
