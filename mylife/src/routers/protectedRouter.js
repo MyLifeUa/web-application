@@ -23,6 +23,7 @@ function PrivateRoute(props) {
     return isAuthenticated === true ? <Route path={path} component={component} /> : <Redirect to="/signin" /> 
 }
 
+// Private paths
 export default [
     { path: '/admin/auth', layout: <PrivateRoute path='/admin/auth' component={Auth} /> },
     { path: '/client/auth', layout: <PrivateRoute path='/client/auth' component={Auth} /> },
