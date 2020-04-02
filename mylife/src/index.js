@@ -27,6 +27,7 @@ import "assets/css/utils.css";
 
 const hist = createBrowserHistory();
 
+
 ReactDOM.render(
   <Router history={hist}>
     <Switch>
