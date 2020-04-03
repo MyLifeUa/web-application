@@ -1,7 +1,6 @@
 import React from "react";
 // @material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
-import InputLabel from "@material-ui/core/InputLabel";
+
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -13,9 +12,10 @@ import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
-import avatar from "assets/img/faces/marc.jpg";
-
 export default class UserProfile extends React.Component {
+
+	authUser = JSON.parse(localStorage.getItem('authUser'));
+
 	classes = {
 		cardCategoryWhite: {
 			color: "rgba(255,255,255,.62)",
@@ -39,6 +39,10 @@ export default class UserProfile extends React.Component {
 		}
 	};
 
+	componentDidMount() {
+		console.log(this.authUser);
+	}
+
 	render() {
 		return (
 			<div>
@@ -46,7 +50,7 @@ export default class UserProfile extends React.Component {
 					<GridItem xs={12} sm={12} md={8}>
 						<Card>
 							<CardHeader style={this.classes.cardHeader}>
-								<h4 style={this.classes.cardTitleWhite}>Edit Profile</h4>
+								<h4 style={this.classes.cardTitleWhite}><i className="fas fa-user"></i>  Edit Profile</h4>
 								<p style={this.classes.cardCategoryWhite}>Complete your profile</p>
 							</CardHeader>
 							<CardBody>
@@ -131,22 +135,6 @@ export default class UserProfile extends React.Component {
 										/>
 									</GridItem>
 								</GridContainer>
-								<GridContainer>
-									<GridItem xs={12} sm={12} md={12}>
-										<InputLabel style={{ color: "#AAAAAA" }}>About me</InputLabel>
-										<CustomInput
-											labelText="Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo."
-											id="about-me"
-											formControlProps={{
-												fullWidth: true
-											}}
-											inputProps={{
-												multiline: true,
-												rows: 5
-											}}
-										/>
-									</GridItem>
-								</GridContainer>
 							</CardBody>
 							<CardFooter>
 								<Button color="primary">Update Profile</Button>
@@ -157,14 +145,18 @@ export default class UserProfile extends React.Component {
 						<Card profile>
 							<CardAvatar profile>
 								<a href="#pablo" onClick={e => e.preventDefault()}>
-									<img src={avatar} alt="..." />
+									<img src={"data:image;base64,"+this.authUser.message.photo} alt="..." />
 								</a>
 							</CardAvatar>
 							<CardBody profile>
-								<h6>CEO / CO-FOUNDER</h6>
-								<h4>Alec Thompson</h4>
-								<p>tiagocmendes@ua.pt</p>
-
+								<GridContainer>
+									<GridItem xs={12} sm={12} md={12}><h3>{this.authUser.message.name}</h3></GridItem>
+									<GridItem xs={12} sm={12} md={12}><a href="/signin">tiagocmendes@ua.pt</a></GridItem>
+									<GridItem xs={12} sm={12} md={12}><a href="/signin">Height: {this.authUser.message.height} cm</a></GridItem>
+									<GridItem xs={12} sm={12} md={12}><a href="/signin">Weight: {this.authUser.message.current_weight} kg</a></GridItem>
+									<GridItem xs={12} sm={12} md={12}><a href="/signin">Phone: {this.authUser.message.phone_number}</a></GridItem>
+									<GridItem xs={12} sm={12} md={12}><a href="/signin">Sex: {this.authUser.message.sex === "M" ? "Male" : "Female"}</a></GridItem>
+								</GridContainer>
 							</CardBody>
 						</Card>
 					</GridItem>

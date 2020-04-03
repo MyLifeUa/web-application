@@ -41,8 +41,8 @@ const dashboardRoutes = [
     layout: "/doctor"
   },
   {
-    path: "/user",
-    name: "User Profile",
+    path: "/profile",
+    name: "Doctor Profile",
     rtlName: "ملف تعريفي للمستخدم",
     icon: Person,
     component: UserProfile,
