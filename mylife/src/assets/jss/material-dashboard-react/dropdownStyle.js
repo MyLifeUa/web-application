@@ -1,10 +1,10 @@
 import {
-  primaryColor,
+  //primaryColor,
   whiteColor,
   primaryBoxShadow,
   defaultFont,
   blackColor,
-  grayColor,
+  //grayColor,
   hexToRgb
 } from "assets/jss/material-dashboard-react.js";
 
