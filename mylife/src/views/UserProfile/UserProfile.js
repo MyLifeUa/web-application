@@ -35,12 +35,11 @@ export default class UserProfile extends React.Component {
 			textDecoration: "none"
 		},
 		cardHeader: {
-			backgroundColor: "#4a9fd2"
+			backgroundColor: "#00acc1"
 		}
 	};
 
 	componentDidMount() {
-		console.log(this.authUser);
 	}
 
 	render() {
@@ -55,42 +54,10 @@ export default class UserProfile extends React.Component {
 							</CardHeader>
 							<CardBody>
 								<GridContainer>
-									<GridItem xs={12} sm={12} md={5}>
-										<CustomInput
-											labelText="Company (disabled)"
-											id="company-disabled"
-											formControlProps={{
-												fullWidth: true
-											}}
-											inputProps={{
-												disabled: true
-											}}
-										/>
-									</GridItem>
-									<GridItem xs={12} sm={12} md={3}>
-										<CustomInput
-											labelText="Username"
-											id="username"
-											formControlProps={{
-												fullWidth: true
-											}}
-										/>
-									</GridItem>
-									<GridItem xs={12} sm={12} md={4}>
-										<CustomInput
-											labelText="Email address"
-											id="email-address"
-											formControlProps={{
-												fullWidth: true
-											}}
-										/>
-									</GridItem>
-								</GridContainer>
-								<GridContainer>
 									<GridItem xs={12} sm={12} md={6}>
 										<CustomInput
-											labelText="First Name"
-											id="first-name"
+											labelText="Email"
+											id="email"
 											formControlProps={{
 												fullWidth: true
 											}}
@@ -98,19 +65,8 @@ export default class UserProfile extends React.Component {
 									</GridItem>
 									<GridItem xs={12} sm={12} md={6}>
 										<CustomInput
-											labelText="Last Name"
-											id="last-name"
-											formControlProps={{
-												fullWidth: true
-											}}
-										/>
-									</GridItem>
-								</GridContainer>
-								<GridContainer>
-									<GridItem xs={12} sm={12} md={4}>
-										<CustomInput
-											labelText="City"
-											id="city"
+											labelText="Phone number"
+											id="phone-number"
 											formControlProps={{
 												fullWidth: true
 											}}
@@ -118,8 +74,8 @@ export default class UserProfile extends React.Component {
 									</GridItem>
 									<GridItem xs={12} sm={12} md={4}>
 										<CustomInput
-											labelText="Country"
-											id="country"
+											labelText="Height (cm)"
+											id="height"
 											formControlProps={{
 												fullWidth: true
 											}}
@@ -127,17 +83,46 @@ export default class UserProfile extends React.Component {
 									</GridItem>
 									<GridItem xs={12} sm={12} md={4}>
 										<CustomInput
-											labelText="Postal Code"
-											id="postal-code"
+											labelText="Weight"
+											id="weight"
 											formControlProps={{
 												fullWidth: true
 											}}
 										/>
 									</GridItem>
+									<GridItem xs={12} sm={12} md={4}>
+										<CustomInput
+											labelText="Goal weight"
+											id="goal-weight"
+											formControlProps={{
+												fullWidth: true
+											}}
+										/>
+									</GridItem>
+									<GridItem xs={12} sm={12} md={6}>
+										<CustomInput
+											labelText="Password"
+											id="password"
+											formControlProps={{
+												fullWidth: true
+											}}
+											
+										/>
+									</GridItem>
+									<GridItem xs={12} sm={12} md={6}>
+										<CustomInput
+											labelText="Confirm password"
+											id="confirm-password"
+											formControlProps={{
+												fullWidth: true
+											}}
+										/>
+									</GridItem>
+									
 								</GridContainer>
 							</CardBody>
 							<CardFooter>
-								<Button color="primary">Update Profile</Button>
+								<Button block color="info">Update Profile</Button>
 							</CardFooter>
 						</Card>
 					</GridItem>
@@ -151,11 +136,11 @@ export default class UserProfile extends React.Component {
 							<CardBody profile>
 								<GridContainer>
 									<GridItem xs={12} sm={12} md={12}><h3>{this.authUser.message.name}</h3></GridItem>
-									<GridItem xs={12} sm={12} md={12}><a href="/signin">tiagocmendes@ua.pt</a></GridItem>
-									<GridItem xs={12} sm={12} md={12}><a href="/signin">Height: {this.authUser.message.height} cm</a></GridItem>
-									<GridItem xs={12} sm={12} md={12}><a href="/signin">Weight: {this.authUser.message.current_weight} kg</a></GridItem>
-									<GridItem xs={12} sm={12} md={12}><a href="/signin">Phone: {this.authUser.message.phone_number}</a></GridItem>
-									<GridItem xs={12} sm={12} md={12}><a href="/signin">Sex: {this.authUser.message.sex === "M" ? "Male" : "Female"}</a></GridItem>
+									<GridItem xs={12} sm={12} md={12}><a><strong>{this.authUser.message.email}</strong></a></GridItem>
+									<GridItem xs={12} sm={12} md={12}><p style={{fontSize: "17px"}}><i style={{color: "#00acc1", marginRight: "3px"}}class="fas fa-ruler-vertical"></i> {this.authUser.message.height} cm</p></GridItem>
+									<GridItem xs={12} sm={12} md={12}><p style={{fontSize: "17px"}}><i style={{color: "#00acc1", marginRight: "3px"}}class="fas fa-weight"></i>  {this.authUser.message.current_weight} kg</p></GridItem>
+									<GridItem xs={12} sm={12} md={12}><p style={{fontSize: "17px"}}><i style={{color: "#00acc1", marginRight: "3px"}}class="fas fa-phone"></i> {this.authUser.message.phone_number}</p></GridItem>
+									<GridItem xs={12} sm={12} md={12}><p style={{fontSize: "17px"}}><i style={{color: "#00acc1", marginRight: "3px"}}class={this.authUser.message.sex === "M" ? "fas fa-male" : "fas fa-female" }></i> {this.authUser.message.sex === "M" ? "Male" : "Female"}</p></GridItem>
 								</GridContainer>
 							</CardBody>
 						</Card>

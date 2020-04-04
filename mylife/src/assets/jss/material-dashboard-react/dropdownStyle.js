@@ -24,7 +24,7 @@ const dropdownStyle = theme => ({
       display: "block",
       width: "30px",
       height: "30px",
-      color: grayColor[9],
+      color: "#00acc1",
       marginRight: "15px"
     }
   },
@@ -109,12 +109,12 @@ const dropdownStyle = theme => ({
     clear: "both",
     fontWeight: "400",
     lineHeight: "1.42857143",
-    color: grayColor[8],
+    color: "#00acc1",
     whiteSpace: "nowrap",
     height: "unset",
     minHeight: "unset",
     "&:hover": {
-      backgroundColor: primaryColor[0],
+      backgroundColor: "#00acc1",
       color: whiteColor,
       ...primaryBoxShadow
     }
