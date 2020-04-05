@@ -17,8 +17,11 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import Alert from '@material-ui/lab/Alert';
 
 import baseURI from "variables/baseURI.js";
+
+
 
 export default class UserProfile extends React.Component {
 
@@ -29,7 +32,8 @@ export default class UserProfile extends React.Component {
 			errorDialog: false,
 			changes: [],
 			errors: [],
-			authUser: JSON.parse(localStorage.getItem('authUser'))
+			authUser: JSON.parse(localStorage.getItem('authUser')),
+			alert: true
 		}
 		this.changeProfilePicture = this.changeProfilePicture.bind(this);
 		this.handleDialogOpen = this.handleDialogOpen.bind(this);
@@ -437,6 +441,7 @@ export default class UserProfile extends React.Component {
 						<Button block onClick={() => this.toggleErrorDialog()} color="danger">Close</Button>
 					</DialogActions>
 				</Dialog>
+				{this.state.alert === true ? <Alert severity="success">Profile updated with success!</Alert> : ""}
 			</div>
 		);
 	}
