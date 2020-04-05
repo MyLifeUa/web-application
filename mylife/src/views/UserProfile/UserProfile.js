@@ -36,6 +36,7 @@ export default class UserProfile extends React.Component {
 		this.toggleErrorDialog = this.toggleErrorDialog.bind(this);
 		this.validEmail = this.validEmail.bind(this);
 		this.validPhoneNumber = this.validPhoneNumber.bind(this);
+		this.isFloat = this.isFloat.bind(this);
 	}
 
 	authUser = JSON.parse(localStorage.getItem('authUser'));
@@ -73,13 +74,18 @@ export default class UserProfile extends React.Component {
 		return phoneNumber.match(/^[0-9]+$/) && phoneNumber.trim().length === 9;
 	}
 
+	isFloat = (number) => {
+		return number.match(/^[.0-9]+$/) && parseFloat(number) > 0;
+	}
+
+
 	handleDialogOpen() {
 
 		var email = ["Email", document.getElementById("email")];
 		var phoneNumber = ["Phone number", document.getElementById("phone-number")];
 		var height = ["Height (cm)", document.getElementById("height")];
 		var weight = ["Weight (kg)", document.getElementById("weight")];
-		var goalWeight = ["Goal weight", document.getElementById("goal-weight")];
+		var goalWeight = ["Goal weight (kg)", document.getElementById("goal-weight")];
 		var password = ["Password", document.getElementById("password")];
 		var confirmPassword = ["Confirm password", document.getElementById("confirm-password")];
 
@@ -110,6 +116,40 @@ export default class UserProfile extends React.Component {
 						errors.push(["Phone number", "should have 9 digits!"]);
 					break;
 				
+				case "Height (cm)":
+					if(!this.isFloat(changes[i][1].value))
+						errors.push(["Height (cm)", "invalid format"]);
+					break;
+				
+				case "Weight (kg)":
+					if(!this.isFloat(changes[i][1].value))
+						errors.push(["Weight (kg)", "invalid format"]);
+					break;
+				
+				case "Goal weight (kg)":
+					if(!this.isFloat(changes[i][1].value))
+						errors.push(["Goal weight (kg)", "invalid format"]);
+					break;
+				
+				case "Password":
+					if(changes[i][1].value !== confirmPassword[1].value) {
+						errors.push(["Password", "password not confirmed"]);
+						break;
+					}
+
+					if(changes[i][1].value.length < 8) {
+						errors.push(["Passowrd", "must have at least 8 characters"]);
+					}
+					
+					/*
+					var hiddenPassword = "";
+					for(var j = 0; j < changes[i][1].value.length; j++)
+						hiddenPassword += "*";
+					
+					changes[i][1].value = hiddenPassword;
+					*/
+					break;
+
 				default:
 					break;
 
@@ -117,10 +157,8 @@ export default class UserProfile extends React.Component {
 
 		}
 
-
-
 		this.setState({
-			confirmDialog: errors.length === 0 ? true : false,
+			confirmDialog: changes.length !== 0 && errors.length === 0 ? true : false,
 			errorDialog: errors.length === 0 ? false : true,
 			changes: changes,
 			errors: errors
@@ -296,14 +334,13 @@ export default class UserProfile extends React.Component {
 						<DialogContentText id="alert-dialog-description">The following fields will be updated:<br />
 							<ol>
 								{this.state.errors.map((error) => {
-									return <li><strong style={{color: "#f44336"}}>{error[0]}: </strong> {error[1]}</li>;
+									return <li><strong>{error[0]}: </strong> {error[1]}</li>;
 								})}
 							</ol>
 						</DialogContentText>
 					</DialogContent>
 					<DialogActions>
-						<Button block onClick={() => this.toggleErrorDialog()} color="info">Cancel</Button>
-						<Button block onClick={() => this.toggleErrorDialog()} color="success" autoFocus>Confirm</Button>
+						<Button block onClick={() => this.toggleErrorDialog()} color="danger">Close</Button>
 					</DialogActions>
 				</Dialog>
 			</div>
