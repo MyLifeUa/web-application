@@ -193,10 +193,10 @@ export default class Profile extends React.Component {
                 else return response.json();
             })
             .then(data => {
-                console.log(data);
-                this.state.authUser.token = data.token;
-                this.state.authUser.userInfo.email = toUpdate.email;
-                localStorage.setItem('authUser', JSON.stringify(this.state.authUser));
+                var currentUser = this.state.authUser;
+                currentUser.toke = data.token;
+                currentUser.userInfo.email = toUpdate.email;
+                localStorage.setItem('authUser', JSON.stringify(currentUser));
 
                 this.setState({
                     confirmDialog: this.state.confirmDialog,
