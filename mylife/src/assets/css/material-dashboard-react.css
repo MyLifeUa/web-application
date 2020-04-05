@@ -133,13 +133,13 @@ h6 {
 }
 
 a {
-  color: #9c27b0;
+  color: #00acc1;
   text-decoration: none;
 }
 
 a:hover,
 a:focus {
-  color: #89229b;
+  color: #2d2c2d;
   text-decoration: none;
 }
 
@@ -650,9 +650,22 @@ footer ul li a:hover {
   background-color: white;
   padding: 6px 6px 6px 12px;
   margin-bottom: 12px;
-  color: #5eb6cd;;
+  color: #5eb6cd;
   font-weight: 400;
 }
+
+.sex-select {
+  position: relative;
+  width: 100%;
+  height: 50px;
+  font-size: 20px;
+  padding: 6px 6px 6px 0px;
+  font-weight: 400;
+  color: #5eb6cd;
+}
+
+
+
 
 .form-input-error {
   width: 100%;
@@ -754,4 +767,8 @@ footer ul li a:hover {
       -ms-animation: fadein 2s; /* Internet Explorer */
        -o-animation: fadein 2s; /* Opera < 12.1 */
           animation: fadein 2s;
+}
+
+.profile-picture:hover {
+  opacity: 0.8;
 }

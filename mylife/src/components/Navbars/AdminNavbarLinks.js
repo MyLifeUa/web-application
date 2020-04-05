@@ -1,4 +1,6 @@
 import React from "react";
+import { Redirect } from "react-router-dom";
+
 import classNames from "classnames";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -27,6 +29,8 @@ export default function AdminNavbarLinks() {
   const classes = useStyles();
   const [openNotification, setOpenNotification] = React.useState(null);
   const [openProfile, setOpenProfile] = React.useState(null);
+  const [logout, setLogout] = React.useState(false);
+
   const handleClickNotification = event => {
     if (openNotification && openNotification.contains(event.target)) {
       setOpenNotification(null);
@@ -47,6 +51,15 @@ export default function AdminNavbarLinks() {
   const handleCloseProfile = () => {
     setOpenProfile(null);
   };
+
+
+  const handleLogout = () => {
+    localStorage.clear();
+    setLogout(true);
+  }
+  
+
+  if(logout) return <Redirect to="/signin" />;
   return (
     <div>
       <div className={classes.searchWrapper}>
@@ -196,8 +209,8 @@ export default function AdminNavbarLinks() {
                     <MenuItem
                       onClick={handleCloseProfile}
                       className={classes.dropdownItem}
-                    >
-                      Profile
+                    ><a href={"/" + JSON.parse(localStorage.getItem('authUser')).role + "/profile"}>Profile</a>
+                      
                     </MenuItem>
                     <MenuItem
                       onClick={handleCloseProfile}
@@ -207,9 +220,10 @@ export default function AdminNavbarLinks() {
                     </MenuItem>
                     <Divider light />
                     <MenuItem
-                      onClick={handleCloseProfile}
+                      onClick={handleLogout}
                       className={classes.dropdownItem}
                     >
+                      
                       Logout
                     </MenuItem>
                   </MenuList>

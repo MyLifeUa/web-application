@@ -1,6 +1,6 @@
 const cardBodyStyle = {
   cardBody: {
-    padding: "0.9375rem 20px",
+    padding: "10px 20px",
     flex: "1 1 auto",
     WebkitBoxFlex: "1",
     position: "relative"
@@ -10,7 +10,6 @@ const cardBodyStyle = {
     paddingRight: "5px"
   },
   cardBodyProfile: {
-    marginTop: "15px"
   }
 };
 

@@ -36,7 +36,8 @@ class SignUp extends React.Component {
         phone_number: null,
         photo: config.defaultUser,
         current_weight: null,
-        weight_goal: null
+        weight_goal: null,
+        sex: "M"
     }
 
     validEmail = (email) => {
@@ -170,6 +171,8 @@ class SignUp extends React.Component {
         var goalWeight = document.getElementById("goal-weight");
         var phoneNumber = document.getElementById("phone-number");
         var birthDate = document.getElementById("birth-date");
+        
+        var sex = document.getElementById("sex-select");
 
         var properties = [height, currentWeight, goalWeight, phoneNumber, birthDate];
 
@@ -240,6 +243,7 @@ class SignUp extends React.Component {
         this.signupInfo.height = height.value;
         this.signupInfo.current_weight = currentWeight.value;
         this.signupInfo.weight_goal = goalWeight.value;
+        this.signupInfo.sex = sex.value;
 
         var aux = birthDate.value.split("/").reverse()
         this.signupInfo.birth_date = aux[0] + "-" + aux[2] + "-" + aux[1];

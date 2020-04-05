@@ -14,8 +14,8 @@ import routes from "routers/doctorRouter.js";
 
 import styles from "assets/jss/material-dashboard-react/layouts/adminStyle.js";
 
-import bgImage from "assets/img/sidebar-2.jpg";
-import logo from "assets/img/reactlogo.png";
+import bgImage from "assets/img/banner.png";
+import logo from "assets/img/small-logo.png";
 
 let ps;
 
@@ -82,7 +82,7 @@ export default function Doctor({ ...rest }) {
     <div className={classes.wrapper}>
       <Sidebar
         routes={routes}
-        logoText={"Creative Tim"}
+        logoText={"MY LIFE DOCTOR"}
         logo={logo}
         image={image}
         handleDrawerToggle={handleDrawerToggle}

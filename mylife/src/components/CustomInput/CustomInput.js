@@ -23,7 +23,8 @@ export default function CustomInput(props) {
     labelProps,
     inputProps,
     error,
-    success
+    success,
+    password
   } = props;
 
   const labelClasses = classNames({
@@ -38,6 +39,15 @@ export default function CustomInput(props) {
   const marginTop = classNames({
     [classes.marginTop]: labelText === undefined
   });
+
+  var type;
+  password===null ?  type="" : password===true ? type="password" : type="" 
+  if(password){
+    type = "password"
+  }else{
+    type = ""
+  }
+
   return (
     <FormControl
       {...formControlProps}
@@ -58,6 +68,8 @@ export default function CustomInput(props) {
           disabled: classes.disabled,
           underline: underlineClasses
         }}
+        type={type}
+
         id={id}
         {...inputProps}
       />
@@ -77,5 +89,6 @@ CustomInput.propTypes = {
   inputProps: PropTypes.object,
   formControlProps: PropTypes.object,
   error: PropTypes.bool,
-  success: PropTypes.bool
+  success: PropTypes.bool,
+  password: PropTypes.bool
 };
