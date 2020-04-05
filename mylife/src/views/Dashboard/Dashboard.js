@@ -43,6 +43,7 @@ const useStyles = makeStyles(styles);
 
 export default function Dashboard() {
   const classes = useStyles();
+  console.log(JSON.parse(localStorage.getItem('authUser')));
   return (
     <div>
       <GridContainer>

@@ -314,6 +314,7 @@ export default class UserProfile extends React.Component {
 		})
 	}
 
+	
 	changeProfilePicture() {
 	}
 

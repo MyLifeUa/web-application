@@ -31,6 +31,8 @@ import Icons from "views/Icons/Icons.js";
 import Maps from "views/Maps/Maps.js";
 import NotificationsPage from "views/Notifications/Notifications.js";
 
+import Profile from "views/Doctor/Profile/Profile.js"
+
 const dashboardRoutes = [
   {
     path: "/dashboard",
@@ -45,7 +47,7 @@ const dashboardRoutes = [
     name: "Doctor Profile",
     rtlName: "ملف تعريفي للمستخدم",
     icon: Person,
-    component: UserProfile,
+    component: Profile,
     layout: "/doctor"
   },
   {

@@ -17,25 +17,29 @@ class Auth extends React.Component {
     componentDidMount() {
         var currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-        fetch(baseURI.restApi.signup + "/" + currentUser.userInfo.email, {
-            method: "GET",
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-                "Authorization": "Token " + currentUser.token
-            }
-        })
-            .then(response => {
-                if (!response.ok) throw new Error(response.status);
-                else return response.json();
+        if (currentUser.role === "admin" || currentUser.role === "doctor")
+            localStorage.setItem('authUser', JSON.stringify(currentUser));
+        else
 
+            fetch(baseURI.restApi.signup + "/" + currentUser.userInfo.email, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Token " + currentUser.token
+                }
             })
-            .then(data => {
-                localStorage.setItem('authUser', JSON.stringify(data));
-            })
-            .catch(error => {
-                console.log("Fetch error: " + error);
-            })
+                .then(response => {
+                    if (!response.ok) throw new Error(response.status);
+                    else return response.json();
+
+                })
+                .then(data => {
+                    localStorage.setItem('authUser', JSON.stringify(data));
+                })
+                .catch(error => {
+                    console.log("Fetch error: " + error);
+                })
 
         this.setState({ loaded: false, currentUser: currentUser })
         setInterval(() => {
