@@ -7,96 +7,99 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 
+import baseURI from "variables/baseURI.js";  
+
 class Doctors extends React.Component {
+
+    constructor() {
+        super();
+        this.state = {
+            authUser: JSON.parse(localStorage.getItem('authUser')),
+            doctors: []
+        }
+    }
 
     classes = {
         cardCategoryWhite: {
-            "&,& a,& a:hover,& a:focus": {
-                color: "rgba(255,255,255,.62)",
-                margin: "0",
-                fontSize: "14px",
-                marginTop: "0",
-                marginBottom: "0"
-            },
-            "& a,& a:hover,& a:focus": {
-                color: "#FFFFFF"
-            }
+            color: "rgba(255,255,255,.62)",
+            margin: "0",
+            fontSize: "14px",
+            fontWeight: "500",
+            marginTop: "0",
+            marginBottom: "0"
         },
         cardTitleWhite: {
             color: "#FFFFFF",
             marginTop: "0px",
             minHeight: "auto",
-            fontWeight: "300",
+            fontWeight: "500",
             fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
             marginBottom: "3px",
-            textDecoration: "none",
-            "& small": {
-                color: "#777",
-                fontSize: "65%",
-                fontWeight: "400",
-                lineHeight: "1"
-            }
+            textDecoration: "none"
+        },
+        cardHeader: {
+            backgroundColor: "#00acc1"
+        },
+        picture: {
+            height: "40px", width: "40px", borderRadius: "50%"
         }
     };
+
+    componentDidMount() {
+        
+        fetch(baseURI.restApi.hospitalDoctors, {
+            method: "GET",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": "Token " + this.state.authUser.token
+            }
+        })
+            .then(response => {
+                if (!response.ok) throw new Error(response.status);
+                else return response.json();
+
+            })
+            .then(data => {
+                var doctors = data.message;
+
+                for(var i = 0; i < doctors.length; i++) {
+                    doctors[i] = [
+                        <img style={this.classes.picture} src={"data:image;base64," + doctors[i].photo} alt={doctors[i].name}/>,
+                        doctors[i].name,
+                        doctors[i].email,
+                        doctors[i].phone_number,
+                        doctors[i].hospital,
+                        <i style={{color: "#00acc1", fontSize: "16px"}} class="fas fa-user-edit"></i>,
+                        <i style={{color: "#f44336", fontSize: "16px"}} class="fas fa-trash-alt"></i>
+                    ]
+                }
+
+                this.setState({
+                    authUser: this.state.authUser,
+                    doctors: doctors
+                })
+            })
+            .catch(error => {
+                console.log("Fetch error: " + error);
+            })
+            
+    }
 
     render() {
         return (
             <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                     <Card>
-                        <CardHeader color="primary">
-                            <h4>Doctors list</h4>
+                        <CardHeader style={this.classes.cardHeader}>
+                            <h4 style={this.classes.cardTitleWhite}><i class="fas fa-user-md"></i>  Doctors list</h4>
+                            <p style={this.classes.cardCategoryWhite}>Manage all doctors from your hospital</p>
                         </CardHeader>
                         <CardBody>
                             <Table
-                                tableHeaderColor="primary"
-                                tableHead={["Name", "Country", "City", "Salary"]}
-                                tableData={[
-                                    ["Dakota Rice", "Niger", "Oud-Turnhout", "$36,738"],
-                                    ["Minerva Hooper", "Curaçao", "Sinaai-Waas", "$23,789"],
-                                    ["Sage Rodriguez", "Netherlands", "Baileux", "$56,142"],
-                                    ["Philip Chaney", "Korea, South", "Overland Park", "$38,735"],
-                                    ["Doris Greene", "Malawi", "Feldkirchen in Kärnten", "$63,542"],
-                                    ["Mason Porter", "Chile", "Gloucester", "$78,615"]
-                                ]}
-                            />
-                        </CardBody>
-                    </Card>
-                </GridItem>
-                <GridItem xs={12} sm={12} md={12}>
-                    <Card plain>
-                        <CardHeader plain color="primary">
-                            <h4 className={this.classes.cardTitleWhite}>
-                                Table on Plain Background
-            </h4>
-                            <p className={this.classes.cardCategoryWhite}>
-                                Here is a subtitle for this table
-            </p>
-                        </CardHeader>
-                        <CardBody>
-                            <Table
-                                tableHeaderColor="primary"
-                                tableHead={["ID", "Name", "Country", "City", "Salary"]}
-                                tableData={[
-                                    ["1", "Dakota Rice", "$36,738", "Niger", "Oud-Turnhout"],
-                                    ["2", "Minerva Hooper", "$23,789", "Curaçao", "Sinaai-Waas"],
-                                    ["3", "Sage Rodriguez", "$56,142", "Netherlands", "Baileux"],
-                                    [
-                                        "4",
-                                        "Philip Chaney",
-                                        "$38,735",
-                                        "Korea, South",
-                                        "Overland Park"
-                                    ],
-                                    [
-                                        "5",
-                                        "Doris Greene",
-                                        "$63,542",
-                                        "Malawi",
-                                        "Feldkirchen in Kärnten"
-                                    ],
-                                    ["6", "Mason Porter", "$78,615", "Chile", "Gloucester"]
-                                ]}
+                                tableHeaderColor="info"
+                                tableHead={["", "Name", "Email", "Phone Number", "Hospital", "Edit", "Delete"]}
+                                tableData={this.state.doctors}
                             />
                         </CardBody>
                     </Card>

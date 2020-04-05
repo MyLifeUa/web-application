@@ -240,8 +240,6 @@ export default class UserProfile extends React.Component {
 				else return response.json();
 			})
 			.then(data => {
-				console.log(data);
-				console.log(baseURI.restApi.signup + "/" + toUpdate.email)
 				fetch(baseURI.restApi.signup + "/" + toUpdate.email, {
 					method: "GET",
 					headers: {
