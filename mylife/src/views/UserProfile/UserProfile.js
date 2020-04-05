@@ -17,7 +17,6 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import Alert from '@material-ui/lab/Alert';
 
 import baseURI from "variables/baseURI.js";
 
@@ -33,7 +32,7 @@ export default class UserProfile extends React.Component {
 			changes: [],
 			errors: [],
 			authUser: JSON.parse(localStorage.getItem('authUser')),
-			alert: true
+			updated: false
 		}
 		this.changeProfilePicture = this.changeProfilePicture.bind(this);
 		this.handleDialogOpen = this.handleDialogOpen.bind(this);
@@ -43,6 +42,7 @@ export default class UserProfile extends React.Component {
 		this.validEmail = this.validEmail.bind(this);
 		this.validPhoneNumber = this.validPhoneNumber.bind(this);
 		this.isFloat = this.isFloat.bind(this);
+		this.toggleSuccessDialog = this.toggleSuccessDialog.bind(this);
 	}
 
 	classes = {
@@ -82,6 +82,15 @@ export default class UserProfile extends React.Component {
 		return number.match(/^[.0-9]+$/) && parseFloat(number) > 0;
 	}
 
+	toggleSuccessDialog() {
+		this.setState({
+			errorDialog: this.state.errorDialog,
+			changes: this.state.changes,
+			errors: this.state.errors,
+			authUser: this.state.authUser,
+			updated: !this.state.updated
+		})
+	}
 
 	handleDialogOpen() {
 
@@ -170,14 +179,15 @@ export default class UserProfile extends React.Component {
 			errorDialog: errors.length === 0 ? false : true,
 			changes: changes,
 			errors: errors,
-			authUser: this.state.authUser
+			authUser: this.state.authUser,
+			updated: this.state.updated
 		})
 	}
 
 	handleDialogConfirm() {
 		console.log(this.state.changes);
 
-		var toUpdate = {email: this.state.authUser.message.email};
+		var toUpdate = { email: this.state.authUser.message.email };
 
 		for (var i = 0; i < this.state.changes.length; i++) {
 			switch (this.state.changes[i][0]) {
@@ -211,6 +221,10 @@ export default class UserProfile extends React.Component {
 
 			}
 		}
+
+		console.log(baseURI.restApi.signup + "/" + this.state.authUser.message.email);
+		console.log(this.state.authUser.token);
+		console.log(toUpdate.email);
 
 		fetch(baseURI.restApi.signup + "/" + this.state.authUser.message.email, {
 			method: "PUT",
@@ -249,8 +263,17 @@ export default class UserProfile extends React.Component {
 							errorDialog: this.state.errorDialog,
 							changes: this.state.changes,
 							errors: this.state.errors,
-							authUser: JSON.parse(localStorage.getItem('authUser'))
+							authUser: JSON.parse(localStorage.getItem('authUser')),
+							updated: true
 						})
+
+						document.getElementById("email").value = "";
+						document.getElementById("phone-number").value = "";
+						document.getElementById("height").value = "";
+						document.getElementById("weight").value = "";
+						document.getElementById("goal-weight").value = "";
+						document.getElementById("password").value = "";
+						document.getElementById("confirm-password").value = "";
 					})
 					.catch(error => {
 						console.log("Fetch error: " + error);
@@ -265,7 +288,8 @@ export default class UserProfile extends React.Component {
 			errorDialog: this.state.errorDialog,
 			changes: this.state.changes,
 			errors: this.state.errors,
-			authUser: this.state.authUser
+			authUser: this.state.authUser,
+			updated: this.state.updated
 		})
 	}
 
@@ -275,7 +299,8 @@ export default class UserProfile extends React.Component {
 			errorDialog: this.state.errorDialog,
 			changes: this.state.changes,
 			errors: this.state.errors,
-			authUser: this.state.authUser
+			authUser: this.state.authUser,
+			updated: this.state.updated
 		})
 	}
 
@@ -284,13 +309,12 @@ export default class UserProfile extends React.Component {
 			errorDialog: !this.state.errorDialog,
 			changes: this.state.changes,
 			errors: this.state.errors,
-			authUser: this.state.authUser
+			authUser: this.state.authUser,
+			updated: this.state.updated
 		})
 	}
 
 	changeProfilePicture() {
-		alert("Hello");
-		console.log(this.state.authUser);
 	}
 
 	render() {
@@ -354,6 +378,7 @@ export default class UserProfile extends React.Component {
 										<CustomInput
 											labelText="Password"
 											id="password"
+											password={true}
 											formControlProps={{
 												fullWidth: true
 											}}
@@ -364,6 +389,7 @@ export default class UserProfile extends React.Component {
 										<CustomInput
 											labelText="Confirm password"
 											id="confirm-password"
+											password={true}
 											formControlProps={{
 												fullWidth: true
 											}}
@@ -441,7 +467,19 @@ export default class UserProfile extends React.Component {
 						<Button block onClick={() => this.toggleErrorDialog()} color="danger">Close</Button>
 					</DialogActions>
 				</Dialog>
-				{this.state.alert === true ? <Alert severity="success">Profile updated with success!</Alert> : ""}
+				<Dialog
+					open={this.state.updated}
+					onClose={this.toggleSuccessDialog}
+					aria-labelledby="alert-dialog-title"
+					aria-describedby="alert-dialog-description"
+				>
+					<DialogTitle id="alert-dialog-title" style={{ color: "#4caf50" }}>
+						<i class="fas fa-check-circle"></i> Profile updated with success!
+					</DialogTitle>
+					<DialogActions>
+						<Button block onClick={() => this.toggleSuccessDialog()} color="success">Close</Button>
+					</DialogActions>
+				</Dialog>
 			</div>
 		);
 	}
