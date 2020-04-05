@@ -18,6 +18,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
+import baseURI from "variables/baseURI.js";
 
 export default class UserProfile extends React.Component {
 
@@ -27,7 +28,8 @@ export default class UserProfile extends React.Component {
 			confirmDialog: false,
 			errorDialog: false,
 			changes: [],
-			errors: []
+			errors: [],
+			authUser: JSON.parse(localStorage.getItem('authUser'))
 		}
 		this.changeProfilePicture = this.changeProfilePicture.bind(this);
 		this.handleDialogOpen = this.handleDialogOpen.bind(this);
@@ -38,8 +40,6 @@ export default class UserProfile extends React.Component {
 		this.validPhoneNumber = this.validPhoneNumber.bind(this);
 		this.isFloat = this.isFloat.bind(this);
 	}
-
-	authUser = JSON.parse(localStorage.getItem('authUser'));
 
 	classes = {
 		cardCategoryWhite: {
@@ -66,10 +66,10 @@ export default class UserProfile extends React.Component {
 
 
 	validEmail = (email) => {
-        var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(String(email).toLowerCase());
+		var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		return re.test(String(email).toLowerCase());
 	}
-	
+
 	validPhoneNumber = (phoneNumber) => {
 		return phoneNumber.match(/^[0-9]+$/) && phoneNumber.trim().length === 9;
 	}
@@ -91,56 +91,60 @@ export default class UserProfile extends React.Component {
 
 		// array with all values
 		var values = [email, phoneNumber, height, weight, goalWeight, password, confirmPassword];
-		
+
 		// add all changes
 		var changes = []
-		for(var i = 0; i < values.length - 1; i++) {
-			if(values[i][1].value !== "")
+		for (var i = 0; i < values.length - 1; i++) {
+			if (values[i][1].value !== "")
 				changes.push(values[i]);
 		}
 
 
 		var errors = [];
-		for(i = 0; i < changes.length; i++) {
-			
-			switch(changes[i][0]) {
+		for (i = 0; i < changes.length; i++) {
+
+			switch (changes[i][0]) {
 
 				case "Email":
 					const correctEmail = this.validEmail(changes[i][1].value);
-					if(!correctEmail)
+					if (!correctEmail)
 						errors.push(["Email", "format not valid!"]);
+
 					break;
-				
+
 				case "Phone number":
-					if(!this.validPhoneNumber(changes[i][1].value))
+					if (!this.validPhoneNumber(changes[i][1].value))
 						errors.push(["Phone number", "should have 9 digits!"]);
+
 					break;
-				
+
 				case "Height (cm)":
-					if(!this.isFloat(changes[i][1].value))
+					if (!this.isFloat(changes[i][1].value))
 						errors.push(["Height (cm)", "invalid format"]);
 					break;
-				
+
 				case "Weight (kg)":
-					if(!this.isFloat(changes[i][1].value))
+					if (!this.isFloat(changes[i][1].value))
 						errors.push(["Weight (kg)", "invalid format"]);
+
 					break;
-				
+
 				case "Goal weight (kg)":
-					if(!this.isFloat(changes[i][1].value))
+					if (!this.isFloat(changes[i][1].value))
 						errors.push(["Goal weight (kg)", "invalid format"]);
+
 					break;
-				
+
 				case "Password":
-					if(changes[i][1].value !== confirmPassword[1].value) {
+					if (changes[i][1].value !== confirmPassword[1].value) {
 						errors.push(["Password", "password not confirmed"]);
 						break;
 					}
 
-					if(changes[i][1].value.length < 8) {
+					if (changes[i][1].value.length < 8) {
 						errors.push(["Passowrd", "must have at least 8 characters"]);
 					}
-					
+
 					/*
 					var hiddenPassword = "";
 					for(var j = 0; j < changes[i][1].value.length; j++)
@@ -161,16 +165,103 @@ export default class UserProfile extends React.Component {
 			confirmDialog: changes.length !== 0 && errors.length === 0 ? true : false,
 			errorDialog: errors.length === 0 ? false : true,
 			changes: changes,
-			errors: errors
+			errors: errors,
+			authUser: this.state.authUser
 		})
 	}
 
 	handleDialogConfirm() {
+		console.log(this.state.changes);
+
+		var toUpdate = {email: this.state.authUser.message.email};
+
+		for (var i = 0; i < this.state.changes.length; i++) {
+			switch (this.state.changes[i][0]) {
+
+				case "Email":
+					toUpdate.email = this.state.changes[i][1].value;
+					break;
+
+				case "Phone number":
+					toUpdate.phone_number = this.state.changes[i][1].value;
+					break;
+
+				case "Height (cm)":
+					toUpdate.height = this.state.changes[i][1].value;
+					break;
+
+				case "Weight (kg)":
+					toUpdate.current_weight = this.state.changes[i][1].value;
+					break;
+
+				case "Goal weight (kg)":
+					toUpdate.weight_goal = this.state.changes[i][1].value;
+					break;
+
+				case "Password":
+					toUpdate.password = this.state.changes[i][1].value;
+					break;
+
+				default:
+					break;
+
+			}
+		}
+
+		fetch(baseURI.restApi.signup + "/" + this.state.authUser.message.email, {
+			method: "PUT",
+			headers: {
+				"Accept": "application/json",
+				"Content-Type": "application/json",
+				"Authorization": "Token " + this.state.authUser.token
+			},
+			body: JSON.stringify(toUpdate)
+		})
+			.then(response => {
+				if (!response.ok) throw new Error(response.status);
+				else return response.json();
+			})
+			.then(data => {
+				console.log(data);
+				console.log(baseURI.restApi.signup + "/" + toUpdate.email)
+				fetch(baseURI.restApi.signup + "/" + toUpdate.email, {
+					method: "GET",
+					headers: {
+						"Accept": "application/json",
+						"Content-Type": "application/json",
+						"Authorization": "Token " + data.token
+					}
+				})
+					.then(response => {
+						if (!response.ok) throw new Error(response.status);
+						else return response.json();
+
+					})
+					.then(data => {
+						localStorage.setItem('authUser', JSON.stringify(data));
+						console.log(data);
+						this.setState({
+							confirmDialog: this.state.confirmDialog,
+							errorDialog: this.state.errorDialog,
+							changes: this.state.changes,
+							errors: this.state.errors,
+							authUser: JSON.parse(localStorage.getItem('authUser'))
+						})
+					})
+					.catch(error => {
+						console.log("Fetch error: " + error);
+					})
+			})
+			.catch(error => {
+				console.log("Fetch error: " + error);
+			})
+
 		this.setState({
 			confirmDialog: false,
 			errorDialog: this.state.errorDialog,
 			changes: this.state.changes,
-			errors: this.state.errors
+			errors: this.state.errors,
+			authUser: this.state.authUser
 		})
 	}
 
@@ -179,7 +270,8 @@ export default class UserProfile extends React.Component {
 			confirmDialog: false,
 			errorDialog: this.state.errorDialog,
 			changes: this.state.changes,
-			errors: this.state.errors
+			errors: this.state.errors,
+			authUser: this.state.authUser
 		})
 	}
 
@@ -187,12 +279,14 @@ export default class UserProfile extends React.Component {
 		this.setState({
 			errorDialog: !this.state.errorDialog,
 			changes: this.state.changes,
-			errors: this.state.errors
+			errors: this.state.errors,
+			authUser: this.state.authUser
 		})
 	}
 
 	changeProfilePicture() {
 		alert("Hello");
+		console.log(this.state.authUser);
 	}
 
 	render() {
@@ -236,7 +330,7 @@ export default class UserProfile extends React.Component {
 									</GridItem>
 									<GridItem xs={12} sm={12} md={4}>
 										<CustomInput
-											labelText="Weight"
+											labelText="Weight (kg)"
 											id="weight"
 											formControlProps={{
 												fullWidth: true
@@ -245,7 +339,7 @@ export default class UserProfile extends React.Component {
 									</GridItem>
 									<GridItem xs={12} sm={12} md={4}>
 										<CustomInput
-											labelText="Goal weight"
+											labelText="Goal weight (kg)"
 											id="goal-weight"
 											formControlProps={{
 												fullWidth: true
@@ -282,17 +376,17 @@ export default class UserProfile extends React.Component {
 						<Card profile>
 							<CardAvatar profile>
 								<a href="#pablo" onClick={this.changeProfilePicture}>
-									<img className="profile-picture" src={"data:image;base64," + this.authUser.message.photo} alt="Edit profile" />
+									<img className="profile-picture" src={"data:image;base64," + this.state.authUser.message.photo} alt="Edit profile" />
 								</a>
 							</CardAvatar>
 							<CardBody profile>
 								<GridContainer>
-									<GridItem xs={12} sm={12} md={12}><h3>{this.authUser.role === "doctor" ? "Dr." : ""} {this.authUser.message.name}</h3></GridItem>
-									<GridItem xs={12} sm={12} md={12}><a href={"mailto:" + this.authUser.message.email}><strong>{this.authUser.message.email}</strong></a></GridItem>
-									<GridItem xs={12} sm={12} md={12}><p style={{ fontSize: "17px" }}><i style={{ color: "#00acc1", marginRight: "3px" }} class="fas fa-ruler-vertical"></i> {this.authUser.message.height} cm</p></GridItem>
-									<GridItem xs={12} sm={12} md={12}><p style={{ fontSize: "17px" }}><i style={{ color: "#00acc1", marginRight: "3px" }} class="fas fa-weight"></i>  {this.authUser.message.current_weight} kg</p></GridItem>
-									<GridItem xs={12} sm={12} md={12}><p style={{ fontSize: "17px" }}><i style={{ color: "#00acc1", marginRight: "3px" }} class="fas fa-phone"></i> {this.authUser.message.phone_number}</p></GridItem>
-									<GridItem xs={12} sm={12} md={12}><p style={{ fontSize: "17px" }}><i style={{ color: "#00acc1", marginRight: "3px" }} class={this.authUser.message.sex === "M" ? "fas fa-male" : "fas fa-female"}></i> {this.authUser.message.sex === "M" ? "Male" : "Female"}</p></GridItem>
+									<GridItem xs={12} sm={12} md={12}><h3>{this.state.authUser.role === "doctor" ? "Dr." : ""} {this.state.authUser.message.name}</h3></GridItem>
+									<GridItem xs={12} sm={12} md={12}><a href={"mailto:" + this.state.authUser.message.email}><strong>{this.state.authUser.message.email}</strong></a></GridItem>
+									<GridItem xs={12} sm={12} md={12}><p style={{ fontSize: "17px" }}><i style={{ color: "#00acc1", marginRight: "3px" }} class="fas fa-ruler-vertical"></i> {this.state.authUser.message.height} cm</p></GridItem>
+									<GridItem xs={12} sm={12} md={12}><p style={{ fontSize: "17px" }}><i style={{ color: "#00acc1", marginRight: "3px" }} class="fas fa-weight"></i>  {this.state.authUser.message.current_weight} kg</p></GridItem>
+									<GridItem xs={12} sm={12} md={12}><p style={{ fontSize: "17px" }}><i style={{ color: "#00acc1", marginRight: "3px" }} class="fas fa-phone"></i> {this.state.authUser.message.phone_number}</p></GridItem>
+									<GridItem xs={12} sm={12} md={12}><p style={{ fontSize: "17px" }}><i style={{ color: "#00acc1", marginRight: "3px" }} class={this.state.authUser.message.sex === "M" ? "fas fa-male" : "fas fa-female"}></i> {this.state.authUser.message.sex === "M" ? "Male" : "Female"}</p></GridItem>
 								</GridContainer>
 							</CardBody>
 						</Card>

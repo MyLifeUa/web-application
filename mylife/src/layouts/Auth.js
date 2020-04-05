@@ -16,9 +16,7 @@ class Auth extends React.Component {
 
     componentDidMount() {
         var currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        
-        console.log(baseURI.restApi.signup + "/" + currentUser.userInfo.email);
-        console.log(currentUser.token);
+
         fetch(baseURI.restApi.signup + "/" + currentUser.userInfo.email, {
             method: "GET",
             headers: {
