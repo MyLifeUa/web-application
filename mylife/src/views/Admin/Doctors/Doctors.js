@@ -59,8 +59,10 @@ class Doctors extends React.Component {
         }
     };
 
-    deleteDoctor(doctorEmail) {
-        fetch(baseURI.restApi.doctors + "/" + doctorEmail, {
+    deleteDoctor() {
+        console.log(baseURI.restApi.doctors + "/" + this.state.currentDoctor);
+        console.log(this.state.authUser.token);
+        fetch(baseURI.restApi.doctors + "/" + this.state.currentDoctor, {
             method: "DELETE",
             headers: {
                 "Accept": "application/json",
@@ -69,12 +71,27 @@ class Doctors extends React.Component {
             }
         })
             .then(response => {
+                console.log(response);
                 if (!response.ok) throw new Error(response.status);
                 else return response.json();
 
             })
             .then(data => {
                 console.log(data);
+
+                var doctors = [];
+                for (var i = 0; i < this.state.doctors.length; i++) {
+                    if (this.state.doctors[i][2] !== this.state.currentDoctor)
+                        doctors.push(this.state.doctors[i]);
+                }
+
+                this.setState({
+                    authUser: this.state.authUser,
+                    doctors: doctors,
+                    deleteDialog: false,
+                    currentDoctor: null
+                })
+
             })
             .catch(error => {
                 console.log("Fetch error: " + error);
@@ -163,7 +180,7 @@ class Doctors extends React.Component {
                     aria-describedby="alert-dialog-description"
                 >
                     <DialogTitle id="alert-dialog-title" style={{ color: "#f44336" }}>
-                        <i class="fas fa-exclamation-circle"></i> Are you sure you want to remove <strong style={{color: "#00acc1"}}>{this.state.currentDoctor}?</strong>
+                        <i class="fas fa-exclamation-circle"></i> Are you sure you want to remove <strong style={{ color: "#00acc1" }}>{this.state.currentDoctor}?</strong>
                     </DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">This action will be <strong>permanent.</strong>
@@ -171,7 +188,7 @@ class Doctors extends React.Component {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button block onClick={() => this.deleteDialog()} color="danger">Delete</Button>
+                        <Button block onClick={() => this.deleteDoctor()} color="danger">Delete</Button>
                     </DialogActions>
                 </Dialog>
             </div>
