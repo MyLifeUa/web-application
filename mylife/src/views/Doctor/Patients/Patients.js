@@ -6,7 +6,6 @@ import Table from "components/Table/Table.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-import CardAvatar from "components/Card/CardAvatar.js";
 
 import Button from "components/CustomButtons/Button.js";
 import IconButton from '@material-ui/core/IconButton';
@@ -21,7 +20,6 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
 import baseURI from "variables/baseURI.js";
-import config from "variables/config.js";
 
 import PatientsInfo from "views/Doctor/Patients/PatientsInfo.js";
 
