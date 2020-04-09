@@ -202,7 +202,7 @@ class Patients extends React.Component {
     }
 
     render() {
-        if(this.state.details) return <PatientsInfo currentPatient={this.state.currentPatient}/>
+        if(this.state.details) return <PatientsInfo currentPatient={this.state.currentPatient} patientsInfo={this.patientsInfo}/>
         return (
             <div>
                 <GridContainer>
