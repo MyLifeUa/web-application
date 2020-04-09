@@ -20,6 +20,7 @@ import GridContainer from "components/Grid/GridContainer.js";
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 
 import Patients from "views/Doctor/Patients/Patients.js";
+import PatientsInfo from "views/Doctor/Patients/PatientsInfo.js";
 
 import baseUri from "variables/baseURI.js";
 
@@ -33,11 +34,12 @@ class AddPatient extends React.Component {
             notFound: false,
             foundClient: null,
             message: 'The searched email was not found!',
-            color: 'danger'
+            color: 'danger',
+            detailsView: false
         }
         this.toggleReturn = this.toggleReturn.bind(this);
         this.searchUser = this.searchUser.bind(this);
-        this.addPatient = this.addPatient.bind(this);
+        this.toggleDetailsView = this.toggleDetailsView.bind(this);
     }
 
     searchUser() {
@@ -62,7 +64,8 @@ class AddPatient extends React.Component {
                         notFound: true,
                         foundClient: null,
                         message: 'The searched email was not found!',
-                        color: 'danger'
+                        color: 'danger',
+                        detailsView: this.state.detailsView
                     })
                     return;
                 }
@@ -84,7 +87,8 @@ class AddPatient extends React.Component {
                                 notFound: true,
                                 foundClient: null,
                                 message: "The searched user is already associated!",
-                                color: "warning"
+                                color: "warning",
+                                detailsView: this.state.detailsView
                             })
                         }
                         else if (!response.ok) throw new Error(response.status);
@@ -116,7 +120,8 @@ class AddPatient extends React.Component {
                                     notFound: true,
                                     foundClient: data.message,
                                     message: "Patient added with success to your patients list!",
-                                    color: "success"
+                                    color: "success",
+                                    detailsView: this.state.detailsView
                                 })
         
                             })
@@ -135,33 +140,12 @@ class AddPatient extends React.Component {
             })
     }
 
-    addPatient() {
-
-        console.log(baseUri.restApi.patientAssociation);
-        console.log(this.state.foundClient.email);
-        console.log(this.state.authUser.token)
-        console.log({client: this.state.foundClient.email})
-        fetch(baseUri.restApi.patientAssociation, {
-            method: "POST",
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-                "Authorization": "Token " + this.state.authUser.token
-            },
-            body: JSON.stringify({"client": this.state.foundClient.email})
+    toggleDetailsView() {
+        this.setState({
+            detailsView: true
         })
-            .then(response => {
-                if (!response.ok) throw new Error(response.status);
-                else return response.json();
-            })
-            .then(data => {
-                console.log(data);
-            })
-            .catch(error => {
-                console.log("Fetch error: " + error);
-            })
     }
-
+    
     toggleReturn() {
         this.setState({
             return: true
@@ -169,6 +153,7 @@ class AddPatient extends React.Component {
     }
 
     render() {
+        if (this.state.detailsView) return <PatientsInfo currentPatient={this.state.foundClient} />
         if (this.state.return) return <Patients />
         return (
             <div>
@@ -217,7 +202,7 @@ class AddPatient extends React.Component {
                                 <GridContainer>
                                     <GridItem xs={12} sm={12} md={12}><h3>{this.state.foundClient.name}</h3></GridItem>
                                     <GridItem xs={12} sm={12} md={12}><a href={"mailto:" + this.state.foundClient.email}><strong>{this.state.foundClient.email}</strong></a></GridItem>
-                                    <GridItem xs={12} sm={12} md={12}><Button color="info" style={{marginTop: "10px", marginBottom: "10px"}} round onClick={this.toggleDeleteDialog}><EyeIcon /> View details</Button></GridItem>
+                                    <GridItem xs={12} sm={12} md={12}><Button color="info" style={{marginTop: "10px", marginBottom: "10px"}} round onClick={this.toggleDetailsView}><EyeIcon /> View details</Button></GridItem>
                                 </GridContainer>
                             </CardBody>
                         </Card>
