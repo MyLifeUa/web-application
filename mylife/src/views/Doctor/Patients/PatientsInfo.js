@@ -22,7 +22,7 @@ class PatientsInfo extends React.Component {
             currentPatient: props.currentPatient,
             return: false,
             stats: [
-                props.currentPatient.weight_goal
+                [<i className="fas fa-trophy" style={{color: "#00acc1"}}></i>, "Goal weight", props.currentPatient.weight_goal]
             ]
         }
         this.toggleReturn = this.toggleReturn.bind(this);
