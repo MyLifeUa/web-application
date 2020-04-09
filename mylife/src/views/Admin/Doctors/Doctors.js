@@ -196,6 +196,7 @@ class Doctors extends React.Component {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
+                        <Button block onClick={() => this.deleteDialog()} color="info">Cancel</Button>
                         <Button block onClick={() => this.deleteDoctor()} color="danger">Delete</Button>
                     </DialogActions>
                 </Dialog>
