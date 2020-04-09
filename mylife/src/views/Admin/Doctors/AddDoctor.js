@@ -259,7 +259,7 @@ class AddDoctor extends React.Component {
                 this.setState({
                     authUser: this.state.authUser,
                     notFound: true,
-                    message: this.up"",
+                    message: this.doctorInfo.email + " doctor added with success!",
                     color: "success",
                     return: this.state.return,
                 })
@@ -268,10 +268,12 @@ class AddDoctor extends React.Component {
             .catch(error => {
                 console.log("Fetch error: " + error);
                 this.setState({
-                    errorMessage: "Email already taken",
-                    stage: this.state.currentStage
+                    authUser: this.state.authUser,
+                    notFound: true,
+                    message: this.doctorInfo.email + " can not be added to the doctor list!",
+                    color: "warning",
+                    return: this.state.return,
                 })
-                document.getElementById("errorMessage").style.visibility = "";
             })
         }
 
@@ -279,7 +281,6 @@ class AddDoctor extends React.Component {
 
     onChange = (jsDate, dateString) => {
         document.getElementById("birth-date").value = dateString.split("T")[0]
-        alert(document.getElementById("birth-date").value)
     }
 
     toggleReturn() {
