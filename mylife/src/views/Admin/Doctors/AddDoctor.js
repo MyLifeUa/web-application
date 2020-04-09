@@ -245,36 +245,45 @@ class AddDoctor extends React.Component {
                 },
                 body: JSON.stringify(this.doctorInfo)
             })
-            .then(response => {
+                .then(response => {
 
-                if (!response.ok) throw new Error(response.status);
-                else return response.json();
+                    if (!response.ok) throw new Error(response.status);
+                    else return response.json();
 
-            })
-            .then(data => {
-                
-                var authUser = this.state.authUser;
-                authUser.toke = data.token;
-
-                this.setState({
-                    authUser: this.state.authUser,
-                    notFound: true,
-                    message: this.doctorInfo.email + " doctor added with success!",
-                    color: "success",
-                    return: this.state.return,
                 })
+                .then(data => {
 
-            })
-            .catch(error => {
-                console.log("Fetch error: " + error);
-                this.setState({
-                    authUser: this.state.authUser,
-                    notFound: true,
-                    message: this.doctorInfo.email + " can not be added to the doctor list!",
-                    color: "warning",
-                    return: this.state.return,
+                    document.getElementById("first-name").value = "";
+                    document.getElementById("last-name").value = "";
+                    document.getElementById("email").value = "";
+                    document.getElementById("password").value = "";
+                    document.getElementById("confirm-password").value = "";
+                    document.getElementById("phone-number").value = "";
+                    document.getElementById("birth-date").value = "";
+
+                    var authUser = this.state.authUser;
+                    authUser.token = data.token;
+                    
+                    localStorage.setItem('authUser', JSON.stringify(authUser));
+                    this.setState({
+                        authUser: this.state.authUser,
+                        notFound: true,
+                        message: this.doctorInfo.email + " doctor added with success!",
+                        color: "success",
+                        return: this.state.return,
+                    })
+
                 })
-            })
+                .catch(error => {
+                    console.log("Fetch error: " + error);
+                    this.setState({
+                        authUser: this.state.authUser,
+                        notFound: true,
+                        message: this.doctorInfo.email + " can not be added to the doctor list!",
+                        color: "warning",
+                        return: this.state.return,
+                    })
+                })
         }
 
     }
