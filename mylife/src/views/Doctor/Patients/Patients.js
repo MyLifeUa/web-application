@@ -10,6 +10,7 @@ import CardBody from "components/Card/CardBody.js";
 import Button from "components/CustomButtons/Button.js";
 import IconButton from '@material-ui/core/IconButton';
 
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EyeIcon from '@material-ui/icons/Visibility';
 
@@ -21,7 +22,9 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 
 import baseURI from "variables/baseURI.js";
 
+import AddPatient from "views/Doctor/Patients/AddPatient.js";
 import PatientsInfo from "views/Doctor/Patients/PatientsInfo.js";
+
 
 class Patients extends React.Component {
 
@@ -33,12 +36,14 @@ class Patients extends React.Component {
             deleteDialog: false,
             currentPatient: null,
             successDialog: false,
-            details: false
+            details: false,
+            addPatient: false
         }
         this.deletePatient = this.deletePatient.bind(this);
         this.deleteDialog = this.deleteDialog.bind(this);
         this.toggleSuccessDialog = this.toggleSuccessDialog.bind(this);
         this.showDetails = this.showDetails.bind(this);
+        this.addPatient = this.addPatient.bind(this);
     }
 
     patientsInfo = []
@@ -94,7 +99,8 @@ class Patients extends React.Component {
                         deleteDialog: false,
                         currentPatient: null,
                         successDialog: true,
-                        details: this.state.details
+                        details: this.state.details,
+                        addPatient: this.state.addPatient
                     })
                     return
                 }
@@ -112,7 +118,8 @@ class Patients extends React.Component {
             deleteDialog: this.state.deleteDialog,
             currentPatient: this.state.currentPatient,
             successDialog: !this.state.successDialog,
-            details: this.state.details
+            details: this.state.details,
+            addPatient: this.state.addPatient
         })
     }
 
@@ -123,7 +130,8 @@ class Patients extends React.Component {
             deleteDialog: !this.state.deleteDialog,
             currentPatient: patientEmail,
             successDialog: this.state.successDialog,
-            details: this.state.details
+            details: this.state.details,
+            addPatient: this.state.addPatient
         })
 
     }
@@ -131,8 +139,8 @@ class Patients extends React.Component {
     showDetails(patientEmail) {
 
         var currentPatient;
-        for(var i = 0; i < this.patientsInfo.length; i++) {
-            if(this.patientsInfo[i].email === patientEmail) {
+        for (var i = 0; i < this.patientsInfo.length; i++) {
+            if (this.patientsInfo[i].email === patientEmail) {
                 currentPatient = this.patientsInfo[i];
                 break;
             }
@@ -144,7 +152,20 @@ class Patients extends React.Component {
             deleteDialog: this.state.deleteDialog,
             currentPatient: currentPatient,
             successDialog: this.state.successDialog,
-            details: true
+            details: true,
+            addPatient: this.state.addPatient
+        })
+    }
+
+    addPatient() {
+        this.setState({
+            authUser: this.state.authUser,
+            patients: this.state.patients,
+            deleteDialog: this.state.deleteDialog,
+            currentPatient: this.state.currentPatient,
+            successDialog: this.state.successDialog,
+            details: this.state.details,
+            addPatient: true
         })
     }
 
@@ -190,7 +211,8 @@ class Patients extends React.Component {
                     deleteDialog: this.state.deleteDialog,
                     currentPatient: this.state.currentPatient,
                     successDialog: this.state.successDialog,
-                    details: this.state.details
+                    details: this.state.details,
+                    addPatient: this.state.addPatient
                 })
             })
             .catch(error => {
@@ -200,15 +222,22 @@ class Patients extends React.Component {
     }
 
     render() {
-        if(this.state.details) return <PatientsInfo currentPatient={this.state.currentPatient} patientsInfo={this.patientsInfo}/>
+        if (this.state.addPatient) return <AddPatient />
+        if (this.state.details) return <PatientsInfo currentPatient={this.state.currentPatient} patientsInfo={this.patientsInfo} />
         return (
             <div>
                 <GridContainer>
                     <GridItem xs={12} sm={12} md={12}>
                         <Card>
                             <CardHeader style={this.classes.cardHeader}>
-                                <h4 style={this.classes.cardTitleWhite}><i class="fas fa-procedures"></i>  Patients list</h4>
-                                <p style={this.classes.cardCategoryWhite}>Manage all patients from your hospital</p>
+                                <GridContainer>
+                                    <GridItem xs={12} sm={12} md={9}>
+                                        <h4 style={this.classes.cardTitleWhite}><i class="fas fa-procedures"></i>  Patients list</h4>
+                                        <p style={this.classes.cardCategoryWhite}>Manage all patients from your hospital</p>
+                                    </GridItem>
+                                    <GridItem xs={12} sm={12} md={3}><Button color="success" onClick={this.addPatient} round><AddCircleIcon /> Add new patient</Button></GridItem>
+
+                                </GridContainer>
                             </CardHeader>
                             <CardBody>
                                 <Table
@@ -220,7 +249,7 @@ class Patients extends React.Component {
                         </Card>
                     </GridItem>
                 </GridContainer>
-                
+
                 <Dialog
                     open={this.state.deleteDialog}
                     onClose={this.deleteDialog}

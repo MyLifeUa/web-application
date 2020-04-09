@@ -598,11 +598,19 @@ footer ul li a:hover {
   animation: spin 1.5s ease-in-out infinite;
 }
 
+.small-loader {
+  width: 100px;
+  height: 100px;
+  animation: spin 1.5s ease-in-out infinite;
+}
+
+
 @keyframes spin {
   0% { transform: scale(0.5); }
   50% {transform: scale(1.5);}
   100% { transform: scale(0.5); }
 }
+
 
 /* SIGN IN */
 
@@ -653,6 +661,35 @@ footer ul li a:hover {
   color: #5eb6cd;
   font-weight: 400;
 }
+
+.doctor-form-input {
+  width: 100%;
+  height: 50px;
+  box-sizing: border-box;
+  border: 2px solid #5eb6cd;
+  border-radius: 30px;
+  font-size: 20px;
+  background-color: transparent;
+  padding: 6px 6px 6px 12px;
+  margin-bottom: 12px;
+  color: #5eb6cd;
+  font-weight: 400;
+}
+
+.doctor-form-input-error {
+  width: 100%;
+  height: 50px;
+  box-sizing: border-box;
+  border: 2px solid #ff393a;
+  border-radius: 30px;
+  font-size: 20px;
+  background-color: transparent;
+  padding: 6px 6px 6px 12px;
+  margin-bottom: 12px;
+  color: #4ca2d1;
+  font-weight: 400;
+}
+
 
 .sex-select {
   position: relative;
@@ -776,3 +813,4 @@ footer ul li a:hover {
 #tableRowHover:hover {
   background-color: #e9e9e9;
 }
+

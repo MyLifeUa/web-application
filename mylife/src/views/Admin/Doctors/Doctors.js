@@ -17,6 +17,10 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+
+import AddDoctor from "views/Admin/Doctors/AddDoctor.js";
+
 import baseURI from "variables/baseURI.js";
 
 class Doctors extends React.Component {
@@ -28,11 +32,13 @@ class Doctors extends React.Component {
             doctors: [],
             deleteDialog: false,
             currentDoctor: null,
-            successDialog: false
+            successDialog: false,
+            addDoctor: false
         }
         this.deleteDoctor = this.deleteDoctor.bind(this);
         this.deleteDialog = this.deleteDialog.bind(this);
         this.toggleSuccessDialog = this.toggleSuccessDialog.bind(this);
+        this.addDoctor = this.addDoctor.bind(this);
     }
 
     classes = {
@@ -71,7 +77,7 @@ class Doctors extends React.Component {
             }
         })
             .then(response => {
-                if(response.status === 204) {
+                if (response.status === 204) {
                     var doctors = [];
                     for (var i = 0; i < this.state.doctors.length; i++) {
                         if (this.state.doctors[i][2] !== this.state.currentDoctor)
@@ -83,7 +89,8 @@ class Doctors extends React.Component {
                         doctors: doctors,
                         deleteDialog: false,
                         currentDoctor: null,
-                        successDialog: true
+                        successDialog: true,
+                        addDoctor: this.state.addDoctor
                     })
                     return
                 }
@@ -100,7 +107,8 @@ class Doctors extends React.Component {
             doctors: this.state.doctors,
             deleteDialog: this.state.deleteDialog,
             currentDoctor: this.state.currentDoctor,
-            successDialog: !this.state.successDialog
+            successDialog: !this.state.successDialog,
+            addDoctor: this.state.addDoctor
         })
     }
 
@@ -110,7 +118,8 @@ class Doctors extends React.Component {
             doctors: this.state.doctors,
             deleteDialog: !this.state.deleteDialog,
             currentDoctor: doctorEmail,
-            successDialog: this.state.successDialog
+            successDialog: this.state.successDialog,
+            addDoctor: this.state.addDoctor
         })
 
     }
@@ -138,7 +147,6 @@ class Doctors extends React.Component {
                         <img style={this.classes.picture} src={"data:image;base64," + doctor.photo} alt={doctor.name} />,
                         doctor.name,
                         doctor.email,
-                        doctor.phone_number,
                         doctor.hospital,
                         <IconButton aria-label="delete">
                             <DeleteIcon onClick={() => this.deleteDialog(doctor.email)} style={{ color: "#f44336" }} fontSize="medium" />
@@ -151,7 +159,8 @@ class Doctors extends React.Component {
                     doctors: doctors,
                     deleteDialog: this.state.deleteDialog,
                     currentDoctor: this.state.currentDoctor,
-                    successDialog: this.state.successDialog
+                    successDialog: this.state.successDialog,
+                    addDoctor: this.state.addDoctor
                 })
             })
             .catch(error => {
@@ -160,21 +169,33 @@ class Doctors extends React.Component {
 
     }
 
+    addDoctor() {
+        this.setState({
+            addDoctor: true
+        })
+    }
 
     render() {
+        if(this.state.addDoctor) return <AddDoctor />
         return (
             <div>
                 <GridContainer>
                     <GridItem xs={12} sm={12} md={12}>
                         <Card>
                             <CardHeader style={this.classes.cardHeader}>
-                                <h4 style={this.classes.cardTitleWhite}><i class="fas fa-user-md"></i>  Doctors list</h4>
-                                <p style={this.classes.cardCategoryWhite}>Manage all doctors from your hospital</p>
+                                <GridContainer>
+                                    <GridItem xs={12} sm={12} md={9}>
+                                        <h4 style={this.classes.cardTitleWhite}><i class="fas fa-user-md"></i>  Doctors list</h4>
+                                        <p style={this.classes.cardCategoryWhite}>Manage all doctors from your hospital</p>
+                                    </GridItem>
+                                    <GridItem xs={12} sm={12} md={3}><Button color="success" onClick={this.addDoctor} round><AddCircleIcon /> Add new doctor</Button></GridItem>
+                                </GridContainer>
+
                             </CardHeader>
                             <CardBody>
                                 <Table
                                     tableHeaderColor="info"
-                                    tableHead={["", "Name", "Email", "Phone Number", "Hospital", "Delete"]}
+                                    tableHead={["", "Name", "Email", "Hospital", "Delete"]}
                                     tableData={this.state.doctors}
                                 />
                             </CardBody>
