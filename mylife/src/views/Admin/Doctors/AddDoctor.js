@@ -4,10 +4,6 @@ import { DatePickerInput } from 'rc-datepicker';
 
 import IconButton from '@material-ui/core/IconButton';
 import ArrowBack from '@material-ui/icons/ArrowBackIos';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import InputAdornment from '@material-ui/core/InputAdornment';
 
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 
