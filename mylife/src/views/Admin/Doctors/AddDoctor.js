@@ -77,20 +77,20 @@ class AddDoctor extends React.Component {
                     </GridItem>
                     <GridItem xs={12} sm={12} md={2}></GridItem>
                     <GridItem xs={12} sm={12} md={4}>
-                        <input id="first-name" class="form-input" placeholder="First name *" type="text" />
+                        <input id="first-name" class="doctor-form-input" placeholder="First name *" type="text" />
                     </GridItem>
                     <GridItem xs={12} sm={12} md={4}>
-                        <input id="last-name" class="form-input" placeholder="Last name *" type="text" />
+                        <input id="last-name" class="doctor-form-input" placeholder="Last name *" type="text" />
                     </GridItem>
                     <GridItem xs={12} sm={12} md={2}></GridItem>
                     <GridItem xs={12} sm={12} md={2}></GridItem>
                     <GridItem xs={12} sm={12} md={8}>
-                        <input id="email" class="form-input" placeholder="Email" type="email" />
+                        <input id="email" class="doctor-form-input" placeholder="Email" type="email" />
                     </GridItem>
                     <GridItem xs={12} sm={12} md={2}></GridItem>
                     <GridItem xs={12} sm={12} md={2}></GridItem>
                     <GridItem xs={12} sm={12} md={4}>
-                        <input id="phone-number" class="form-input" placeholder="Phone number *" type="text" />
+                        <input id="phone-number" class="doctor-form-input" placeholder="Phone number *" type="text" />
                     </GridItem>
                     <GridItem xs={12} sm={12} md={4}>
                         <DatePickerInput
@@ -98,16 +98,16 @@ class AddDoctor extends React.Component {
                             id="birth-date"
                             value={this.date}
                             onChange={this.onChange}
-                            className='form-input'
+                            className='doctor-form-input'
                         />
                     </GridItem>
                     <GridItem xs={12} sm={12} md={2}></GridItem>
                     <GridItem xs={12} sm={12} md={2}></GridItem>
                     <GridItem xs={12} sm={12} md={4}>
-                        <input id="password" class="form-input" placeholder="Password *" type="password" />
+                        <input id="password" class="doctor-form-input" placeholder="Password *" type="password" />
                     </GridItem>
                     <GridItem xs={12} sm={12} md={4}>
-                        <input id="confirm-password" class="form-input" placeholder="Confirm password *" type="password" />
+                        <input id="confirm-password" class="doctor-form-input" placeholder="Confirm password *" type="password" />
                     </GridItem>
                     <GridItem xs={12} sm={12} md={2}></GridItem>
                     <GridItem xs={12} sm={12} md={2}></GridItem>
