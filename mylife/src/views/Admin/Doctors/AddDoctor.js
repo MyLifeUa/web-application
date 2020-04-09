@@ -19,6 +19,7 @@ import SnackbarContent from "components/Snackbar/SnackbarContent.js";
 import Doctors from "views/Admin/Doctors/Doctors.js";
 
 import baseUri from "variables/baseURI.js";
+import config from "variables/config.js";
 
 class AddDoctor extends React.Component {
 
@@ -27,30 +28,252 @@ class AddDoctor extends React.Component {
         super();
         this.state = {
             authUser: JSON.parse(localStorage.getItem('authUser')),
-            notFound: true,
+            notFound: false,
             message: "The searched doctor is already registered in the hospital!",
             color: "danger",
             return: false,
+        }
+        this.doctorInfo = {
+            email: null,
+            password: null,
+            first_name: null,
+            last_name: null,
+            birth_date: null,
+            phone_number: null,
+            photo: config.defaultUser
         }
         this.today = new Date();
         this.date = this.today.toISOString().split('T')[0];
         this.addDoctor = this.addDoctor.bind(this);
         this.toggleReturn = this.toggleReturn.bind(this);
         this.onChange = this.onChange.bind(this);
+        this.fieldsValidation = this.fieldsValidation.bind(this);
     }
 
+    validEmail = (email) => {
+        var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    }
+
+    fieldsValidation() {
+        const firstName = document.getElementById("first-name");
+        const lastName = document.getElementById("last-name");
+        const email = document.getElementById("email");
+        const password = document.getElementById("password");
+        const confirmPassword = document.getElementById("confirm-password");
+        var phoneNumber = document.getElementById("phone-number");
+        var birthDate = document.getElementById("birth-date");
+
+        var properties = [firstName, lastName, email, password, confirmPassword, phoneNumber, birthDate];
+
+        // Check if there are empty fields
+        for (var i = 0; i < properties.length; i++)
+            if (properties[i].value === "")
+                properties[i].className = "doctor-form-input-error";
+            else
+                properties[i].className = "doctor-form-input";
+
+        var emptyFields = properties.filter(p => p.value === "").length;
+
+        if (emptyFields !== 0) {
+            this.setState({
+                authUser: this.state.authUser,
+                notFound: true,
+                message: "*" + emptyFields + (emptyFields === 1 ? " field required" : " fields required"),
+                color: "danger",
+                return: this.state.return,
+            })
+
+            return false;
+        }
+
+        // First name verification
+        properties[0].className = "doctor-form-input";
+        if (!properties[0].value.match(/^[a-zA-Z]+$/)) {
+            this.setState({
+                authUser: this.state.authUser,
+                notFound: true,
+                message: "First name can only contain letters",
+                color: "danger",
+                return: this.state.return,
+            })
+            properties[0].className = "doctor-form-input-error";
+            return false;
+        }
+
+        if (properties[0].value.trim().length < 3) {
+            this.setState({
+                authUser: this.state.authUser,
+                notFound: true,
+                message: "First name should have at least 3 characters",
+                color: "danger",
+                return: this.state.return,
+            })
+
+            properties[0].className = "doctor-form-input-error";
+            return false;
+        }
+
+        // Last name verification
+        properties[1].className = "doctor-form-input";
+        if (!properties[1].value.match(/^[a-zA-Z]+$/)) {
+            this.setState({
+                authUser: this.state.authUser,
+                notFound: true,
+                message: "Last name can only contain letters",
+                color: "danger",
+                return: this.state.return,
+            })
+            properties[1].className = "doctor-form-input-error";
+            return false;
+        }
+
+        if (properties[1].value.trim().length < 3) {
+            this.setState({
+                authUser: this.state.authUser,
+                notFound: true,
+                message: "Last name should have at least 3 characters",
+                color: "danger",
+                return: this.state.return,
+            })
+
+            properties[1].className = "doctor-form-input-error";
+            return false;
+        }
+
+        // Check valid email
+        properties[2].className = "doctor-form-input";
+        if (!this.validEmail(properties[2].value)) {
+            this.setState({
+                authUser: this.state.authUser,
+                notFound: true,
+                message: "Email format not valid",
+                color: "danger",
+                return: this.state.return,
+            })
+            properties[2].className = "doctor-form-input-error";
+            return false;
+        }
+
+        // Check phone number
+        properties[5].className = "doctor-form-input";
+        if (!properties[5].value.match(/^[0-9]+$/) || properties[5].value.trim().length !== 9) {
+            this.setState({
+                authUser: this.state.authUser,
+                notFound: true,
+                message: "Invalid phone number",
+                color: "danger",
+                return: this.state.return,
+            })
+
+            properties[5].className = "doctor-form-input-error";
+            return false;
+        }
+
+        // Check valid password
+        properties[3].className = "doctor-form-input";
+        if (properties[3].value.length < 8) {
+            this.setState({
+                authUser: this.state.authUser,
+                notFound: true,
+                message: "Password must have at least 8 characters",
+                color: "danger",
+                return: this.state.return,
+            })
+            properties[3].className = "doctor-form-input-error";
+            return false;
+        }
+
+        properties[3].className = "doctor-form-input";
+        if (properties[3].value.includes(properties[0].value.toLowerCase()) || properties[3].value.includes(properties[1].value.toLowerCase()) || properties[3].value.includes(properties[2].value.toLowerCase())) {
+            this.setState({
+                authUser: this.state.authUser,
+                notFound: true,
+                message: "Password can not be to similiar to the other fields",
+                color: "danger",
+                return: this.state.return,
+            })
+            properties[3].className = "doctor-form-input-error";
+            return false;
+        }
+
+        // Check password confirmation
+        properties[4].className = "doctor-form-input";
+        if (properties[3].value !== properties[4].value) {
+            this.setState({
+                authUser: this.state.authUser,
+                notFound: true,
+                message: "Password not confirmed",
+                color: "danger",
+                return: this.state.return,
+            })
+            properties[4].className = "doctor-form-input-error";
+            return false;
+        }
+
+        this.doctorInfo.first_name = firstName.value;
+        this.doctorInfo.last_name = lastName.value;
+        this.doctorInfo.email = email.value;
+        this.doctorInfo.phone_number = phoneNumber.value;
+        this.doctorInfo.password = password.value;
+
+        var aux = birthDate.value.split("/").reverse()
+        this.doctorInfo.birth_date = aux[0] + "-" + aux[2] + "-" + aux[1];
+
+        this.setState({
+            authUser: this.state.authUser,
+            notFound: false,
+            message: this.state.message,
+            color: this.state.color,
+            return: this.state.return,
+        })
+
+        return true;
+    }
 
 
     addDoctor() {
 
-        fetch(baseUri.restApi.doctors, {
-            method: 'POST',
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-                "Authorization": "Token " + this.state.authUser.token
-            }
-        })
+        if (this.fieldsValidation()) {
+
+            fetch(baseUri.restApi.doctors, {
+                method: 'POST',
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Token " + this.state.authUser.token
+                },
+                body: JSON.stringify(this.doctorInfo)
+            })
+            .then(response => {
+
+                if (!response.ok) throw new Error(response.status);
+                else return response.json();
+
+            })
+            .then(data => {
+                
+                var authUser = this.state.authUser;
+                authUser.toke = data.token;
+
+                this.setState({
+                    authUser: this.state.authUser,
+                    notFound: true,
+                    message: this.up"",
+                    color: "success",
+                    return: this.state.return,
+                })
+
+            })
+            .catch(error => {
+                console.log("Fetch error: " + error);
+                this.setState({
+                    errorMessage: "Email already taken",
+                    stage: this.state.currentStage
+                })
+                document.getElementById("errorMessage").style.visibility = "";
+            })
+        }
 
     }
 
