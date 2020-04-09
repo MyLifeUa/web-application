@@ -14,6 +14,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
+import baseUri from "variables/baseURI.js";
 import config from "variables/config.js";
 
 class Doctor extends React.Component {
@@ -21,11 +22,12 @@ class Doctor extends React.Component {
     constructor() {
         super();
         this.state = {
+            authUser: JSON.parse(localStorage.getItem('authUser')),
             doctor: {
-                name: "Vasco Ramos",
-                email: "vascoalramos@ua.pt",
-                photo: config.vascoRamos,
-                hospital: "Hospital de Aveiro"
+                name: null,
+                email: null,
+                photo: config.defaultUser,
+                hospital: null
             },
             deleteDialog: false,
             successDialog: false
@@ -35,11 +37,50 @@ class Doctor extends React.Component {
         this.removeDoctor = this.removeDoctor.bind(this);
     }
 
+    componentDidMount() {
+
+        fetch(baseUri.restApi.patientAssociation, {
+            method: "GET",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": "Token " + this.state.authUser.token
+            }
+        })
+            .then(response => {
+                if (!response.ok) throw new Error(response.status);
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                var authUser = this.state.authUser;
+                authUser.token = data.token
+                localStorage.setItem('authUser', JSON.stringify(authUser));
+                console.log(data);
+                this.setState({
+                    authUser: this.state.authUser,
+                    doctor: {
+                        name: data.message.name,
+                        email: data.message.email,
+                        photo: data.message.photo,
+                        hospital: data.message.hospital
+                    },
+                    deleteDialog: false,
+                    successDialog: false
+                })
+            })
+            .catch(error => {
+                console.log("Fetch error: " + error);
+            })
+
+    }
+
 
     removeDoctor() {
         console.log("Doctor removed!");
 
         this.setState({
+            authUser: this.state.authUser,
             doctor: this.state.doctor,
             deleteDialog: false,
             successDialog: true
@@ -48,6 +89,7 @@ class Doctor extends React.Component {
 
     toggleDeleteDialog() {
         this.setState({
+            authUser: this.state.authUser,
             doctor: this.state.doctor,
             deleteDialog: !this.state.deleteDialog,
             successDialog: this.state.successDialog
@@ -56,6 +98,7 @@ class Doctor extends React.Component {
 
     toggleSuccessDialog() {
         this.setState({
+            authUser: this.state.authUser,
             doctor: this.state.doctor,
             deleteDialog: this.state.deleteDialog,
             successDialog: !this.state.successDialog
@@ -67,7 +110,7 @@ class Doctor extends React.Component {
             <div>
                 <GridContainer>
                     <GridItem xs={12} sm={12} md={12} style={{ marginTop: "-50px", marginBottom: "20px" }}>
-                    <h3><i className="fas fa-user-md" style={{ color: "#00acc1", marginRight:"10px"}}></i> Doctor details</h3>
+                        <h3><i className="fas fa-user-md" style={{ color: "#00acc1", marginRight: "10px" }}></i> Doctor details</h3>
                     </GridItem>
                     <GridItem xs={12} sm={12} md={3}></GridItem>
                     <GridItem xs={12} sm={12} md={6}>
