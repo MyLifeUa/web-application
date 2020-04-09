@@ -147,7 +147,6 @@ class Doctors extends React.Component {
                         <img style={this.classes.picture} src={"data:image;base64," + doctor.photo} alt={doctor.name} />,
                         doctor.name,
                         doctor.email,
-                        doctor.phone_number,
                         doctor.hospital,
                         <IconButton aria-label="delete">
                             <DeleteIcon onClick={() => this.deleteDialog(doctor.email)} style={{ color: "#f44336" }} fontSize="medium" />
@@ -196,7 +195,7 @@ class Doctors extends React.Component {
                             <CardBody>
                                 <Table
                                     tableHeaderColor="info"
-                                    tableHead={["", "Name", "Email", "Phone Number", "Hospital", "Delete"]}
+                                    tableHead={["", "Name", "Email", "Hospital", "Delete"]}
                                     tableData={this.state.doctors}
                                 />
                             </CardBody>
