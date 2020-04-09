@@ -27,9 +27,9 @@ class AddDoctor extends React.Component {
         super();
         this.state = {
             authUser: JSON.parse(localStorage.getItem('authUser')),
-            notFound: false,
+            notFound: true,
             message: "The searched doctor is already registered in the hospital!",
-            color: "warning",
+            color: "danger",
             return: false,
         }
         this.today = new Date();
@@ -56,6 +56,7 @@ class AddDoctor extends React.Component {
 
     onChange = (jsDate, dateString) => {
         document.getElementById("birth-date").value = dateString.split("T")[0]
+        alert(document.getElementById("birth-date").value)
     }
 
     toggleReturn() {
@@ -110,19 +111,18 @@ class AddDoctor extends React.Component {
                         <input id="confirm-password" class="doctor-form-input" placeholder="Confirm password *" type="password" />
                     </GridItem>
                     <GridItem xs={12} sm={12} md={2}></GridItem>
-                    <GridItem xs={12} sm={12} md={2}></GridItem>
-                    <GridItem xs={12} sm={12} md={2}><Button color="info" onClick={this.addDoctor} size="large" round><AddCircleIcon /> Add doctor</Button></GridItem>
-
-
+                    <GridItem xs={12} sm={12} md={4}></GridItem>
+                    <GridItem xs={12} sm={12} md={4}><Button color="info" onClick={this.addDoctor} size="large" round block><AddCircleIcon /> Add doctor</Button></GridItem>
+                    <GridItem xs={12} sm={12} md={4}></GridItem>
+                    <GridItem xs={12} sm={12} md={3}></GridItem>
                     {this.state.notFound === true ?
-                        <GridItem xs={12} sm={12} md={5} style={{ marginTop: "20px" }}>
+                        <GridItem xs={12} sm={12} md={6} style={{ marginTop: "20px" }}>
                             <SnackbarContent
                                 message={this.state.message}
                                 color={this.state.color}
                             />
                         </GridItem> :
                         ""}
-
                     <GridItem xs={12} sm={12} md={6}></GridItem>
                 </GridContainer>
             </div>
