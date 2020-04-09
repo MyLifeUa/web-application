@@ -7,7 +7,17 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 
-import baseURI from "variables/baseURI.js";  
+import Button from "components/CustomButtons/Button.js";
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+
+import baseURI from "variables/baseURI.js";
 
 class Doctors extends React.Component {
 
@@ -15,8 +25,14 @@ class Doctors extends React.Component {
         super();
         this.state = {
             authUser: JSON.parse(localStorage.getItem('authUser')),
-            doctors: []
+            doctors: [],
+            deleteDialog: false,
+            currentDoctor: null,
+            successDialog: false
         }
+        this.deleteDoctor = this.deleteDoctor.bind(this);
+        this.deleteDialog = this.deleteDialog.bind(this);
+        this.toggleSuccessDialog = this.toggleSuccessDialog.bind(this);
     }
 
     classes = {
@@ -45,8 +61,62 @@ class Doctors extends React.Component {
         }
     };
 
+    deleteDoctor() {
+        fetch(baseURI.restApi.doctors + "/" + this.state.currentDoctor, {
+            method: "DELETE",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": "Token " + this.state.authUser.token
+            }
+        })
+            .then(response => {
+                if(response.status === 204) {
+                    var doctors = [];
+                    for (var i = 0; i < this.state.doctors.length; i++) {
+                        if (this.state.doctors[i][2] !== this.state.currentDoctor)
+                            doctors.push(this.state.doctors[i]);
+                    }
+
+                    this.setState({
+                        authUser: this.state.authUser,
+                        doctors: doctors,
+                        deleteDialog: false,
+                        currentDoctor: null,
+                        successDialog: true
+                    })
+                    return
+                }
+                else throw new Error(response.status)
+            })
+            .catch(error => {
+                console.log("Fetch error: " + error);
+            })
+    }
+
+    toggleSuccessDialog() {
+        this.setState({
+            authUser: this.state.authUser,
+            doctors: this.state.doctors,
+            deleteDialog: this.state.deleteDialog,
+            currentDoctor: this.state.currentDoctor,
+            successDialog: !this.state.successDialog
+        })
+    }
+
+    deleteDialog(doctorEmail) {
+        this.setState({
+            authUser: this.state.authUser,
+            doctors: this.state.doctors,
+            deleteDialog: !this.state.deleteDialog,
+            currentDoctor: doctorEmail,
+            successDialog: this.state.successDialog
+        })
+
+    }
+
     componentDidMount() {
-        
+
         fetch(baseURI.restApi.hospitalDoctors, {
             method: "GET",
             headers: {
@@ -61,51 +131,88 @@ class Doctors extends React.Component {
 
             })
             .then(data => {
-                var doctors = data.message;
+                var doctors = [];
 
-                for(var i = 0; i < doctors.length; i++) {
-                    doctors[i] = [
-                        <img style={this.classes.picture} src={"data:image;base64," + doctors[i].photo} alt={doctors[i].name}/>,
-                        doctors[i].name,
-                        doctors[i].email,
-                        doctors[i].phone_number,
-                        doctors[i].hospital,
-                        <i style={{color: "#00acc1", fontSize: "16px"}} class="fas fa-user-edit"></i>,
-                        <i style={{color: "#f44336", fontSize: "16px"}} class="fas fa-trash-alt"></i>
+                data.message.forEach(doctor => doctors.push(
+                    [
+                        <img style={this.classes.picture} src={"data:image;base64," + doctor.photo} alt={doctor.name} />,
+                        doctor.name,
+                        doctor.email,
+                        doctor.phone_number,
+                        doctor.hospital,
+                        <IconButton aria-label="delete">
+                            <DeleteIcon onClick={() => this.deleteDialog(doctor.email)} style={{ color: "#f44336" }} fontSize="medium" />
+                        </IconButton>
                     ]
-                }
+                ))
 
                 this.setState({
                     authUser: this.state.authUser,
-                    doctors: doctors
+                    doctors: doctors,
+                    deleteDialog: this.state.deleteDialog,
+                    currentDoctor: this.state.currentDoctor,
+                    successDialog: this.state.successDialog
                 })
             })
             .catch(error => {
                 console.log("Fetch error: " + error);
             })
-            
+
     }
 
-    
+
     render() {
         return (
-            <GridContainer>
-                <GridItem xs={12} sm={12} md={12}>
-                    <Card>
-                        <CardHeader style={this.classes.cardHeader}>
-                            <h4 style={this.classes.cardTitleWhite}><i class="fas fa-user-md"></i>  Doctors list</h4>
-                            <p style={this.classes.cardCategoryWhite}>Manage all doctors from your hospital</p>
-                        </CardHeader>
-                        <CardBody>
-                            <Table
-                                tableHeaderColor="info"
-                                tableHead={["", "Name", "Email", "Phone Number", "Hospital", "Edit", "Delete"]}
-                                tableData={this.state.doctors}
-                            />
-                        </CardBody>
-                    </Card>
-                </GridItem>
-            </GridContainer>
+            <div>
+                <GridContainer>
+                    <GridItem xs={12} sm={12} md={12}>
+                        <Card>
+                            <CardHeader style={this.classes.cardHeader}>
+                                <h4 style={this.classes.cardTitleWhite}><i class="fas fa-user-md"></i>  Doctors list</h4>
+                                <p style={this.classes.cardCategoryWhite}>Manage all doctors from your hospital</p>
+                            </CardHeader>
+                            <CardBody>
+                                <Table
+                                    tableHeaderColor="info"
+                                    tableHead={["", "Name", "Email", "Phone Number", "Hospital", "Delete"]}
+                                    tableData={this.state.doctors}
+                                />
+                            </CardBody>
+                        </Card>
+                    </GridItem>
+                </GridContainer>
+                <Dialog
+                    open={this.state.deleteDialog}
+                    onClose={this.deleteDialog}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title" style={{ color: "#f44336" }}>
+                        <i class="fas fa-exclamation-circle"></i> Are you sure you want to remove <strong style={{ color: "#00acc1" }}>{this.state.currentDoctor}?</strong>
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">This action will be <strong>permanent.</strong>
+
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button block onClick={() => this.deleteDoctor()} color="danger">Delete</Button>
+                    </DialogActions>
+                </Dialog>
+                <Dialog
+                    open={this.state.successDialog}
+                    onClose={this.toggleSuccessDialog}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title" style={{ color: "#4caf50" }}>
+                        <i class="fas fa-check-circle"></i> User deleted with success!
+					</DialogTitle>
+                    <DialogActions>
+                        <Button block onClick={() => this.toggleSuccessDialog()} color="success">Close</Button>
+                    </DialogActions>
+                </Dialog>
+            </div>
         );
     }
 
