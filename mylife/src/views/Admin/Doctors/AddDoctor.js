@@ -40,7 +40,7 @@ class AddDoctor extends React.Component {
             last_name: null,
             birth_date: null,
             phone_number: null,
-            photo: config.defaultUser
+            photo: config.tiagoMendes
         }
         this.today = new Date();
         this.date = this.today.toISOString().split('T')[0];
@@ -259,7 +259,7 @@ class AddDoctor extends React.Component {
                     document.getElementById("password").value = "";
                     document.getElementById("confirm-password").value = "";
                     document.getElementById("phone-number").value = "";
-                    document.getElementById("birth-date").value = "";
+                    document.getElementById("birth-date").value = this.date;
 
                     var authUser = this.state.authUser;
                     authUser.token = data.token;
