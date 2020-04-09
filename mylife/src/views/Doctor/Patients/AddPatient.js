@@ -8,21 +8,18 @@ import InputLabel from '@material-ui/core/InputLabel';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
-import SearchIcon from '@material-ui/icons/Search';
+import EyeIcon from '@material-ui/icons/Visibility'
 import Button from "components/CustomButtons/Button.js";
 import SnackbarContent from "components/Snackbar/SnackbarContent.js";
 import Card from "components/Card/Card.js";
 import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
-import CardFooter from "components/Card/CardFooter.js";
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 
 import Patients from "views/Doctor/Patients/Patients.js";
-
-import myLifeLogo from 'assets/img/mylife-logo.png'
 
 import baseUri from "variables/baseURI.js";
 
@@ -118,7 +115,7 @@ class AddPatient extends React.Component {
                                     return: this.state.return,
                                     notFound: true,
                                     foundClient: data.message,
-                                    message: "User added with success to your patients list!",
+                                    message: "Patient added with success to your patients list!",
                                     color: "success"
                                 })
         
@@ -213,13 +210,14 @@ class AddPatient extends React.Component {
                             <Card profile>
                             <CardAvatar profile>
                                 <a href="#pablo" >
-                                    <img className="profile-picture" src={"data:image;base64," + this.state.foundClient.photo} alt="Client" />
+                                    <img className="profile-picture" src={"data:image;base64," + this.state.foundClient.photo} alt="Patient" />
                                 </a>
                             </CardAvatar>
                             <CardBody profile>
                                 <GridContainer>
                                     <GridItem xs={12} sm={12} md={12}><h3>{this.state.foundClient.name}</h3></GridItem>
                                     <GridItem xs={12} sm={12} md={12}><a href={"mailto:" + this.state.foundClient.email}><strong>{this.state.foundClient.email}</strong></a></GridItem>
+                                    <GridItem xs={12} sm={12} md={12}><Button color="info" style={{marginTop: "10px", marginBottom: "10px"}} round onClick={this.toggleDeleteDialog}><EyeIcon /> View details</Button></GridItem>
                                 </GridContainer>
                             </CardBody>
                         </Card>
