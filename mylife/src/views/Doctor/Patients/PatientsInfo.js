@@ -6,7 +6,6 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
-import CardFooter from "components/Card/CardFooter.js";
 import IconButton from '@material-ui/core/IconButton';
 import Table from "components/Table/Table.js";
 import ArrowBack from '@material-ui/icons/ArrowBackIos';
