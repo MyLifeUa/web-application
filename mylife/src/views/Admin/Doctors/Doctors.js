@@ -27,10 +27,12 @@ class Doctors extends React.Component {
             authUser: JSON.parse(localStorage.getItem('authUser')),
             doctors: [],
             deleteDialog: false,
-            currentDoctor: null
+            currentDoctor: null,
+            successDialog: false
         }
         this.deleteDoctor = this.deleteDoctor.bind(this);
         this.deleteDialog = this.deleteDialog.bind(this);
+        this.toggleSuccessDialog = this.toggleSuccessDialog.bind(this);
     }
 
     classes = {
@@ -60,8 +62,6 @@ class Doctors extends React.Component {
     };
 
     deleteDoctor() {
-        console.log(baseURI.restApi.doctors + "/" + this.state.currentDoctor);
-        console.log(this.state.authUser.token);
         fetch(baseURI.restApi.doctors + "/" + this.state.currentDoctor, {
             method: "DELETE",
             headers: {
@@ -71,31 +71,37 @@ class Doctors extends React.Component {
             }
         })
             .then(response => {
-                console.log(response);
-                if (!response.ok) throw new Error(response.status);
-                else return response.json();
+                if(response.status === 204) {
+                    var doctors = [];
+                    for (var i = 0; i < this.state.doctors.length; i++) {
+                        if (this.state.doctors[i][2] !== this.state.currentDoctor)
+                            doctors.push(this.state.doctors[i]);
+                    }
 
-            })
-            .then(data => {
-                console.log(data);
-
-                var doctors = [];
-                for (var i = 0; i < this.state.doctors.length; i++) {
-                    if (this.state.doctors[i][2] !== this.state.currentDoctor)
-                        doctors.push(this.state.doctors[i]);
+                    this.setState({
+                        authUser: this.state.authUser,
+                        doctors: doctors,
+                        deleteDialog: false,
+                        currentDoctor: null,
+                        successDialog: true
+                    })
+                    return
                 }
-
-                this.setState({
-                    authUser: this.state.authUser,
-                    doctors: doctors,
-                    deleteDialog: false,
-                    currentDoctor: null
-                })
-
+                else throw new Error(response.status)
             })
             .catch(error => {
                 console.log("Fetch error: " + error);
             })
+    }
+
+    toggleSuccessDialog() {
+        this.setState({
+            authUser: this.state.authUser,
+            doctors: this.state.doctors,
+            deleteDialog: this.state.deleteDialog,
+            currentDoctor: this.state.currentDoctor,
+            successDialog: !this.state.successDialog
+        })
     }
 
     deleteDialog(doctorEmail) {
@@ -103,7 +109,8 @@ class Doctors extends React.Component {
             authUser: this.state.authUser,
             doctors: this.state.doctors,
             deleteDialog: !this.state.deleteDialog,
-            currentDoctor: doctorEmail
+            currentDoctor: doctorEmail,
+            successDialog: this.state.successDialog
         })
 
     }
@@ -143,7 +150,8 @@ class Doctors extends React.Component {
                     authUser: this.state.authUser,
                     doctors: doctors,
                     deleteDialog: this.state.deleteDialog,
-                    currentDoctor: this.state.currentDoctor
+                    currentDoctor: this.state.currentDoctor,
+                    successDialog: this.state.successDialog
                 })
             })
             .catch(error => {
@@ -189,6 +197,19 @@ class Doctors extends React.Component {
                     </DialogContent>
                     <DialogActions>
                         <Button block onClick={() => this.deleteDoctor()} color="danger">Delete</Button>
+                    </DialogActions>
+                </Dialog>
+                <Dialog
+                    open={this.state.successDialog}
+                    onClose={this.toggleSuccessDialog}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title" style={{ color: "#4caf50" }}>
+                        <i class="fas fa-check-circle"></i> User deleted with success!
+					</DialogTitle>
+                    <DialogActions>
+                        <Button block onClick={() => this.toggleSuccessDialog()} color="success">Close</Button>
                     </DialogActions>
                 </Dialog>
             </div>
