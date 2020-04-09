@@ -30,6 +30,11 @@ import Icons from "views/Icons/Icons.js";
 import Maps from "views/Maps/Maps.js";
 import NotificationsPage from "views/Notifications/Notifications.js";
 
+import AccessibleIcon from '@material-ui/icons/Accessible';
+
+
+
+import Patients from "views/Doctor/Patients/Patients.js"
 import Profile from "views/Doctor/Profile/Profile.js"
 
 const dashboardRoutes = [
@@ -47,6 +52,14 @@ const dashboardRoutes = [
     rtlName: "ملف تعريفي للمستخدم",
     icon: Person,
     component: Profile,
+    layout: "/doctor"
+  },
+  {
+    path: "/patients",
+    name: "Manage Patients",
+    rtlName: "ملف تعريفي للمستخدم",
+    icon: AccessibleIcon,
+    component: Patients,
     layout: "/doctor"
   },
   {

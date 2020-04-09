@@ -772,3 +772,7 @@ footer ul li a:hover {
 .profile-picture:hover {
   opacity: 0.8;
 }
+
+#tableRowHover:hover {
+  background-color: #e9e9e9;
+}
