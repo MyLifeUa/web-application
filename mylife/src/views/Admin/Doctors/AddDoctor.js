@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { DatePickerInput } from 'rc-datepicker';
 
 import IconButton from '@material-ui/core/IconButton';
 import ArrowBack from '@material-ui/icons/ArrowBackIos';
@@ -13,8 +14,11 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import Button from "components/CustomButtons/Button.js";
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
+import SnackbarContent from "components/Snackbar/SnackbarContent.js";
 
 import Doctors from "views/Admin/Doctors/Doctors.js";
+
+import baseUri from "variables/baseURI.js";
 
 class AddDoctor extends React.Component {
 
@@ -22,14 +26,36 @@ class AddDoctor extends React.Component {
     constructor() {
         super();
         this.state = {
-            return: false
+            authUser: JSON.parse(localStorage.getItem('authUser')),
+            notFound: false,
+            message: "The searched doctor is already registered in the hospital!",
+            color: "warning",
+            return: false,
         }
-        this.searchDoctor = this.searchDoctor.bind(this);
+        this.today = new Date();
+        this.date = this.today.toISOString().split('T')[0];
+        this.addDoctor = this.addDoctor.bind(this);
         this.toggleReturn = this.toggleReturn.bind(this);
+        this.onChange = this.onChange.bind(this);
     }
 
-    searchDoctor() {
-        alert("Search doctor!");
+
+
+    addDoctor() {
+
+        fetch(baseUri.restApi.doctors, {
+            method: 'POST',
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": "Token " + this.state.authUser.token
+            }
+        })
+
+    }
+
+    onChange = (jsDate, dateString) => {
+        document.getElementById("birth-date").value = dateString.split("T")[0]
     }
 
     toggleReturn() {
@@ -39,7 +65,7 @@ class AddDoctor extends React.Component {
     }
 
     render() {
-        if(this.state.return) return <Doctors /> 
+        if (this.state.return) return <Doctors />
         return (
             <div>
                 <GridContainer>
@@ -49,19 +75,55 @@ class AddDoctor extends React.Component {
                         </IconButton>
                         Add doctor</h3>
                     </GridItem>
-                    <GridItem xs={12} sm={12} md={1}></GridItem>
-                    <GridItem xs={12} sm={12} md={8}>
-                        <FormControl fullWidth variant="outlined" >
-                            <InputLabel htmlFor="outlined-adornment-amount">Email</InputLabel>
-                            <OutlinedInput
-                                id="outlined-adornment-amount"
-                                startAdornment={<InputAdornment position="start"><i className="fas fa-envelope"></i></InputAdornment>}
-                                labelWidth={60}
-                            />
-                        </FormControl>
+                    <GridItem xs={12} sm={12} md={2}></GridItem>
+                    <GridItem xs={12} sm={12} md={4}>
+                        <input id="first-name" class="form-input" placeholder="First name *" type="text" />
                     </GridItem>
-                    <GridItem xs={12} sm={12} md={2}><Button color="info" onClick={this.searchDoctor} size="large" round><AddCircleIcon /> Add doctor</Button></GridItem>
-                    <GridItem xs={12} sm={12} md={1}></GridItem>
+                    <GridItem xs={12} sm={12} md={4}>
+                        <input id="last-name" class="form-input" placeholder="Last name *" type="text" />
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={2}></GridItem>
+                    <GridItem xs={12} sm={12} md={2}></GridItem>
+                    <GridItem xs={12} sm={12} md={8}>
+                        <input id="email" class="form-input" placeholder="Email" type="email" />
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={2}></GridItem>
+                    <GridItem xs={12} sm={12} md={2}></GridItem>
+                    <GridItem xs={12} sm={12} md={4}>
+                        <input id="phone-number" class="form-input" placeholder="Phone number *" type="text" />
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={4}>
+                        <DatePickerInput
+                            locale="en-SG"
+                            id="birth-date"
+                            value={this.date}
+                            onChange={this.onChange}
+                            className='form-input'
+                        />
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={2}></GridItem>
+                    <GridItem xs={12} sm={12} md={2}></GridItem>
+                    <GridItem xs={12} sm={12} md={4}>
+                        <input id="password" class="form-input" placeholder="Password *" type="password" />
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={4}>
+                        <input id="confirm-password" class="form-input" placeholder="Confirm password *" type="password" />
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={2}></GridItem>
+                    <GridItem xs={12} sm={12} md={2}></GridItem>
+                    <GridItem xs={12} sm={12} md={2}><Button color="info" onClick={this.addDoctor} size="large" round><AddCircleIcon /> Add doctor</Button></GridItem>
+
+
+                    {this.state.notFound === true ?
+                        <GridItem xs={12} sm={12} md={5} style={{ marginTop: "20px" }}>
+                            <SnackbarContent
+                                message={this.state.message}
+                                color={this.state.color}
+                            />
+                        </GridItem> :
+                        ""}
+
+                    <GridItem xs={12} sm={12} md={6}></GridItem>
                 </GridContainer>
             </div>
         );
