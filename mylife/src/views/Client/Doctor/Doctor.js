@@ -5,7 +5,6 @@ import GridContainer from "components/Grid/GridContainer.js";
 import Card from "components/Card/Card.js";
 import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
-import CheckIcon from '@material-ui/icons/CheckBox';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Button from "components/CustomButtons/Button.js";
 
@@ -46,8 +45,7 @@ class Doctor extends React.Component {
                                     <GridItem xs={12} sm={12} md={12}><h3>Dr. {this.state.doctor.name}</h3></GridItem>
                                     <GridItem xs={12} sm={12} md={12}><a href={"mailto:" + this.state.doctor.email}><strong>{this.state.doctor.email}</strong></a></GridItem>
                                     <GridItem xs={12} sm={12} md={12}><p style={{ fontSize: "17px" }}><i style={{ color: "#00acc1", marginRight: "3px" }} class="fas fa-hospital"></i> {this.state.doctor.hospital}</p></GridItem>
-                                    <GridItem xs={12} sm={12} md={6}><Button color="info" round><CheckIcon /> Check reports</Button></GridItem>
-                                    <GridItem xs={12} sm={12} md={6}><Button color="danger" round><DeleteIcon /> Remove doctor</Button></GridItem>
+                                    <GridItem xs={12} sm={12} md={12}><Button color="danger" round><DeleteIcon /> Remove doctor</Button></GridItem>
                                 </GridContainer>
                             </CardBody>
                         </Card>
