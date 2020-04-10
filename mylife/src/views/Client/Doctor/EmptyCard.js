@@ -2,7 +2,7 @@ import React from "react";
 // material-ui
 import { makeStyles } from "@material-ui/core/styles";
 // @material-ui/icons
-import ErrorIcon from '@material-ui/icons/Error';
+import Sad from '@material-ui/icons/SentimentVeryDissatisfied';
 // core components
 import Grid from "@material-ui/core/Grid";
 import GridItem from "components/Grid/GridItem.js";
@@ -21,7 +21,8 @@ var styles = {
         fontWeight: "300",
         fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
         marginBottom: "3px",
-        textDecoration: "none"
+        textDecoration: "none",
+        color: "#15bbcf"
     }
 };
 
@@ -32,16 +33,15 @@ export default function EmptyCard() {
     return (
         <div>
             <Card>
-                <CardHeader color="danger" icon>
-                    <CardIcon color="danger">
-                        <ErrorIcon />
+                <CardHeader color="info" icon>
+                    <CardIcon color="info">
+                        <Sad />
                     </CardIcon>
                 </CardHeader>
                 <CardBody>
-                    <h4 className={classes.cardTitle}>Here is the Icon</h4>
-              The place is close to Barceloneta Beach and bus stop just 2 min by
-              walk and near to "Naviglio" where you can enjoy the main night
-              life in Barcelona...
+                    <h3 className={classes.cardTitle}>There is not associated doctor!</h3>
+                    Currently, you do not have an associated doctor.<br />
+                    Please, contact your doctor in order for him to add you. 
             </CardBody>
             </Card>
         </div>

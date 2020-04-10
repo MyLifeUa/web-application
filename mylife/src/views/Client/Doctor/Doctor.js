@@ -62,10 +62,10 @@ class Doctor extends React.Component {
                 this.setState({
                     authUser: this.state.authUser,
                     doctor: {
-                        name: null,
-                        email: data.message.email,
-                        photo: data.message.photo,
-                        hospital: data.message.hospital
+                        name: data.message !== null ? data.message.name : null,
+                        email: data.message !== null ? data.message.email : null,
+                        photo: data.message !== null ? data.message.photo : null,
+                        hospital: data.message !== null ? data.message.hospital : null
                     },
                     deleteDialog: false,
                     successDialog: false
