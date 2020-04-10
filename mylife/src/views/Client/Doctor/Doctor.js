@@ -14,6 +14,8 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
+import EmptyCard from "views/Client/Doctor/EmptyCard.js";
+
 import baseUri from "variables/baseURI.js";
 import config from "variables/config.js";
 
@@ -60,7 +62,7 @@ class Doctor extends React.Component {
                 this.setState({
                     authUser: this.state.authUser,
                     doctor: {
-                        name: data.message.name,
+                        name: null,
                         email: data.message.email,
                         photo: data.message.photo,
                         hospital: data.message.hospital
@@ -114,6 +116,7 @@ class Doctor extends React.Component {
                     </GridItem>
                     <GridItem xs={12} sm={12} md={3}></GridItem>
                     <GridItem xs={12} sm={12} md={6}>
+                        {this.state.doctor.name !== null ?
                         <Card profile>
                             <CardAvatar profile>
                                 <a href="#pablo" >
@@ -129,6 +132,7 @@ class Doctor extends React.Component {
                                 </GridContainer>
                             </CardBody>
                         </Card>
+                        : <EmptyCard /> }
                     </GridItem>
                 </GridContainer>
                 <Dialog
