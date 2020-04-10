@@ -39,7 +39,7 @@ export default function EmptyCard() {
                     </CardIcon>
                 </CardHeader>
                 <CardBody>
-                    <h3 className={classes.cardTitle}>There is not associated doctor!</h3>
+                    <h3 className={classes.cardTitle}>Doctor not found!</h3>
                     Currently, you do not have an associated doctor.<br />
                     Please, contact your doctor in order for him to add you. 
             </CardBody>

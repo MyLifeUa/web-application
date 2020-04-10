@@ -26,7 +26,7 @@ class Doctor extends React.Component {
         this.state = {
             authUser: JSON.parse(localStorage.getItem('authUser')),
             doctor: {
-                name: null,
+                name: "",
                 email: null,
                 photo: config.defaultUser,
                 hospital: null
@@ -161,7 +161,7 @@ class Doctor extends React.Component {
                     aria-describedby="alert-dialog-description"
                 >
                     <DialogTitle id="alert-dialog-title" style={{ color: "#4caf50" }}>
-                        <i class="fas fa-check-circle"></i> User deleted with success!
+                        <i class="fas fa-check-circle"></i> Doctor deleted with success!
 					</DialogTitle>
                     <DialogActions>
                         <Button block onClick={() => this.toggleSuccessDialog()} color="success">Close</Button>
