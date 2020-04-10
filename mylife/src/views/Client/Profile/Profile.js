@@ -22,7 +22,7 @@ import baseURI from "variables/baseURI.js";
 
 
 
-export default class UserProfile extends React.Component {
+export default class Profile extends React.Component {
 
 	constructor() {
 		super();
