@@ -4,8 +4,6 @@ import { makeStyles } from "@material-ui/core/styles";
 // @material-ui/icons
 import Sad from '@material-ui/icons/SentimentVeryDissatisfied';
 // core components
-import Grid from "@material-ui/core/Grid";
-import GridItem from "components/Grid/GridItem.js";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
