@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-    LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend
+    LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
 } from 'recharts';
 
 import Button from "components/CustomButtons/Button.js";
@@ -9,35 +9,69 @@ import Button from "components/CustomButtons/Button.js";
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 
+
+import baseUri from "variables/baseURI";
+import utils from "variables/utils";
+
 class History extends React.Component {
 
     constructor() {
         super();
+        this.state = {
+            nutrient: "Calories",
+            bodyMetric: "Calories",
+            nutrientsHistory: [],
+            bodyHistory: [],
+        }
         this.authUser = JSON.parse(localStorage.getItem('authUser'));
-        this.nutrients = ["Calories", "Carbs", "Fat", "Proteins"]
+
         this.data = [
             {
-                name: 'Page A', uv: 4000, pv: 2400, amt: 2400,
+                name: 'Page A', pv: 24
             },
             {
-                name: 'Page B', uv: 3000, pv: 1398, amt: 2210,
+                name: 'Page B', pv: 13
             },
             {
-                name: 'Page C', uv: 2000, pv: 9800, amt: 2290,
+                name: 'Page C', pv: 98
             },
             {
-                name: 'Page D', uv: 2780, pv: 3908, amt: 2000,
+                name: 'Page D', pv: 39,
             },
             {
-                name: 'Page E', uv: 1890, pv: 4800, amt: 2181,
+                name: 'Page E', pv: 48
             },
             {
-                name: 'Page F', uv: 2390, pv: 3800, amt: 2500,
+                name: 'Page F', pv: 38
             },
             {
-                name: 'Page G', uv: 3490, pv: 4300, amt: 2100,
+                name: 'Page G', pv: 43
             },
         ];
+    }
+
+    componentDidMount() {
+        fetch(baseUri.restApi.nutrientsHistory + this.authUser.message.email + "?metric=" + this.state.nutrient.toLowerCase(), {
+            method: "GET",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": "Token " + this.authUser.token
+            }
+        })
+        .then(response => {
+            if (!response.ok) throw new Error(response.status);
+            else return response.json();
+        })
+        .then(data => {
+
+
+
+            console.log(data);
+        })
+        .catch(error => {
+            console.log("Fetch error: " + error);
+        })
     }
 
 
@@ -53,8 +87,8 @@ class History extends React.Component {
                         <h4><i className="fas fa-apple-alt" style={{ color: "#00acc1", marginRight: "5px" }}></i> Nutrients history</h4>
                     </GridItem>
                     {
-                        this.nutrients.map((nutrient, key) => {
-                            return <GridItem xs={12} sm={12} md={2} style={{marginTop: "15px"}}><Button round color={nutrient === "Calories" ? "info" : "white"} style={{width: "150px"}}>{nutrient}</Button></GridItem>
+                        utils.nutrients.map((nutrient, key) => {
+                            return <GridItem xs={12} sm={12} md={2} style={{marginTop: "15px"}}><Button round color={nutrient === this.state.nutrient ? "info" : "white"} style={{width: "150px"}}>{nutrient}</Button></GridItem>
                         })
                     }
                     <GridItem xs={12} sm={12} md={12}>
@@ -71,15 +105,15 @@ class History extends React.Component {
                             <YAxis />
                             <Tooltip />
                             <Legend />
-                            <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
+                            <Line type="monotone" dataKey="pv" stroke="#00acc1" activeDot={{ r: 8 }} />
                         </LineChart>
                     </GridItem>
                     <GridItem xs={12} sm={12} md={3}>
                         <h4><i className="fas fa-dumbbell" style={{ color: "#00acc1", marginRight: "5px" }}></i> Body history</h4>
                     </GridItem>
                     {
-                        this.nutrients.map((nutrient, key) => {
-                            return <GridItem xs={12} sm={12} md={2} style={{marginTop: "15px"}}><Button round color={nutrient === "Calories" ? "info" : "white"} style={{width: "150px"}}>{nutrient}</Button></GridItem>
+                        utils.body.map((elem, key) => {
+                            return <GridItem xs={12} sm={12} md={2} style={{marginTop: "15px"}}><Button round color={elem === this.state.bodyMetric ? "info" : "white"} style={{width: "150px"}}>{elem}</Button></GridItem>
                         })
                     }
                     <GridItem xs={12} sm={12} md={12}>
