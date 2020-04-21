@@ -26,9 +26,16 @@ class History extends React.Component {
         super();
         this.state = {
             nutrient: {name: "Calories", period: "week"},
-            nutrientsHistory: utils.defaultHistory,
-            
+            nutrientsHistory: utils.defaultHistory
         }
+
+        this.nutrientsCache = {}
+        utils.nutrients.forEach(nutrient => {
+            utils.periods.forEach(period => {
+                this.nutrientsCache[nutrient + "" + period] = [];
+            });
+        });
+
         this.authUser = JSON.parse(localStorage.getItem('authUser'));
         this.toggleNutrient = this.toggleNutrient.bind(this);
         this.toggleNutrientPeriod = this.toggleNutrientPeriod.bind(this);
@@ -36,12 +43,22 @@ class History extends React.Component {
     }
 
     componentDidMount() {
-        this.fetchNutrients();
+        this.fetchNutrients(this.state.nutrient.name, this.state.nutrient.period);
     }
 
 
-    fetchNutrients() {
-        fetch(baseUri.restApi.nutrientsHistory + this.authUser.message.email + "?metric=" + this.state.nutrient.name.toLowerCase() + "&period=" + this.state.nutrient.period, {
+    fetchNutrients(nutrient, period) {
+
+        if(this.nutrientsCache[nutrient + "" + period].length !== 0) {
+            this.setState({
+                nutrient: {name: nutrient, period: period},
+                nutrientsHistory: this.nutrientsCache[nutrient + "" + period],
+            })
+            return;
+        }
+
+
+        fetch(baseUri.restApi.nutrientsHistory + this.authUser.message.email + "?metric=" + nutrient.toLowerCase() + "&period=" + period, {
             method: "GET",
             headers: {
                 "Accept": "application/json",
@@ -54,13 +71,13 @@ class History extends React.Component {
                 else return response.json();
             })
             .then(data => {
-                console.log(data);
                 this.authUser.token = data.token;
                 localStorage.setItem('authUser', JSON.stringify(this.authUser));
                 this.setState({
-                    nutrient: this.state.nutrient,
+                    nutrient: {name: nutrient, period: period},
                     nutrientsHistory: data.message.history,
                 })
+                this.nutrientsCache[nutrient + "" + period] = data.message.history;
 
             })
             .catch(error => {
@@ -71,18 +88,13 @@ class History extends React.Component {
 
 
     toggleNutrient = (event) => {
-        this.setState({
-            nutrient: {name: event.target.value, period: this.state.nutrient.period},
-            nutrientsHistory: this.state.nutrientsHistory,
-        })
+        this.fetchNutrients(event.target.value, this.state.nutrient.period);
     }
 
     toggleNutrientPeriod = (event) => {
-        this.setState({
-            nutrient: {name: this.state.nutrient.name, period: event.target.value},
-            nutrientsHistory: this.state.nutrientsHistory,
-        })
+        this.fetchNutrients(this.state.nutrient.name, event.target.value);
     }
+
 
     render() {
         return (
