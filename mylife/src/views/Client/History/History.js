@@ -89,9 +89,19 @@ class History extends React.Component {
             .then(data => {
                 this.authUser.token = data.token;
                 localStorage.setItem('authUser', JSON.stringify(this.authUser));
+
+                let nutrientsHistory = [];
+                data.message.history.forEach(elem => {
+                    nutrientsHistory.push({
+                        day: elem.day,
+                        value: elem.value,
+                        goal: data.message.goal !== undefined ? data.message.goal : 0
+                    })
+                })
+
                 this.setState({
                     nutrient: { name: nutrient, period: period },
-                    nutrientsHistory: data.message.history,
+                    nutrientsHistory: nutrientsHistory,
                     body: this.state.body,
                     bodyHistory: this.state.bodyHistory,
                 })
@@ -142,11 +152,21 @@ class History extends React.Component {
             .then(data => {
                 this.authUser.token = data.token;
                 localStorage.setItem('authUser', JSON.stringify(this.authUser));
+
+                let bodyHistory = [];
+                data.message.history.forEach(elem => {
+                    bodyHistory.push({
+                        day: elem.day,
+                        value: elem.value,
+                        goal: data.message.goal !== undefined ? data.message.goal : 0
+                    })
+                })
+
                 this.setState({
                     nutrient: this.state.nutrient,
                     nutrientsHistory: this.state.nutrientsHistory,
                     body: { name: body, period: period },
-                    bodyHistory: data.message.history,
+                    bodyHistory: bodyHistory
                 })
                 this.bodyCache[body + "" + period] = data.message.history;
 
@@ -222,6 +242,7 @@ class History extends React.Component {
                             <Tooltip />
                             <Legend />
                             <Line type="monotone" dataKey="value" stroke="#00acc1" activeDot={{ r: 8 }} />
+                            <Line type="monotone" dataKey="goal" stroke="red" />
                         </LineChart>
                     </GridItem>
                     <GridItem xs={12} sm={12} md={6}>
@@ -274,6 +295,7 @@ class History extends React.Component {
                             <Tooltip />
                             <Legend />
                             <Line type="monotone" dataKey="value" stroke="#00acc1" activeDot={{ r: 8 }} />
+                            <Line type="monotone" dataKey="goal" stroke="red" />
                         </LineChart>
                     </GridItem>
 
