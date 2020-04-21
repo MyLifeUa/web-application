@@ -24,7 +24,7 @@ import LocationOn from "@material-ui/icons/LocationOn";
 import Notifications from "@material-ui/icons/Notifications";
 import Unarchive from "@material-ui/icons/Unarchive";
 // core components/views for Admin layout
-import DashboardPage from "views/Dashboard/Dashboard.js";
+import DashboardPage from "views/Client/Dashboard/Dashboard.js";
 
 import TableList from "views/TableList/TableList.js";
 import Typography from "views/Typography/Typography.js";
