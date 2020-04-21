@@ -10,6 +10,7 @@ class Dashboard extends React.Component {
     constructor() {
         super();
         this.authUser = JSON.parse(localStorage.getItem('authUser'));
+        console.log(this.authUser);
         this.today = new Date();
     }
 
