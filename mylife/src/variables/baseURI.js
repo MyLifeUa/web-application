@@ -9,6 +9,7 @@ export default {
         patients: 'http://mednat.ieeta.pt:8442/doctor-clients',
         patientAssociation: 'http://mednat.ieeta.pt:8442/doctor-patient-association',
         checkEmail: 'http://mednat.ieeta.pt:8442/check-email/',
-        nutrientsHistory: 'http://mednat.ieeta.pt:8442/health-stats/nutrients/history/'
+        nutrientsHistory: 'http://mednat.ieeta.pt:8442/health-stats/nutrients/history/',
+        bodyHistory: 'http://mednat.ieeta.pt:8442/health-stats/body/history/'
     }
 }
