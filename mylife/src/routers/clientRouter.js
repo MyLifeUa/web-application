@@ -18,6 +18,7 @@
 // @material-ui/icons
 import Dashboard from "@material-ui/icons/Dashboard";
 import Person from "@material-ui/icons/Person";
+import Timeline from "@material-ui/icons/Timeline";
 import LibraryBooks from "@material-ui/icons/LibraryBooks";
 import BubbleChart from "@material-ui/icons/BubbleChart";
 import LocationOn from "@material-ui/icons/LocationOn";
@@ -36,6 +37,7 @@ import LocalHospitalIcon from '@material-ui/icons/LocalHospital';
 // core components/views for RTL layout
 
 import Profile from "views/Client/Profile/Profile.js";
+import History from "views/Client/History/History.js"
 import Doctor from "views/Client/Doctor/Doctor.js";
 
 const dashboardRoutes = [
@@ -53,6 +55,13 @@ const dashboardRoutes = [
     rtlName: "ملف تعريفي للمستخدم",
     icon: Person,
     component: Profile,
+    layout: "/client"
+  },
+  {
+    path: "/history",
+    name: "Health History",
+    icon: Timeline,
+    component: History,
     layout: "/client"
   },
   {
