@@ -25,41 +25,23 @@ class History extends React.Component {
     constructor() {
         super();
         this.state = {
-            nutrient: "Calories",
-            bodyMetric: "Calories",
-            nutrientsHistory: [],
-            bodyHistory: [],
+            nutrient: {name: "Calories", period: "week"},
+            nutrientsHistory: utils.defaultHistory,
+            
         }
         this.authUser = JSON.parse(localStorage.getItem('authUser'));
-
-        this.data = [
-            {
-                name: 'Page A', pv: 24
-            },
-            {
-                name: 'Page B', pv: 13
-            },
-            {
-                name: 'Page C', pv: 98
-            },
-            {
-                name: 'Page D', pv: 39,
-            },
-            {
-                name: 'Page E', pv: 48
-            },
-            {
-                name: 'Page F', pv: 38
-            },
-            {
-                name: 'Page G', pv: 43
-            },
-        ];
         this.toggleNutrient = this.toggleNutrient.bind(this);
+        this.toggleNutrientPeriod = this.toggleNutrientPeriod.bind(this);
+        this.fetchNutrients = this.fetchNutrients.bind(this);
     }
 
     componentDidMount() {
-        fetch(baseUri.restApi.nutrientsHistory + this.authUser.message.email + "?metric=" + this.state.nutrient.toLowerCase(), {
+        this.fetchNutrients();
+    }
+
+
+    fetchNutrients() {
+        fetch(baseUri.restApi.nutrientsHistory + this.authUser.message.email + "?metric=" + this.state.nutrient.name.toLowerCase() + "&period=" + this.state.nutrient.period, {
             method: "GET",
             headers: {
                 "Accept": "application/json",
@@ -72,30 +54,34 @@ class History extends React.Component {
                 else return response.json();
             })
             .then(data => {
+                console.log(data);
                 this.authUser.token = data.token;
                 localStorage.setItem('authUser', JSON.stringify(this.authUser));
-
-
-                data.message.history.forEach(element => {
-                    element.value = Math.floor(Math.random() * 101);
-                });
-
                 this.setState({
                     nutrient: this.state.nutrient,
-                    bodyMetric: this.state.bodyMetric,
                     nutrientsHistory: data.message.history,
-                    bodyHistory: this.state.bodyHistory,
                 })
 
             })
             .catch(error => {
                 console.log("Fetch error: " + error);
             })
+        
     }
 
 
-    toggleNutrient() {
+    toggleNutrient = (event) => {
+        this.setState({
+            nutrient: {name: event.target.value, period: this.state.nutrient.period},
+            nutrientsHistory: this.state.nutrientsHistory,
+        })
+    }
 
+    toggleNutrientPeriod = (event) => {
+        this.setState({
+            nutrient: {name: this.state.nutrient.name, period: event.target.value},
+            nutrientsHistory: this.state.nutrientsHistory,
+        })
     }
 
     render() {
@@ -106,21 +92,18 @@ class History extends React.Component {
                         <h3><i className="fas fa-file-medical-alt" style={{ color: "#00acc1", marginRight: "5px" }}></i> Health History</h3>
                     </GridItem>
                     <GridItem xs={12} sm={12} md={6}>
-                        <h4><i className="fas fa-apple-alt" style={{ color: "#00acc1", marginRight: "5px" }}></i> Nutrients history - <strong>{this.state.nutrient}</strong></h4>
+                        <h4><i className="fas fa-apple-alt" style={{ color: "#00acc1", marginRight: "5px" }}></i> Nutrients history - <strong>{this.state.nutrient.name}</strong></h4>
                     </GridItem>
                     <GridItem xs={12} sm={12} md={3} style={{ marginTop: "15px" }}>
                         <FormControl variant="outlined" style={{ width: "180px" }}>
                             <InputLabel id="demo-simple-select-outlined-label">Metric</InputLabel>
                             <Select
                                 labelId="demo-simple-select-outlined-label"
-                                id="demo-simple-select-outlined"
-                                value={5}
+                                id="nutrients-metric"
+                                value={this.state.nutrient.name}
                                 onChange={this.toggleNutrient}
-                                label="Age"
+                                label="Metric"
                             >
-                                <MenuItem value="Calories">
-                                    <em>None</em>
-                                </MenuItem>
                                 {utils.nutrients.map((nutrient, key) => {
                                     return <MenuItem value={nutrient}>{nutrient}</MenuItem>
                                 })}
@@ -132,14 +115,11 @@ class History extends React.Component {
                             <InputLabel id="demo-simple-select-outlined-label">Period</InputLabel>
                             <Select
                                 labelId="demo-simple-select-outlined-label"
-                                id="demo-simple-select-outlined"
-                                value={5}
-                                onChange={this.toggleNutrient}
-                                label="Age"
+                                id="nutrients-period"
+                                value={this.state.nutrient.period}
+                                onChange={this.toggleNutrientPeriod}
+                                label="Period"
                             >
-                                <MenuItem value="Calories">
-                                    <em>None</em>
-                                </MenuItem>
                                 {utils.periods.map((period, key) => {
                                     return <MenuItem value={period}>{period}</MenuItem>
                                 })}
@@ -161,65 +141,6 @@ class History extends React.Component {
                             <Tooltip />
                             <Legend />
                             <Line type="monotone" dataKey="value" stroke="#00acc1" activeDot={{ r: 8 }} />
-                        </LineChart>
-                    </GridItem>
-                    <GridItem xs={12} sm={12} md={6}>
-                        <h4><i className="fas fa-dumbbell" style={{ color: "#00acc1", marginRight: "5px" }}></i> Body history - <strong>{this.state.bodyMetric}</strong></h4>
-                    </GridItem>
-                    <GridItem xs={12} sm={12} md={3} style={{ marginTop: "15px" }}>
-                        <FormControl variant="outlined" style={{ width: "180px" }}>
-                            <InputLabel id="demo-simple-select-outlined-label">Metric</InputLabel>
-                            <Select
-                                labelId="demo-simple-select-outlined-label"
-                                id="demo-simple-select-outlined"
-                                value={5}
-                                onChange={this.toggleNutrient}
-                                label="Age"
-                            >
-                                <MenuItem value="Calories">
-                                    <em>None</em>
-                                </MenuItem>
-                                {utils.body.map((metric, key) => {
-                                    return <MenuItem value={metric}>{metric}</MenuItem>
-                                })}
-                            </Select>
-                        </FormControl>
-                    </GridItem>
-                    <GridItem xs={12} sm={12} md={3} style={{ marginTop: "15px" }}>
-                        <FormControl variant="outlined" style={{ width: "180px" }}>
-                            <InputLabel id="demo-simple-select-outlined-label">Period</InputLabel>
-                            <Select
-                                labelId="demo-simple-select-outlined-label"
-                                id="demo-simple-select-outlined"
-                                value={5}
-                                onChange={this.toggleNutrient}
-                                label="Age"
-                            >
-                                <MenuItem value="Calories">
-                                    <em>None</em>
-                                </MenuItem>
-                                {utils.periods.map((period, key) => {
-                                    return <MenuItem value={period}>{period}</MenuItem>
-                                })}
-                            </Select>
-                        </FormControl>
-                    </GridItem>
-                    <GridItem xs={12} sm={12} md={12}>
-                        <LineChart
-                            width={1000}
-                            height={300}
-                            data={this.data}
-                            margin={{
-                                top: 5, right: 30, left: 5, bottom: 5,
-                            }}
-                        >
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="name" />
-                            <YAxis />
-                            <Tooltip />
-                            <Legend />
-                            <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
-                            <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
                         </LineChart>
                     </GridItem>
 
