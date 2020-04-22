@@ -169,12 +169,6 @@ export default function AdminNavbarLinks() {
                     ><a href={"/" + JSON.parse(localStorage.getItem('authUser')).role + "/profile"}>Profile</a>
                       
                     </MenuItem>
-                    <MenuItem
-                      onClick={handleCloseProfile}
-                      className={classes.dropdownItem}
-                    >
-                      Settings
-                    </MenuItem>
                     <Divider light />
                     <MenuItem
                       onClick={handleLogout}
