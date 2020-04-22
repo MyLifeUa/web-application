@@ -156,7 +156,7 @@ class History extends React.Component {
                         goal: data.message.goal !== undefined ? data.message.goal : 0
                     })
                 })
-
+                
                 this.setState({
                     nutrient: this.state.nutrient,
                     nutrientsHistory: this.state.nutrientsHistory,
