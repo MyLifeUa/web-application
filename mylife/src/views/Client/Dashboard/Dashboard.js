@@ -21,11 +21,11 @@ class Dashboard extends React.Component {
                     <GridItem xs={12} sm={12} md={1}>
                         <img style={{ height: "40px", borderRadius: "50%" }} src={"data:image;base64," + this.authUser.message.photo} alt={this.authUser.message.name}/>
                     </GridItem>
-                    <GridItem xs={12} sm={12} md={11} style={{ marginTop: "-20px", marginLeft: "-30px" }}>
+                    <GridItem xs={12} sm={12} md={7} style={{ marginTop: "-20px", marginLeft: "-30px" }}>
                         <h3> Welcome, <a href="/client/profile">{this.authUser.message.name}!</a></h3>
                     </GridItem>
-                    <GridItem xs={12} sm={12} md={12} style={{ marginTop: "-20px"}}>
-                        <h4><i className="fas fa-calendar-alt" style={{color: "#00acc1"}}></i> {utils.weekday[this.today.getDay()]}, {this.today.getUTCDate()}th of {utils.monthNames[this.today.getMonth()] + " " + this.today.getFullYear()}</h4>
+                    <GridItem xs={12} sm={12} md={4} style={{ marginTop: "-25px"}}>
+                        <h5><i className="fas fa-calendar-alt" style={{color: "#00acc1"}}></i> {utils.weekday[this.today.getDay()]}, {this.today.getUTCDate()}th of {utils.monthNames[this.today.getMonth()] + " " + this.today.getFullYear()}</h5>
                     </GridItem>
                 </GridContainer>
             </div>
