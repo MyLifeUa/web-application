@@ -36,6 +36,7 @@ class Auth extends React.Component {
                 })
                 .then(data => {
                     localStorage.setItem('authUser', JSON.stringify(data));
+                    console.log(data);
                 })
                 .catch(error => {
                     console.log("Fetch error: " + error);
@@ -44,7 +45,7 @@ class Auth extends React.Component {
         this.setState({ loaded: false, currentUser: currentUser })
         setInterval(() => {
             this.setState({ loaded: true, currentUser: this.state.currentUser })
-        }, 1000);
+        }, 2000); // possible bug
     }
 
     render() {
