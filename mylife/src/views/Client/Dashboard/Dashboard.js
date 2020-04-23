@@ -8,6 +8,8 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
+import Table from "components/Table/Table.js";
+
 import utils from "variables/utils.js";
 
 import metric1 from "assets/img/client-dashboard/metric-1.png"
@@ -47,13 +49,14 @@ class Dashboard extends React.Component {
                     }],
 
                 }
-            }
+            },
+            nutrientsTotal: []
         };
 
-        this.fetchRatio = this.fetchRatio.bind(this);
+        this.fetchNutrients = this.fetchNutrients.bind(this);
 
     }
-    
+
     classes = {
         cardHeader: {
             backgroundColor: "#00acc1",
@@ -62,10 +65,8 @@ class Dashboard extends React.Component {
         }
     }
 
-    fetchRatio() {
-
-        console.log(baseUri.restApi.nutrientsRatio + this.authUser.message.email + "/" + this.today.toISOString().slice(0,10));
-        fetch(baseUri.restApi.nutrientsRatio + this.authUser.message.email + "/" + this.today.toISOString().slice(0,10) , {
+    fetchNutrients() {
+        fetch(baseUri.restApi.nutrientsRatio + this.authUser.message.email + "/" + this.today.toISOString().slice(0, 10), {
             method: "GET",
             headers: {
                 "Accept": "application/json",
@@ -79,7 +80,6 @@ class Dashboard extends React.Component {
 
             })
             .then(data => {
-                console.log(data);
 
                 let series = [
                     data.message.carbs.ratio,
@@ -92,9 +92,10 @@ class Dashboard extends React.Component {
                 pieChart.series = series;
 
                 this.setState({
-                    pieChart: pieChart
+                    pieChart: pieChart,
+                    nutrientsTotal: this.state.nutrientsTotal
                 })
-                
+
 
 
             })
@@ -102,10 +103,45 @@ class Dashboard extends React.Component {
                 console.log("Fetch error: " + error);
             })
 
+            fetch(baseUri.restApi.nutrientsTotal + this.authUser.message.email + "/" + this.today.toISOString().slice(0, 10), {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Token " + this.authUser.token
+                }
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error(response.status);
+                    else return response.json();
+    
+                })
+                .then(data => {
+
+                    console.log(data);
+
+                    let nutrients = [
+                        [<span><i className="fas fa-circle" style={{color: "#007280"}}></i> Carbs</span> ,data.message.carbs.total,data.message.carbs.goal,data.message.carbs.left],
+                        [<span><i className="fas fa-circle" style={{color: "#00acc1"}}></i> Fats</span> ,data.message.fat.total, data.message.fat.goal,data.message.fat.left],
+                        [<span><i className="fas fa-circle" style={{color: "#00cde6"}}></i> Proteins</span> ,data.message.proteins.total,data.message.proteins.goal,data.message.proteins.left],
+                        [<span><i className="fas fa-circle" style={{color: "#1ae6ff"}}></i> Calories</span> ,data.message.calories.total,data.message.calories.goal,data.message.calories.left]
+                    ];
+
+                    this.setState({
+                        pieChart: this.state.pieChart,
+                        nutrientsTotal: nutrients
+                    })
+
+    
+                })
+                .catch(error => {
+                    console.log("Fetch error: " + error);
+                })
+
     }
 
     componentDidMount() {
-        this.fetchRatio();
+        this.fetchNutrients();
     }
 
     render() {
@@ -206,11 +242,19 @@ class Dashboard extends React.Component {
                             </CardHeader>
                             <CardBody>
                                 <GridContainer >
-                                    <GridItem xs={12} sm={12} md={2}></GridItem>
-                                    <GridItem xs={12} sm={12} md={8}>
+                                    <GridItem xs={12} sm={12} md={3}></GridItem>
+                                    <GridItem xs={12} sm={12} md={7}>
                                         <Chart options={this.state.pieChart.options} series={this.state.pieChart.series} type="pie" width={300} />
                                     </GridItem>
                                     <GridItem xs={12} sm={12} md={2}></GridItem>
+                                    <GridItem xs={12} sm={12} md={12}>
+                                        <Table
+                                            tableHeaderColor="info"
+                                            tableHead={["Nutrient", "Total", "Goal", "Left"]}
+                                            tableData={this.state.nutrientsTotal}
+                                        />
+                                    </GridItem>
+
                                 </GridContainer>
                             </CardBody>
                         </Card>
