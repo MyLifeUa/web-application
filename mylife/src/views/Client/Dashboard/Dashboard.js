@@ -6,9 +6,6 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
-import CardFooter from "components/Card/CardFooter.js";
-
-import SnackbarContent from "components/Snackbar/SnackbarContent.js";
 import utils from "variables/utils.js";
 
 import metric1 from "assets/img/client-dashboard/metric-1.png"
