@@ -15,7 +15,7 @@ import metric2 from "assets/img/client-dashboard/metric-2.png"
 import metric3 from "assets/img/client-dashboard/metric-3.png"
 import metric4 from "assets/img/client-dashboard/metric-4.png"
 
-
+import baseUri from "variables/baseURI.js";
 
 class Dashboard extends React.Component {
 
@@ -24,16 +24,16 @@ class Dashboard extends React.Component {
         this.authUser = JSON.parse(localStorage.getItem('authUser'));
         this.today = new Date();
 
-
         this.state = {
             pieChart: {
-                series: [44, 55, 13, 43, 22],
+                series: [20, 20, 20, 20],
                 options: {
                     chart: {
                         width: 380,
                         type: 'pie',
                     },
-                    labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
+                    labels: ['Carbs', 'Fats', 'Proteins', 'Others'],
+                    colors: ['#007280', '#00acc1', '#00cde6', '#1ae6ff'],
                     responsive: [{
                         breakpoint: 480,
                         options: {
@@ -44,19 +44,68 @@ class Dashboard extends React.Component {
                                 position: 'bottom'
                             }
                         }
-                    }]
+                    }],
+
                 }
             }
         };
 
-    }
+        this.fetchRatio = this.fetchRatio.bind(this);
 
+    }
+    
     classes = {
         cardHeader: {
             backgroundColor: "#00acc1",
             color: "white",
             fontSize: "18px",
         }
+    }
+
+    fetchRatio() {
+
+        console.log(baseUri.restApi.nutrientsRatio + this.authUser.message.email + "/" + this.today.toISOString().slice(0,10));
+        fetch(baseUri.restApi.nutrientsRatio + this.authUser.message.email + "/" + this.today.toISOString().slice(0,10) , {
+            method: "GET",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": "Token " + this.authUser.token
+            }
+        })
+            .then(response => {
+                if (!response.ok) throw new Error(response.status);
+                else return response.json();
+
+            })
+            .then(data => {
+                console.log(data);
+
+                let series = [
+                    data.message.carbs.ratio,
+                    data.message.fat.ratio,
+                    data.message.proteins.ratio,
+                    data.message.others.ratio,
+                ];
+
+                let pieChart = this.state.pieChart;
+                pieChart.series = series;
+
+                this.setState({
+                    pieChart: pieChart
+                })
+                
+
+
+            })
+            .catch(error => {
+                console.log("Fetch error: " + error);
+            })
+
+    }
+
+    componentDidMount() {
+        this.fetchRatio();
     }
 
     render() {
@@ -75,79 +124,98 @@ class Dashboard extends React.Component {
                     <GridItem xs={12} sm={12} md={12} style={{ marginTop: "-20px" }}>
                         <Card>
                             <CardHeader style={this.classes.cardHeader}>
-                                <i className="fas fa-heartbeat"></i> Your daily health measures
+                                <i className="fas fa-heartbeat"></i> <strong>Your daily health measures</strong>
                             </CardHeader>
                         </Card>
 
                     </GridItem>
-                    <GridItem xs={12} sm={12} md={3} style={{ marginTop: "25px" }}>
-                        <Card profile>
-                            <CardAvatar profile style={{ height: "100px", width: "100px" }}>
-                                <a href="#pablo" onClick={this.changeProfilePicture}>
-                                    <img className="profile-picture" src={metric1} alt="Edit profile" />
-                                </a>
-                            </CardAvatar>
-                            <CardBody profile>
-                                <GridContainer>
-                                    <GridItem xs={12} sm={12} md={12}><h4>{this.authUser.message.heart_rate !== null && this.authUser.message.heart_rate !== "" ? this.authUser.message.heart_rate + " bpm" : "Not found"}</h4></GridItem>
-                                    <GridItem xs={12} sm={12} md={12} style={{ marginTop: "-40px", color: "#00acc1" }}><h6>Heart Rate</h6></GridItem>
-                                </GridContainer>
-                            </CardBody>
-                        </Card>
-                    </GridItem>
-                    <GridItem xs={12} sm={12} md={3} style={{ marginTop: "25px" }}>
-                        <Card profile>
-                            <CardAvatar profile style={{ height: "100px", width: "100px" }}>
-                                <a href="#pablo" onClick={this.changeProfilePicture}>
-                                    <img className="profile-picture" src={metric2} alt="Edit profile" />
-                                </a>
-                            </CardAvatar>
-                            <CardBody profile>
-                                <GridContainer>
-                                    <GridItem xs={12} sm={12} md={6}><h4>{this.authUser.message.steps !== null && this.authUser.message.steps !== "" ? this.authUser.message.steps : 0}</h4></GridItem>
-                                    <GridItem xs={12} sm={12} md={6}><h4>{this.authUser.message.distance !== null && this.authUser.message.distance !== "" ? this.authUser.message.distance : 0} km</h4></GridItem>
-                                    <GridItem xs={12} sm={12} md={6} style={{ marginTop: "-40px", color: "#00acc1" }}><h6>Steps</h6></GridItem>
-                                    <GridItem xs={12} sm={12} md={6} style={{ marginTop: "-40px", color: "#00acc1" }}><h6>Distance</h6></GridItem>
-                                </GridContainer>
-                            </CardBody>
-                        </Card>
+
+                    <GridItem xs={12} sm={12} md={6} style={{ marginTop: "25px" }}>
+                        <GridContainer>
+                            <GridItem xs={12} sm={12} md={6}>
+                                <Card profile>
+                                    <CardAvatar profile style={{ height: "100px", width: "100px" }}>
+                                        <a href="#pablo" onClick={this.changeProfilePicture}>
+                                            <img className="profile-picture" src={metric1} alt="Edit profile" />
+                                        </a>
+                                    </CardAvatar>
+                                    <CardBody profile>
+                                        <GridContainer>
+                                            <GridItem xs={12} sm={12} md={12}><h4>{this.authUser.message.heart_rate !== null && this.authUser.message.heart_rate !== "" ? this.authUser.message.heart_rate + " bpm" : "Not found"}</h4></GridItem>
+                                            <GridItem xs={12} sm={12} md={12} style={{ marginTop: "-40px", color: "#00acc1" }}><h6>Heart Rate</h6></GridItem>
+                                        </GridContainer>
+                                    </CardBody>
+                                </Card>
+                            </GridItem>
+                            <GridItem xs={12} sm={12} md={6}>
+                                <Card profile>
+                                    <CardAvatar profile style={{ height: "100px", width: "100px" }}>
+                                        <a href="#pablo" onClick={this.changeProfilePicture}>
+                                            <img className="profile-picture" src={metric2} alt="Edit profile" />
+                                        </a>
+                                    </CardAvatar>
+                                    <CardBody profile>
+                                        <GridContainer>
+                                            <GridItem xs={12} sm={12} md={6}><h4>{this.authUser.message.steps !== null && this.authUser.message.steps !== "" ? this.authUser.message.steps : 0}</h4></GridItem>
+                                            <GridItem xs={12} sm={12} md={6}><h4>{this.authUser.message.distance !== null && this.authUser.message.distance !== "" ? this.authUser.message.distance : 0} km</h4></GridItem>
+                                            <GridItem xs={12} sm={12} md={6} style={{ marginTop: "-40px", color: "#00acc1" }}><h6>Steps</h6></GridItem>
+                                            <GridItem xs={12} sm={12} md={6} style={{ marginTop: "-40px", color: "#00acc1" }}><h6>Distance</h6></GridItem>
+                                        </GridContainer>
+                                    </CardBody>
+                                </Card>
+                            </GridItem>
+                            <GridItem xs={12} sm={12} md={6}>
+                                <Card profile>
+                                    <CardAvatar profile style={{ height: "100px", width: "100px" }}>
+                                        <a href="#pablo" onClick={this.changeProfilePicture}>
+                                            <img className="profile-picture" src={metric4} alt="Edit profile" />
+                                        </a>
+                                    </CardAvatar>
+                                    <CardBody profile>
+                                        <GridContainer>
+                                            <GridItem xs={12} sm={12} md={6}><h4>{this.authUser.message.height !== null && this.authUser.message.height !== "" ? this.authUser.message.height + " m" : "Not found"}</h4></GridItem>
+                                            <GridItem xs={12} sm={12} md={6}><h4>{this.authUser.message.current_weight !== null && this.authUser.message.current_weight !== "" ? this.authUser.message.current_weight + " kg" : "Not found"}</h4></GridItem>
+                                            <GridItem xs={12} sm={12} md={6} style={{ marginTop: "-40px", color: "#00acc1" }}><h6>Height</h6></GridItem>
+                                            <GridItem xs={12} sm={12} md={6} style={{ marginTop: "-40px", color: "#00acc1" }}><h6>Weight</h6></GridItem>
+                                        </GridContainer>
+                                    </CardBody>
+                                </Card>
+                            </GridItem>
+                            <GridItem xs={12} sm={12} md={6}>
+                                <Card profile>
+                                    <CardAvatar profile style={{ height: "100px", width: "100px" }}>
+                                        <a href="#pablo" onClick={this.changeProfilePicture}>
+                                            <img className="profile-picture" src={metric3} alt="Edit profile" />
+                                        </a>
+                                    </CardAvatar>
+                                    <CardBody profile>
+                                        <GridContainer>
+                                            <GridItem xs={12} sm={12} md={12}><h4>{this.authUser.message.heart_rate !== null && this.authUser.message.weight_goal !== "" ? this.authUser.message.weight_goal + " kg" : "Not found"}</h4></GridItem>
+                                            <GridItem xs={12} sm={12} md={12} style={{ marginTop: "-40px", color: "#00acc1" }}><h6>Weight Goal</h6></GridItem>
+
+                                        </GridContainer>
+                                    </CardBody>
+                                </Card>
+                            </GridItem>
+                        </GridContainer>
                     </GridItem>
                     <GridItem xs={12} sm={12} md={6} style={{ marginTop: "25px" }}>
-                        <Chart options={this.state.pieChart.options} series={this.state.pieChart.series} type="pie" width={380} />
-                    </GridItem>
-                    <GridItem xs={12} sm={12} md={3} style={{ marginTop: "25px" }}>
-                        <Card profile>
-                            <CardAvatar profile style={{ height: "100px", width: "100px" }}>
-                                <a href="#pablo" onClick={this.changeProfilePicture}>
-                                    <img className="profile-picture" src={metric4} alt="Edit profile" />
-                                </a>
-                            </CardAvatar>
-                            <CardBody profile>
-                                <GridContainer>
-                                    <GridItem xs={12} sm={12} md={6}><h4>{this.authUser.message.height !== null && this.authUser.message.height !== "" ? this.authUser.message.height + " m" : "Not found"}</h4></GridItem>
-                                    <GridItem xs={12} sm={12} md={6}><h4>{this.authUser.message.current_weight !== null && this.authUser.message.current_weight !== "" ? this.authUser.message.current_weight + " kg" : "Not found"}</h4></GridItem>
-                                    <GridItem xs={12} sm={12} md={6} style={{ marginTop: "-40px", color: "#00acc1" }}><h6>Height</h6></GridItem>
-                                    <GridItem xs={12} sm={12} md={6} style={{ marginTop: "-40px", color: "#00acc1" }}><h6>Weight</h6></GridItem>
+                        <Card>
+                            <CardHeader style={this.classes.cardHeader}>
+                                <i className="fas fa-apple-alt"></i> Nutrients
+                            </CardHeader>
+                            <CardBody>
+                                <GridContainer >
+                                    <GridItem xs={12} sm={12} md={2}></GridItem>
+                                    <GridItem xs={12} sm={12} md={8}>
+                                        <Chart options={this.state.pieChart.options} series={this.state.pieChart.series} type="pie" width={300} />
+                                    </GridItem>
+                                    <GridItem xs={12} sm={12} md={2}></GridItem>
                                 </GridContainer>
                             </CardBody>
                         </Card>
                     </GridItem>
-                    <GridItem xs={12} sm={12} md={3} style={{ marginTop: "25px" }}>
-                        <Card profile>
-                            <CardAvatar profile style={{ height: "100px", width: "100px" }}>
-                                <a href="#pablo" onClick={this.changeProfilePicture}>
-                                    <img className="profile-picture" src={metric3} alt="Edit profile" />
-                                </a>
-                            </CardAvatar>
-                            <CardBody profile>
-                                <GridContainer>
-                                    <GridItem xs={12} sm={12} md={12}><h4>{this.authUser.message.heart_rate !== null && this.authUser.message.weight_goal !== "" ? this.authUser.message.weight_goal + " kg" : "Not found"}</h4></GridItem>
-                                    <GridItem xs={12} sm={12} md={12} style={{ marginTop: "-40px", color: "#00acc1" }}><h6>Weight Goal</h6></GridItem>
 
-                                </GridContainer>
-                            </CardBody>
-                        </Card>
-                    </GridItem>
                 </GridContainer>
             </div>
         )
