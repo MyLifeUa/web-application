@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 
 import Chart from 'react-apexcharts'
 
@@ -18,6 +19,8 @@ import metric3 from "assets/img/client-dashboard/metric-3.png"
 import metric4 from "assets/img/client-dashboard/metric-4.png"
 
 import baseUri from "variables/baseURI.js";
+
+import Profile from "views/Client/Profile/Profile.js"
 
 class Dashboard extends React.Component {
 
@@ -50,7 +53,8 @@ class Dashboard extends React.Component {
 
                 }
             },
-            nutrientsTotal: []
+            nutrientsTotal: [],
+            redirectProfile: false
         };
 
         this.fetchNutrients = this.fetchNutrients.bind(this);
@@ -93,7 +97,8 @@ class Dashboard extends React.Component {
 
                 this.setState({
                     pieChart: pieChart,
-                    nutrientsTotal: this.state.nutrientsTotal
+                    nutrientsTotal: this.state.nutrientsTotal,
+                    redirectProfile: this.state.redirectProfile
                 })
 
 
@@ -121,15 +126,16 @@ class Dashboard extends React.Component {
                     console.log(data);
 
                     let nutrients = [
-                        [<span><i className="fas fa-circle" style={{color: "#007280"}}></i> Carbs</span> ,data.message.carbs.total,data.message.carbs.goal,data.message.carbs.left],
-                        [<span><i className="fas fa-circle" style={{color: "#00acc1"}}></i> Fats</span> ,data.message.fat.total, data.message.fat.goal,data.message.fat.left],
-                        [<span><i className="fas fa-circle" style={{color: "#00cde6"}}></i> Proteins</span> ,data.message.proteins.total,data.message.proteins.goal,data.message.proteins.left],
-                        [<span><i className="fas fa-circle" style={{color: "#1ae6ff"}}></i> Calories</span> ,data.message.calories.total,data.message.calories.goal,data.message.calories.left]
+                        [<span><i className="fas fa-circle" style={{color: "#007280"}}></i> Carbs</span> ,data.message.carbs.total,data.message.carbs.goal, String(data.message.carbs.left).includes("-") === true ? <span style={{color: "red"}}>{String(data.message.carbs.left).substr(1)}</span> : <span style={{color: "green"}}>{data.message.carbs.left}</span>],
+                        [<span><i className="fas fa-circle" style={{color: "#00acc1"}}></i> Fats</span> ,data.message.fat.total, data.message.fat.goal,String(data.message.fat.left).includes("-") === true ? <span style={{color: "red"}}>{String(data.message.fat.left).substr(1)}</span> : <span style={{color: "green"}}>{data.message.fat.left}</span>],
+                        [<span><i className="fas fa-circle" style={{color: "#00cde6"}}></i> Proteins</span> ,data.message.proteins.total,data.message.proteins.goal,String(data.message.proteins.left).includes("-") === true ? <span style={{color: "red"}}>{String(data.message.proteins.left).substr(1)}</span> : <span style={{color: "green"}}>{data.message.proteins.left}</span>],
+                        [<span><i className="fas fa-circle" style={{color: "#1ae6ff"}}></i> Calories</span> ,data.message.calories.total,data.message.calories.goal,String(data.message.calories.left).includes("-") === true ? <span style={{color: "red"}}>{String(data.message.calories.left).substr(1)}</span> : <span style={{color: "green"}}>{data.message.calories.left}</span>]
                     ];
 
                     this.setState({
                         pieChart: this.state.pieChart,
-                        nutrientsTotal: nutrients
+                        nutrientsTotal: nutrients,
+                        redirectProfile: this.state.redirectProfile
                     })
 
     
@@ -145,6 +151,7 @@ class Dashboard extends React.Component {
     }
 
     render() {
+        if(this.state.redirectProfile) return <Redirect to="/client/profile" />
         return (
             <div id="client-dashboard">
                 <GridContainer>
@@ -152,7 +159,7 @@ class Dashboard extends React.Component {
                         <img style={{ height: "40px", borderRadius: "50%" }} src={"data:image;base64," + this.authUser.message.photo} alt={this.authUser.message.name} />
                     </GridItem>
                     <GridItem xs={12} sm={12} md={8} style={{ marginTop: "-20px", marginLeft: "-30px" }}>
-                        <h3> Welcome, <a href="/client/profile">{this.authUser.message.name}!</a></h3>
+                        <h3> Welcome, <a href="#" onClick={() => this.setState({redirectProfile: true})}>{this.authUser.message.name}!</a></h3>
                     </GridItem>
                     <GridItem xs={12} sm={12} md={3} style={{ marginTop: "-5px" }}>
                         <p><i className="fas fa-calendar-alt" style={{ color: "#00acc1" }}></i> {utils.weekday[this.today.getDay()]}, {this.today.getUTCDate()}th of {utils.monthNames[this.today.getMonth()] + " " + this.today.getFullYear()}</p>
@@ -171,7 +178,7 @@ class Dashboard extends React.Component {
                             <GridItem xs={12} sm={12} md={6}>
                                 <Card profile>
                                     <CardAvatar profile style={{ height: "100px", width: "100px" }}>
-                                        <a href="#pablo" onClick={this.changeProfilePicture}>
+                                        <a href="#" onClick={this.changeProfilePicture}>
                                             <img className="profile-picture" src={metric1} alt="Edit profile" />
                                         </a>
                                     </CardAvatar>
@@ -186,7 +193,7 @@ class Dashboard extends React.Component {
                             <GridItem xs={12} sm={12} md={6}>
                                 <Card profile>
                                     <CardAvatar profile style={{ height: "100px", width: "100px" }}>
-                                        <a href="#pablo" onClick={this.changeProfilePicture}>
+                                        <a href="#" onClick={this.changeProfilePicture}>
                                             <img className="profile-picture" src={metric2} alt="Edit profile" />
                                         </a>
                                     </CardAvatar>
@@ -203,7 +210,7 @@ class Dashboard extends React.Component {
                             <GridItem xs={12} sm={12} md={6}>
                                 <Card profile>
                                     <CardAvatar profile style={{ height: "100px", width: "100px" }}>
-                                        <a href="#pablo" onClick={this.changeProfilePicture}>
+                                        <a href="#" onClick={this.changeProfilePicture}>
                                             <img className="profile-picture" src={metric4} alt="Edit profile" />
                                         </a>
                                     </CardAvatar>
@@ -220,7 +227,7 @@ class Dashboard extends React.Component {
                             <GridItem xs={12} sm={12} md={6}>
                                 <Card profile>
                                     <CardAvatar profile style={{ height: "100px", width: "100px" }}>
-                                        <a href="#pablo" onClick={this.changeProfilePicture}>
+                                        <a href="#" onClick={this.changeProfilePicture}>
                                             <img className="profile-picture" src={metric3} alt="Edit profile" />
                                         </a>
                                     </CardAvatar>
@@ -250,7 +257,7 @@ class Dashboard extends React.Component {
                                     <GridItem xs={12} sm={12} md={12}>
                                         <Table
                                             tableHeaderColor="info"
-                                            tableHead={["Nutrient", "Total", "Goal", "Left"]}
+                                            tableHead={["Nutrient", "Total", "Goal", "Difference"]}
                                             tableData={this.state.nutrientsTotal}
                                         />
                                     </GridItem>
