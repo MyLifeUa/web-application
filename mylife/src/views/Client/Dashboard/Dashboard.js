@@ -62,7 +62,8 @@ class Dashboard extends React.Component {
                             </CardAvatar>
                             <CardBody profile>
                                 <GridContainer>
-                                    <GridItem xs={12} sm={12} md={12}><h4>Heart Rate</h4></GridItem>
+                                    <GridItem xs={12} sm={12} md={12}><h4>{this.authUser.message.heart_rate !== null ? this.authUser.message.heart_rate + " bpm" : "Not found"}</h4></GridItem>
+                                    <GridItem xs={12} sm={12} md={12} style={{marginTop: "-40px", color:"#00acc1"}}><h6>Heart Rate</h6></GridItem>
                                 </GridContainer>
                             </CardBody>
                         </Card>
@@ -76,7 +77,10 @@ class Dashboard extends React.Component {
                             </CardAvatar>
                             <CardBody profile>
                                 <GridContainer>
-                                    <GridItem xs={12} sm={12} md={12}><h4>Steps</h4></GridItem>
+                                    <GridItem xs={12} sm={12} md={6}><h4>{this.authUser.message.steps !== null ? this.authUser.message.steps : 0}</h4></GridItem>
+                                    <GridItem xs={12} sm={12} md={6}><h4>{this.authUser.message.distance !== null ? this.authUser.message.distance : 0} km</h4></GridItem>
+                                    <GridItem xs={12} sm={12} md={6} style={{marginTop: "-40px", color:"#00acc1"}}><h6>Steps</h6></GridItem>
+                                    <GridItem xs={12} sm={12} md={6} style={{marginTop: "-40px", color:"#00acc1"}}><h6>Distance</h6></GridItem>
                                 </GridContainer>
                             </CardBody>
                         </Card>
