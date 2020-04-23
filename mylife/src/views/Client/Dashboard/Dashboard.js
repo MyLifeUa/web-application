@@ -146,6 +146,19 @@ class Dashboard extends React.Component {
 
     }
 
+    dayLabel() {
+        switch(parseInt(String(this.today.getUTCDate()).charAt(String(this.today.getUTCDate()).length-1))) {
+            case 1:
+                return "st"
+            case 2:
+                return "nd"
+            case 3: 
+                return "rd"
+            default:
+                return "th"
+        }
+    }
+
     componentDidMount() {
         this.fetchNutrients();
     }
@@ -162,7 +175,7 @@ class Dashboard extends React.Component {
                         <h3> Welcome, <a href="#" onClick={() => this.setState({redirectProfile: true})}>{this.authUser.message.name}!</a></h3>
                     </GridItem>
                     <GridItem xs={12} sm={12} md={3} style={{ marginTop: "-5px" }}>
-                        <p><i className="fas fa-calendar-alt" style={{ color: "#00acc1" }}></i> {utils.weekday[this.today.getDay()]}, {this.today.getUTCDate()}th of {utils.monthNames[this.today.getMonth()] + " " + this.today.getFullYear()}</p>
+                        <p><i className="fas fa-calendar-alt" style={{ color: "#00acc1" }}></i> {utils.weekday[this.today.getDay()]}, {this.today.getUTCDate()}{this.dayLabel()} of {utils.monthNames[this.today.getMonth()] + " " + this.today.getFullYear()}</p>
                     </GridItem>
                     <GridItem xs={12} sm={12} md={12} style={{ marginTop: "-20px" }}>
                         <Card>
