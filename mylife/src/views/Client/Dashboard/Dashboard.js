@@ -20,8 +20,6 @@ import metric4 from "assets/img/client-dashboard/metric-4.png"
 
 import baseUri from "variables/baseURI.js";
 
-import Profile from "views/Client/Profile/Profile.js"
-
 class Dashboard extends React.Component {
 
     constructor() {
@@ -172,7 +170,7 @@ class Dashboard extends React.Component {
                         <img style={{ height: "40px", borderRadius: "50%" }} src={"data:image;base64," + this.authUser.message.photo} alt={this.authUser.message.name} />
                     </GridItem>
                     <GridItem xs={12} sm={12} md={8} style={{ marginTop: "-20px", marginLeft: "-30px" }}>
-                        <h3> Welcome, <a href="#" onClick={() => this.setState({redirectProfile: true})}>{this.authUser.message.name}!</a></h3>
+                        <h3> Welcome, <a href="#i" onClick={() => this.setState({redirectProfile: true})}>{this.authUser.message.name}!</a></h3>
                     </GridItem>
                     <GridItem xs={12} sm={12} md={3} style={{ marginTop: "-5px" }}>
                         <p><i className="fas fa-calendar-alt" style={{ color: "#00acc1" }}></i> {utils.weekday[this.today.getDay()]}, {this.today.getUTCDate()}{this.dayLabel()} of {utils.monthNames[this.today.getMonth()] + " " + this.today.getFullYear()}</p>
@@ -191,7 +189,7 @@ class Dashboard extends React.Component {
                             <GridItem xs={12} sm={12} md={6}>
                                 <Card profile>
                                     <CardAvatar profile style={{ height: "100px", width: "100px" }}>
-                                        <a href="#" onClick={this.changeProfilePicture}>
+                                        <a href="#i" onClick={this.changeProfilePicture}>
                                             <img className="profile-picture" src={metric1} alt="Edit profile" />
                                         </a>
                                     </CardAvatar>
@@ -206,7 +204,7 @@ class Dashboard extends React.Component {
                             <GridItem xs={12} sm={12} md={6}>
                                 <Card profile>
                                     <CardAvatar profile style={{ height: "100px", width: "100px" }}>
-                                        <a href="#" onClick={this.changeProfilePicture}>
+                                        <a href="#i" onClick={this.changeProfilePicture}>
                                             <img className="profile-picture" src={metric2} alt="Edit profile" />
                                         </a>
                                     </CardAvatar>
@@ -223,7 +221,7 @@ class Dashboard extends React.Component {
                             <GridItem xs={12} sm={12} md={6}>
                                 <Card profile>
                                     <CardAvatar profile style={{ height: "100px", width: "100px" }}>
-                                        <a href="#" onClick={this.changeProfilePicture}>
+                                        <a href="#i" onClick={this.changeProfilePicture}>
                                             <img className="profile-picture" src={metric4} alt="Edit profile" />
                                         </a>
                                     </CardAvatar>
@@ -240,7 +238,7 @@ class Dashboard extends React.Component {
                             <GridItem xs={12} sm={12} md={6}>
                                 <Card profile>
                                     <CardAvatar profile style={{ height: "100px", width: "100px" }}>
-                                        <a href="#" onClick={this.changeProfilePicture}>
+                                        <a href="#i" onClick={this.changeProfilePicture}>
                                             <img className="profile-picture" src={metric3} alt="Edit profile" />
                                         </a>
                                     </CardAvatar>
