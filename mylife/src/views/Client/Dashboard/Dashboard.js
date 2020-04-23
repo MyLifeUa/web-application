@@ -62,7 +62,7 @@ class Dashboard extends React.Component {
                             </CardAvatar>
                             <CardBody profile>
                                 <GridContainer>
-                                    <GridItem xs={12} sm={12} md={12}><h4>{this.authUser.message.heart_rate !== null ? this.authUser.message.heart_rate + " bpm" : "Not found"}</h4></GridItem>
+                                    <GridItem xs={12} sm={12} md={12}><h4>{this.authUser.message.heart_rate !== null && this.authUser.message.heart_rate !== "" ? this.authUser.message.heart_rate + " bpm" : "Not found"}</h4></GridItem>
                                     <GridItem xs={12} sm={12} md={12} style={{marginTop: "-40px", color:"#00acc1"}}><h6>Heart Rate</h6></GridItem>
                                 </GridContainer>
                             </CardBody>
@@ -77,8 +77,8 @@ class Dashboard extends React.Component {
                             </CardAvatar>
                             <CardBody profile>
                                 <GridContainer>
-                                    <GridItem xs={12} sm={12} md={6}><h4>{this.authUser.message.steps !== null ? this.authUser.message.steps : 0}</h4></GridItem>
-                                    <GridItem xs={12} sm={12} md={6}><h4>{this.authUser.message.distance !== null ? this.authUser.message.distance : 0} km</h4></GridItem>
+                                    <GridItem xs={12} sm={12} md={6}><h4>{this.authUser.message.steps !== null && this.authUser.message.steps !== "" ? this.authUser.message.steps : 0}</h4></GridItem>
+                                    <GridItem xs={12} sm={12} md={6}><h4>{this.authUser.message.distance !== null && this.authUser.message.distance !== "" ? this.authUser.message.distance : 0} km</h4></GridItem>
                                     <GridItem xs={12} sm={12} md={6} style={{marginTop: "-40px", color:"#00acc1"}}><h6>Steps</h6></GridItem>
                                     <GridItem xs={12} sm={12} md={6} style={{marginTop: "-40px", color:"#00acc1"}}><h6>Distance</h6></GridItem>
                                 </GridContainer>
@@ -96,7 +96,10 @@ class Dashboard extends React.Component {
                             </CardAvatar>
                             <CardBody profile>
                                 <GridContainer>
-                                    <GridItem xs={12} sm={12} md={12}><h4>Body</h4></GridItem>
+                                <GridItem xs={12} sm={12} md={6}><h4>{this.authUser.message.height !== null && this.authUser.message.height !== "" ? this.authUser.message.height + " m" : "Not found"}</h4></GridItem>
+                                    <GridItem xs={12} sm={12} md={6}><h4>{this.authUser.message.current_weight !== null && this.authUser.message.current_weight !== "" ? this.authUser.message.current_weight + " kg" : "Not found"}</h4></GridItem>
+                                    <GridItem xs={12} sm={12} md={6} style={{marginTop: "-40px", color:"#00acc1"}}><h6>Height</h6></GridItem>
+                                    <GridItem xs={12} sm={12} md={6} style={{marginTop: "-40px", color:"#00acc1"}}><h6>Weight</h6></GridItem>
                                 </GridContainer>
                             </CardBody>
                         </Card>
@@ -110,7 +113,9 @@ class Dashboard extends React.Component {
                             </CardAvatar>
                             <CardBody profile>
                                 <GridContainer>
-                                    <GridItem xs={12} sm={12} md={12}><h4>Weight goal</h4></GridItem>
+                                <GridItem xs={12} sm={12} md={12}><h4>{this.authUser.message.heart_rate !== null && this.authUser.message.weight_goal !== "" ? this.authUser.message.weight_goal + " kg" : "Not found"}</h4></GridItem>
+                                    <GridItem xs={12} sm={12} md={12} style={{marginTop: "-40px", color:"#00acc1"}}><h6>Weight Goal</h6></GridItem>
+                                
                                 </GridContainer>
                             </CardBody>
                         </Card>
