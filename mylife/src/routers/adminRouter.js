@@ -23,7 +23,7 @@ import LocalHospitalIcon from '@material-ui/icons/LocalHospital';
 
 
 // core components/views for Admin layout
-import DashboardPage from "views/Dashboard/Dashboard.js";
+import DashboardPage from "views/Admin/Dashboard/Dashboard.js";
 // core components/views for RTL layout
 
 import Profile from "views/Admin/Profile/Profile.js"

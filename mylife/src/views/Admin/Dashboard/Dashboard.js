@@ -14,7 +14,7 @@ import config from "variables/config.js"
 import utils from "variables/utils.js";
 
 import menu1 from "assets/img/doctor-dashboard/menu1.png";
-import menu2 from "assets/img/doctor-dashboard/menu2.png";
+import menu3 from "assets/img/doctor-dashboard/menu3.png";
 import menu4 from "assets/img/doctor-dashboard/menu4.png";
 
 class Dashboard extends React.Component {
@@ -58,10 +58,10 @@ class Dashboard extends React.Component {
         if(this.state.redirect) {
             switch(this.state.page) {
                 case 1:
-                    return <Redirect to="/doctor/profile" />
+                    return <Redirect to="/admin/profile" />
                 
                 case 2:
-                    return <Redirect to="/doctor/patients" />
+                    return <Redirect to="/admin/doctors" />
                 
                 case 3:
                     localStorage.clear();
@@ -82,7 +82,7 @@ class Dashboard extends React.Component {
                         <img style={{ height: "40px", borderRadius: "50%" }} src={"data:image;base64," + config.defaultUser} alt={this.authUser.userInfo.name} />
                     </GridItem>
                     <GridItem xs={12} sm={12} md={8} style={{ marginTop: "-20px", marginLeft: "-30px" }}>
-                        <h3> Welcome, <a href="#i" onClick={() => this.setState({ redirect: true, page: 1 })}>Dr. {this.authUser.userInfo.first_name + " " + this.authUser.userInfo.last_name}!</a></h3>
+                        <h3> Welcome, <a href="#i" onClick={() => this.setState({ redirect: true, page: 1 })}>{this.authUser.userInfo.first_name + " " + this.authUser.userInfo.last_name}!</a></h3>
                     </GridItem>
                     <GridItem xs={12} sm={12} md={3} style={{ marginTop: "-5px" }}>
                         <p><i className="fas fa-calendar-alt" style={{ color: "#00acc1" }}></i> {utils.weekday[this.today.getDay()]}, {this.today.getUTCDate()}{this.dayLabel()} of {utils.monthNames[this.today.getMonth()] + " " + this.today.getFullYear()}</p>
@@ -90,7 +90,7 @@ class Dashboard extends React.Component {
                     <GridItem xs={12} sm={12} md={12} style={{ marginTop: "-20px" }}>
                         <Card>
                             <CardHeader style={this.classes.cardHeader}>
-                                <i className="fas fa-heartbeat"></i> <strong>Doctor Dashboard</strong>
+                                <i className="fas fa-heartbeat"></i> <strong>Admin Dashboard</strong>
                             </CardHeader>
                         </Card>
 
@@ -99,7 +99,7 @@ class Dashboard extends React.Component {
                         <Card profile>
                             <CardAvatar profile>
                                 <a href="#m">
-                                    <img src={menu1} alt="My profile" />
+                                    <img src={menu3} alt="My profile" />
                                 </a>
                             </CardAvatar>
                             <CardBody profile>
@@ -113,12 +113,12 @@ class Dashboard extends React.Component {
                         <Card profile>
                             <CardAvatar profile>
                                 <a href="#m">
-                                    <img src={menu2} alt="Manage patients" />
+                                    <img src={menu1} alt="Manage patients" />
                                 </a>
                             </CardAvatar>
                             <CardBody profile>
                                 <Button color="info" round onClick={() => this.setState({ redirect: true, page: 2 })}>
-                                    Manage patients
+                                    Manage Doctors
                                 </Button>
                             </CardBody>
                         </Card>
