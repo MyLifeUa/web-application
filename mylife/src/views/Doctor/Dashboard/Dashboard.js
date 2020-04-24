@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Redirect } from 'react-router-dom';
+
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import Button from "components/CustomButtons/Button.js";
@@ -20,9 +22,13 @@ class Dashboard extends React.Component {
     constructor() {
         super();
         this.authUser = JSON.parse(localStorage.getItem('authUser'));
-        console.log(this.authUser);
-        this.today = new Date();
 
+        this.state = {
+            redirect: false,
+            page: 0
+        }
+
+        this.today = new Date();
         this.dayLabel = this.dayLabel.bind(this);
     }
 
@@ -49,6 +55,26 @@ class Dashboard extends React.Component {
 
 
     render() {
+        if(this.state.redirect) {
+            switch(this.state.page) {
+                case 1:
+                    return <Redirect to="/doctor/profile" />
+                
+                case 2:
+                    return <Redirect to="/doctor/patients" />
+                
+                case 3:
+                    localStorage.clear();
+                    return <Redirect to="/signin" />
+                
+                default:
+                    this.setState({
+                        redirect: false,
+                        page: 0
+                    })
+                    break;
+            }
+        }
         return (
             <div id="doctor-dashboard">
                 <GridContainer>
@@ -56,7 +82,7 @@ class Dashboard extends React.Component {
                         <img style={{ height: "40px", borderRadius: "50%" }} src={"data:image;base64," + config.defaultUser} alt={this.authUser.userInfo.name} />
                     </GridItem>
                     <GridItem xs={12} sm={12} md={8} style={{ marginTop: "-20px", marginLeft: "-30px" }}>
-                        <h3> Welcome, <a href="#i" onClick={() => this.setState({ redirectProfile: true })}>{this.authUser.userInfo.first_name + " " + this.authUser.userInfo.last_name}!</a></h3>
+                        <h3> Welcome, <a href="#i" onClick={() => this.setState({ redirect: true, page: 1 })}>{this.authUser.userInfo.first_name + " " + this.authUser.userInfo.last_name}!</a></h3>
                     </GridItem>
                     <GridItem xs={12} sm={12} md={3} style={{ marginTop: "-5px" }}>
                         <p><i className="fas fa-calendar-alt" style={{ color: "#00acc1" }}></i> {utils.weekday[this.today.getDay()]}, {this.today.getUTCDate()}{this.dayLabel()} of {utils.monthNames[this.today.getMonth()] + " " + this.today.getFullYear()}</p>
@@ -73,11 +99,11 @@ class Dashboard extends React.Component {
                         <Card profile>
                             <CardAvatar profile>
                                 <a href="#m">
-                                    <img src={menu1} alt="..." />
+                                    <img src={menu1} alt="My profile" />
                                 </a>
                             </CardAvatar>
                             <CardBody profile>
-                                <Button color="info" round>
+                                <Button color="info" round onClick={() => this.setState({ redirect: true, page: 1 })}>
                                     My profile
                                 </Button>
                             </CardBody>
@@ -87,11 +113,11 @@ class Dashboard extends React.Component {
                         <Card profile>
                             <CardAvatar profile>
                                 <a href="#m">
-                                    <img src={menu2} alt="..." />
+                                    <img src={menu2} alt="Manage patients" />
                                 </a>
                             </CardAvatar>
                             <CardBody profile>
-                                <Button color="info" round>
+                                <Button color="info" round onClick={() => this.setState({ redirect: true, page: 2 })}>
                                     Manage patients
                                 </Button>
                             </CardBody>
@@ -101,11 +127,11 @@ class Dashboard extends React.Component {
                         <Card profile>
                             <CardAvatar profile>
                                 <a href="#m">
-                                    <img src={menu4} alt="..." />
+                                    <img src={menu4} alt="Sign Out" />
                                 </a>
                             </CardAvatar>
                             <CardBody profile>
-                                <Button color="info" round>
+                                <Button color="info" round onClick={() => this.setState({ redirect: true, page: 3 })}>
                                     Sign Out
                                 </Button>
                             </CardBody>
