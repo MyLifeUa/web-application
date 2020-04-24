@@ -91,6 +91,13 @@ class PatientsInfo extends React.Component {
 
         this.toggleReturn = this.toggleReturn.bind(this);
         this.fetchNutrients = this.fetchNutrients.bind(this);
+
+        this.toggleNutrient = this.toggleNutrient.bind(this);
+        this.toggleNutrientPeriod = this.toggleNutrientPeriod.bind(this);
+        this.fetchNutrientsHistory = this.fetchNutrientsHistory.bind(this);
+        this.toggleBody = this.toggleBody.bind(this);
+        this.toggleBodyPeriod = this.toggleBodyPeriod.bind(this);
+        this.fetchBodyHistory = this.fetchBodyHistory.bind(this);
     }
 
     toggleReturn() {
@@ -231,8 +238,150 @@ class PatientsInfo extends React.Component {
             })
     }
 
+    fetchNutrientsHistory(nutrient, period) {
+
+        if (this.nutrientsCache[nutrient + "" + period].length !== 0) {
+            this.setState({
+                nutrient: { name: nutrient, period: period },
+                nutrientsHistory: this.nutrientsCache[nutrient + "" + period],
+                body: this.state.body,
+                bodyHistory: this.state.bodyHistory,
+                pieChart: this.state.pieChart,
+                nutrientsTotal: this.state.nutrientsTotal,
+                currentPatient: this.state.currentPatient,
+                return: this.state.return,
+            })
+            return;
+        }
+
+
+        fetch(baseUri.restApi.nutrientsHistory + this.state.currentPatient.email + "?metric=" + nutrient.toLowerCase() + "&period=" + period, {
+            method: "GET",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": "Token " + this.authUser.token
+            }
+        })
+            .then(response => {
+                if (!response.ok) throw new Error(response.status);
+                else return response.json();
+            })
+            .then(data => {
+                this.authUser.token = data.token;
+                localStorage.setItem('authUser', JSON.stringify(this.authUser));
+
+                let nutrientsHistory = [];
+                data.message.history.forEach(elem => {
+                    nutrientsHistory.push({
+                        day: elem.day,
+                        value: elem.value,
+                        goal: data.message.goal !== undefined ? data.message.goal : 0
+                    })
+                })
+
+                this.setState({
+                    nutrient: { name: nutrient, period: period },
+                    nutrientsHistory: nutrientsHistory,
+                    body: this.state.body,
+                    bodyHistory: this.state.bodyHistory,
+                    pieChart: this.state.pieChart,
+                    nutrientsTotal: this.state.nutrientsTotal,
+                    currentPatient: this.state.currentPatient,
+                    return: this.state.return,
+                })
+                this.nutrientsCache[nutrient + "" + period] = data.message.history;
+
+            })
+            .catch(error => {
+                console.log("Fetch error: " + error);
+            })
+
+    }
+
+
+    toggleNutrient = (event) => {
+        this.fetchNutrientsHistory(event.target.value, this.state.nutrient.period);
+    }
+
+    toggleNutrientPeriod = (event) => {
+        this.fetchNutrientsHistory(this.state.nutrient.name, event.target.value);
+    }
+
+
+    fetchBodyHistory(body, period) {
+
+        if (this.bodyCache[body + "" + period].length !== 0) {
+            this.setState({
+                nutrient: this.state.nutrient,
+                nutrientsHistory: this.state.nutrientsHistory,
+                body: { name: body, period: period },
+                bodyHistory: this.bodyCache[body + "" + period],
+                pieChart: this.state.pieChart,
+                nutrientsTotal: this.state.nutrientsTotal,
+                currentPatient: this.state.currentPatient,
+                return: this.state.return,
+            })
+            return;
+        }
+
+
+        fetch(baseUri.restApi.bodyHistory + this.state.currentPatient.email + "?metric=" + body.toLowerCase() + "&period=" + period, {
+            method: "GET",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": "Token " + this.authUser.token
+            }
+        })
+            .then(response => {
+                if (!response.ok) throw new Error(response.status);
+                else return response.json();
+            })
+            .then(data => {
+                this.authUser.token = data.token;
+                localStorage.setItem('authUser', JSON.stringify(this.authUser));
+
+                let bodyHistory = [];
+                data.message.history.forEach(elem => {
+                    bodyHistory.push({
+                        day: elem.day,
+                        value: elem.value,
+                        goal: data.message.goal !== undefined ? data.message.goal : 0
+                    })
+                })
+
+                this.setState({
+                    nutrient: this.state.nutrient,
+                    nutrientsHistory: this.state.nutrientsHistory,
+                    body: { name: body, period: period },
+                    bodyHistory: bodyHistory,
+                    pieChart: this.state.pieChart,
+                    nutrientsTotal: this.state.nutrientsTotal,
+                    currentPatient: this.state.currentPatient,
+                    return: this.state.return,
+                })
+                this.bodyCache[body + "" + period] = data.message.history;
+
+            })
+            .catch(error => {
+                console.log("Fetch error: " + error);
+            })
+
+    }
+
+    toggleBody = (event) => {
+        this.fetchBodyHistory(event.target.value, this.state.body.period);
+    }
+
+    toggleBodyPeriod = (event) => {
+        this.fetchBodyHistory(this.state.body.name, event.target.value);
+    }
+
     componentDidMount() {
         this.fetchNutrients();
+        this.fetchNutrientsHistory(this.state.nutrient.name, this.state.nutrient.period);
+        this.fetchBodyHistory(this.state.body.name, this.state.body.period);
     }
 
     render() {
