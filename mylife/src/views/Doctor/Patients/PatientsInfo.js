@@ -26,6 +26,8 @@ class PatientsInfo extends React.Component {
 
     constructor(props) {
         super(props);
+        this.today = new Date();
+        this.authUser = JSON.parse(localStorage.getItem('authUser'));
         this.state = {
             currentPatient: props.currentPatient,
             return: false,
@@ -60,8 +62,8 @@ class PatientsInfo extends React.Component {
             },
         }
 
-        console.log(this.state.currentPatient)
         this.toggleReturn = this.toggleReturn.bind(this);
+        this.fetchNutrients = this.fetchNutrients.bind(this);
     }
 
     toggleReturn() {
@@ -94,6 +96,105 @@ class PatientsInfo extends React.Component {
             fontSize: "18px",
         }
     };
+
+
+    fetchNutrients() {
+        fetch(baseUri.restApi.nutrientsRatio + this.state.currentPatient.email + "/" + this.today.toISOString().slice(0, 10), {
+            method: "GET",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": "Token " + this.authUser.token
+            }
+        })
+            .then(response => {
+                if (!response.ok) throw new Error(response.status);
+                else return response.json();
+
+            })
+            .then(data => {
+
+                let series = [
+                    data.message.carbs.ratio,
+                    data.message.fat.ratio,
+                    data.message.proteins.ratio,
+                    data.message.others.ratio,
+                ];
+
+                let pieChart = this.state.pieChart;
+                pieChart.series = series;
+
+                this.setState({
+                    pieChart: pieChart,
+                    nutrientsTotal: this.state.nutrientsTotal,
+                    currentPatient: this.state.currentPatient,
+                    return: this.state.return,
+                })
+
+
+
+            })
+            .catch(error => {
+                console.log("Fetch error: " + error);
+            })
+
+        fetch(baseUri.restApi.nutrientsTotal + this.state.currentPatient.email + "/" + this.today.toISOString().slice(0, 10), {
+            method: "GET",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": "Token " + this.authUser.token
+            }
+        })
+            .then(response => {
+                if (!response.ok) throw new Error(response.status);
+                else return response.json();
+
+            })
+            .then(data => {
+
+                console.log(data);
+
+                let nutrients = [
+                    [<span><i className="fas fa-circle" style={{ color: "#007280" }}></i> Carbs</span>, data.message.carbs.total, data.message.carbs.goal, String(data.message.carbs.left).includes("-") === true ? <span style={{ color: "red" }}>{String(data.message.carbs.left).substr(1)}</span> : <span style={{ color: "green" }}>{data.message.carbs.left}</span>],
+                    [<span><i className="fas fa-circle" style={{ color: "#00acc1" }}></i> Fats</span>, data.message.fat.total, data.message.fat.goal, String(data.message.fat.left).includes("-") === true ? <span style={{ color: "red" }}>{String(data.message.fat.left).substr(1)}</span> : <span style={{ color: "green" }}>{data.message.fat.left}</span>],
+                    [<span><i className="fas fa-circle" style={{ color: "#00cde6" }}></i> Proteins</span>, data.message.proteins.total, data.message.proteins.goal, String(data.message.proteins.left).includes("-") === true ? <span style={{ color: "red" }}>{String(data.message.proteins.left).substr(1)}</span> : <span style={{ color: "green" }}>{data.message.proteins.left}</span>],
+                    [<span><i className="fas fa-circle" style={{ color: "#1ae6ff" }}></i> Calories</span>, data.message.calories.total, data.message.calories.goal, String(data.message.calories.left).includes("-") === true ? <span style={{ color: "red" }}>{String(data.message.calories.left).substr(1)}</span> : <span style={{ color: "green" }}>{data.message.calories.left}</span>]
+                ];
+
+                this.setState({
+                    pieChart: this.state.pieChart,
+                    nutrientsTotal: nutrients,
+                    currentPatient: this.state.currentPatient,
+                    return: this.state.return,
+                })
+
+
+            })
+            .catch(error => {
+                console.log("Fetch error: " + error);
+
+                if (String(error).includes("SyntaxError: JSON.parse")) {
+                    let nutrients = [
+                        [<span><i className="fas fa-circle" style={{ color: "#007280" }}></i> Carbs</span>, 0, 0, 0],
+                        [<span><i className="fas fa-circle" style={{ color: "#00acc1" }}></i> Fats</span>, 0, 0, 0],
+                        [<span><i className="fas fa-circle" style={{ color: "#00cde6" }}></i> Proteins</span>, 0,0,0],
+                        [<span><i className="fas fa-circle" style={{ color: "#1ae6ff" }}></i> Calories</span>, 0,0,0]
+                    ];
+    
+                    this.setState({
+                        pieChart: this.state.pieChart,
+                        nutrientsTotal: nutrients,
+                        currentPatient: this.state.currentPatient,
+                        return: this.state.return,
+                    })
+                }
+            })
+    }
+
+    componentDidMount() {
+        this.fetchNutrients();
+    }
 
     render() {
         if (this.state.return) return <Patients />
