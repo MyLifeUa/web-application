@@ -19,7 +19,7 @@
 import Dashboard from "@material-ui/icons/Dashboard";
 import Person from "@material-ui/icons/Person";
 // core components/views for Admin layout
-import DashboardPage from "views/Dashboard/Dashboard.js";
+import DashboardPage from "views/Doctor/Dashboard/Dashboard.js";
 
 import AccessibleIcon from '@material-ui/icons/Accessible';
 
