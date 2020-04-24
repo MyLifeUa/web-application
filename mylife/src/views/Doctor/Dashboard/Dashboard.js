@@ -2,6 +2,7 @@ import React from 'react';
 
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
+import Button from "components/CustomButtons/Button.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardAvatar from "components/Card/CardAvatar.js";
@@ -9,7 +10,10 @@ import CardBody from "components/Card/CardBody.js";
 
 import config from "variables/config.js"
 import utils from "variables/utils.js";
-import doctorRouter from "routers/doctorRouter.js";
+
+import menu1 from "assets/img/doctor-dashboard/menu1.png";
+import menu2 from "assets/img/doctor-dashboard/menu2.png";
+import menu4 from "assets/img/doctor-dashboard/menu4.png";
 
 class Dashboard extends React.Component {
 
@@ -64,6 +68,48 @@ class Dashboard extends React.Component {
                             </CardHeader>
                         </Card>
 
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={4} style={{marginTop: "20px"}}>
+                        <Card profile>
+                            <CardAvatar profile>
+                                <a href="#m">
+                                    <img src={menu1} alt="..." />
+                                </a>
+                            </CardAvatar>
+                            <CardBody profile>
+                                <Button color="info" round>
+                                    My profile
+                                </Button>
+                            </CardBody>
+                        </Card>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={4} style={{marginTop: "20px"}}>
+                        <Card profile>
+                            <CardAvatar profile>
+                                <a href="#m">
+                                    <img src={menu2} alt="..." />
+                                </a>
+                            </CardAvatar>
+                            <CardBody profile>
+                                <Button color="info" round>
+                                    Manage patients
+                                </Button>
+                            </CardBody>
+                        </Card>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={4} style={{marginTop: "20px"}}>
+                        <Card profile>
+                            <CardAvatar profile>
+                                <a href="#m">
+                                    <img src={menu4} alt="..." />
+                                </a>
+                            </CardAvatar>
+                            <CardBody profile>
+                                <Button color="info" round>
+                                    Sign Out
+                                </Button>
+                            </CardBody>
+                        </Card>
                     </GridItem>
                 </GridContainer>
             </div>
