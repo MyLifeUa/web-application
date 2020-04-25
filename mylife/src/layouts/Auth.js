@@ -17,10 +17,12 @@ class Auth extends React.Component {
     componentDidMount() {
         var currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-        if (currentUser.role === "admin" || currentUser.role === "doctor")
+        if (currentUser.role === "admin" || currentUser.role === "doctor") {
             localStorage.setItem('authUser', JSON.stringify(currentUser));
-        else
-
+            setInterval(() => {
+                this.setState({ loaded: true, currentUser: currentUser })
+            }, 2000);
+        } else {
             fetch(baseURI.restApi.signup + "/" + currentUser.userInfo.email, {
                 method: "GET",
                 headers: {
@@ -43,9 +45,8 @@ class Auth extends React.Component {
                 .catch(error => {
                     console.log("Fetch error: " + error);
                 })
+        }
 
-        //this.setState({ loaded: false, currentUser: currentUser })
-         // possible bug
     }
 
     render() {
