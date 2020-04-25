@@ -226,7 +226,7 @@ class Dashboard extends React.Component {
                                     <CardBody profile>
                                         <GridContainer>
                                             <GridItem xs={12} sm={12} md={6}><h4>{this.authUser.message.steps !== null && this.authUser.message.steps !== "" ? this.authUser.message.steps : 0}</h4></GridItem>
-                                            <GridItem xs={12} sm={12} md={6}><h4>{this.authUser.message.distance !== null && this.authUser.message.distance !== "" ? this.authUser.message.distance : 0} km</h4></GridItem>
+                                            <GridItem xs={12} sm={12} md={6}><h4>{this.authUser.message.distance !== null && this.authUser.message.distance !== "" ? String(this.authUser.message.distance).substring(0,4) : 0} km</h4></GridItem>
                                             <GridItem xs={12} sm={12} md={6} style={{ marginTop: "-40px", color: "#00acc1" }}><h6>Steps</h6></GridItem>
                                             <GridItem xs={12} sm={12} md={6} style={{ marginTop: "-40px", color: "#00acc1" }}><h6>Distance</h6></GridItem>
                                         </GridContainer>
