@@ -36,16 +36,16 @@ class Auth extends React.Component {
                 })
                 .then(data => {
                     localStorage.setItem('authUser', JSON.stringify(data));
-                    console.log(data);
+                    setInterval(() => {
+                        this.setState({ loaded: true, currentUser: currentUser })
+                    }, 2000);
                 })
                 .catch(error => {
                     console.log("Fetch error: " + error);
                 })
 
-        this.setState({ loaded: false, currentUser: currentUser })
-        setInterval(() => {
-            this.setState({ loaded: true, currentUser: this.state.currentUser })
-        }, 2000); // possible bug
+        //this.setState({ loaded: false, currentUser: currentUser })
+         // possible bug
     }
 
     render() {
