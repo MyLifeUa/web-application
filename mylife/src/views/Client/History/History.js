@@ -241,7 +241,7 @@ class History extends React.Component {
                         </LineChart>
                     </GridItem>
                     <GridItem xs={12} sm={12} md={6}>
-                        <h4><i className="fas fa-dumbbell" style={{ color: "#00acc1", marginRight: "5px" }}></i> Body history - <strong>{this.state.nutrient.name}</strong></h4>
+                        <h4><i className="fas fa-dumbbell" style={{ color: "#00acc1", marginRight: "5px" }}></i> Body history - <strong>{this.state.body.name}</strong></h4>
                     </GridItem>
                     <GridItem xs={12} sm={12} md={3} style={{ marginTop: "15px" }}>
                         <FormControl variant="outlined" style={{ width: "180px" }}>
