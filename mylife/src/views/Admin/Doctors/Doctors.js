@@ -195,7 +195,7 @@ class Doctors extends React.Component {
                             <CardBody>
                                 <Table
                                     tableHeaderColor="info"
-                                    tableHead={["", "Name", "Email", "Hospital", "Delete"]}
+                                    tableHead={["", "Name", "Email", "Hospital", "Remove"]}
                                     tableData={this.state.doctors}
                                 />
                             </CardBody>
@@ -218,7 +218,7 @@ class Doctors extends React.Component {
                     </DialogContent>
                     <DialogActions>
                         <Button block onClick={() => this.deleteDialog()} color="info">Cancel</Button>
-                        <Button block onClick={() => this.deleteDoctor()} color="danger">Delete</Button>
+                        <Button block onClick={() => this.deleteDoctor()} color="danger">Remove</Button>
                     </DialogActions>
                 </Dialog>
                 <Dialog
@@ -228,7 +228,7 @@ class Doctors extends React.Component {
                     aria-describedby="alert-dialog-description"
                 >
                     <DialogTitle id="alert-dialog-title" style={{ color: "#4caf50" }}>
-                        <i class="fas fa-check-circle"></i> User deleted with success!
+                        <i class="fas fa-check-circle"></i>Doctor removed with success!
 					</DialogTitle>
                     <DialogActions>
                         <Button block onClick={() => this.toggleSuccessDialog()} color="success">Close</Button>
