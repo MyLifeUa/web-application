@@ -1,6 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 
+import ReactSpeedometer from "react-d3-speedometer"
 import Chart from 'react-apexcharts'
 
 import GridItem from "components/Grid/GridItem.js";
@@ -56,7 +57,7 @@ class Dashboard extends React.Component {
         };
 
         this.fetchNutrients = this.fetchNutrients.bind(this);
-
+        this.fetchHeart = this.fetchHeart.bind(this);
     }
 
     classes = {
@@ -65,6 +66,29 @@ class Dashboard extends React.Component {
             color: "white",
             fontSize: "18px",
         }
+    }
+
+    fetchHeart() {
+        fetch(baseUri.restApi.heartLabel + this.authUser.message.email, {
+            method: "GET",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": "Token " + this.authUser.token
+            }
+        })
+            .then(response => {
+                if (!response.ok) throw new Error(response.status);
+                else return response.json();
+
+            })
+            .then(data => {
+                console.log(data);
+
+            })
+            .catch(error => {
+                console.log("Fetch error: " + error);
+            })
     }
 
     fetchNutrients() {
@@ -145,10 +169,10 @@ class Dashboard extends React.Component {
                     let nutrients = [
                         [<span><i className="fas fa-circle" style={{ color: "#007280" }}></i> Carbs</span>, 0, 0, 0],
                         [<span><i className="fas fa-circle" style={{ color: "#00acc1" }}></i> Fats</span>, 0, 0, 0],
-                        [<span><i className="fas fa-circle" style={{ color: "#00cde6" }}></i> Proteins</span>, 0,0,0],
-                        [<span><i className="fas fa-circle" style={{ color: "#1ae6ff" }}></i> Calories</span>, 0,0,0]
+                        [<span><i className="fas fa-circle" style={{ color: "#00cde6" }}></i> Proteins</span>, 0, 0, 0],
+                        [<span><i className="fas fa-circle" style={{ color: "#1ae6ff" }}></i> Calories</span>, 0, 0, 0]
                     ];
-    
+
                     this.setState({
                         pieChart: this.state.pieChart,
                         nutrientsTotal: nutrients,
@@ -174,6 +198,7 @@ class Dashboard extends React.Component {
 
     componentDidMount() {
         this.fetchNutrients();
+        this.fetchHeart();
     }
 
     render() {
@@ -201,7 +226,7 @@ class Dashboard extends React.Component {
 
                     <GridItem xs={12} sm={12} md={6} style={{ marginTop: "25px" }}>
                         <GridContainer>
-                            <GridItem xs={12} sm={12} md={6}>
+                            <GridItem xs={12} sm={12} md={12}>
                                 <Card profile>
                                     <CardAvatar profile style={{ height: "100px", width: "100px" }}>
                                         <a href="#i" onClick={this.changeProfilePicture}>
@@ -210,8 +235,49 @@ class Dashboard extends React.Component {
                                     </CardAvatar>
                                     <CardBody profile>
                                         <GridContainer>
-                                            <GridItem xs={12} sm={12} md={12}><h4>{this.authUser.message.heart_rate !== null && this.authUser.message.heart_rate !== "" ? this.authUser.message.heart_rate + " bpm" : "Not found"}</h4></GridItem>
-                                            <GridItem xs={12} sm={12} md={12} style={{ marginTop: "-40px", color: "#00acc1" }}><h6>Heart Rate</h6></GridItem>
+                                            <GridItem xs={12} sm={12} md={12}>
+                                                <ReactSpeedometer
+                                                    minValue={49}
+                                                    value={49}
+                                                    maxValue={95}
+                                                    currentValueText="Excellent"
+                                                    customSegmentStops={[49, 62, 66, 75, 82, 95]}
+                                                    segmentColors={[
+                                                        "#00FF65",
+                                                        "#60E065",
+                                                        "#FFE71A",
+                                                        "#ffa21a",
+                                                        "#f44336",
+                                                      ]}
+                                                    customSegmentLabels={[
+                                                        {
+                                                            text: "Excellent",
+                                                            position: "INSIDE",
+                                                            color: "white",
+                                                        },
+                                                        {
+                                                            text: "Good",
+                                                            position: "INSIDE",
+                                                            color: "white",
+                                                        },
+                                                        {
+                                                            text: "Average",
+                                                            position: "INSIDE",
+                                                            color: "white",
+                                                        },
+                                                        {
+                                                            text: "Fair",
+                                                            position: "INSIDE",
+                                                            color: "white",
+                                                        },
+                                                        {
+                                                            text: "Poor",
+                                                            position: "INSIDE",
+                                                            color: "white",
+                                                        },
+                                                    ]}
+                                                />
+                                            </GridItem>
                                         </GridContainer>
                                     </CardBody>
                                 </Card>
@@ -226,26 +292,9 @@ class Dashboard extends React.Component {
                                     <CardBody profile>
                                         <GridContainer>
                                             <GridItem xs={12} sm={12} md={6}><h4>{this.authUser.message.steps !== null && this.authUser.message.steps !== "" ? this.authUser.message.steps : 0}</h4></GridItem>
-                                            <GridItem xs={12} sm={12} md={6}><h4>{this.authUser.message.distance !== null && this.authUser.message.distance !== "" ? String(this.authUser.message.distance).substring(0,4) : 0} km</h4></GridItem>
+                                            <GridItem xs={12} sm={12} md={6}><h4>{this.authUser.message.distance !== null && this.authUser.message.distance !== "" ? String(this.authUser.message.distance).substring(0, 4) : 0} km</h4></GridItem>
                                             <GridItem xs={12} sm={12} md={6} style={{ marginTop: "-40px", color: "#00acc1" }}><h6>Steps</h6></GridItem>
                                             <GridItem xs={12} sm={12} md={6} style={{ marginTop: "-40px", color: "#00acc1" }}><h6>Distance</h6></GridItem>
-                                        </GridContainer>
-                                    </CardBody>
-                                </Card>
-                            </GridItem>
-                            <GridItem xs={12} sm={12} md={6}>
-                                <Card profile>
-                                    <CardAvatar profile style={{ height: "100px", width: "100px" }}>
-                                        <a href="#i" onClick={this.changeProfilePicture}>
-                                            <img className="profile-picture" src={metric4} alt="Edit profile" />
-                                        </a>
-                                    </CardAvatar>
-                                    <CardBody profile>
-                                        <GridContainer>
-                                            <GridItem xs={12} sm={12} md={6}><h4>{this.authUser.message.height !== null && this.authUser.message.height !== "" ? this.authUser.message.height + " m" : "Not found"}</h4></GridItem>
-                                            <GridItem xs={12} sm={12} md={6}><h4>{this.authUser.message.current_weight !== null && this.authUser.message.current_weight !== "" ? this.authUser.message.current_weight + " kg" : "Not found"}</h4></GridItem>
-                                            <GridItem xs={12} sm={12} md={6} style={{ marginTop: "-40px", color: "#00acc1" }}><h6>Height</h6></GridItem>
-                                            <GridItem xs={12} sm={12} md={6} style={{ marginTop: "-40px", color: "#00acc1" }}><h6>Weight</h6></GridItem>
                                         </GridContainer>
                                     </CardBody>
                                 </Card>
