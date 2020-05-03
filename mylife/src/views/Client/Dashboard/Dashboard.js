@@ -53,7 +53,10 @@ class Dashboard extends React.Component {
                 }
             },
             nutrientsTotal: [],
-            redirectProfile: false
+            redirectProfile: false,
+            heartSegmentStops: [49, 62, 66, 75, 82, 95],
+            heartRate: 0
+
         };
 
         this.fetchNutrients = this.fetchNutrients.bind(this);
@@ -83,7 +86,19 @@ class Dashboard extends React.Component {
 
             })
             .then(data => {
-                console.log(data);
+
+                let heartSegmentStops =  [];
+
+                for(let key in data.message.scale) {
+                    key = key + "-";
+                    heartSegmentStops.push(parseInt(String(key).split("-")[0]))
+                }
+                heartSegmentStops.push(99);
+                console.log(heartSegmentStops.sort())
+                this.setState({
+                    heartSegmentStops: heartSegmentStops.sort(),
+                    heartRate: data.message.avg_heart_rate <= 99 ? data.message.avg_heart_rate : 99
+                })
 
             })
             .catch(error => {
@@ -145,8 +160,6 @@ class Dashboard extends React.Component {
             })
             .then(data => {
 
-                console.log(data);
-
                 let nutrients = [
                     [<span><i className="fas fa-circle" style={{ color: "#007280" }}></i> Carbs</span>, data.message.carbs.total, data.message.carbs.goal, String(data.message.carbs.left).includes("-") === true ? <span style={{ color: "red" }}>{String(data.message.carbs.left).substr(1)}</span> : <span style={{ color: "green" }}>{data.message.carbs.left}</span>],
                     [<span><i className="fas fa-circle" style={{ color: "#00acc1" }}></i> Fats</span>, data.message.fat.total, data.message.fat.goal, String(data.message.fat.left).includes("-") === true ? <span style={{ color: "red" }}>{String(data.message.fat.left).substr(1)}</span> : <span style={{ color: "green" }}>{data.message.fat.left}</span>],
@@ -197,8 +210,8 @@ class Dashboard extends React.Component {
     }
 
     componentDidMount() {
-        this.fetchNutrients();
         this.fetchHeart();
+        this.fetchNutrients();
     }
 
     render() {
@@ -234,21 +247,24 @@ class Dashboard extends React.Component {
                                         </a>
                                     </CardAvatar>
                                     <CardBody profile>
-                                        <GridContainer>
-                                            <GridItem xs={12} sm={12} md={12}>
+                                        <GridContainer style={{height: "280px"}}>
+                                            <GridItem xs={12} sm={12} md={12} style={{ color: "#00acc1" }}><h6>Heart Rate</h6></GridItem>
+
+                                            <GridItem xs={12} sm={12} md={12} style={{marginTop: "-30px"}}>
+                                                {this.state.heartRate !== 0 &&
                                                 <ReactSpeedometer
-                                                    minValue={49}
-                                                    value={49}
-                                                    maxValue={95}
-                                                    currentValueText="Excellent"
-                                                    customSegmentStops={[49, 62, 66, 75, 82, 95]}
+                                                    minValue={this.state.heartSegmentStops[0]}
+                                                    value={this.state.heartRate}
+                                                    maxValue={this.state.heartSegmentStops[this.state.heartSegmentStops.length-1]}
+                                                    currentValueText={this.state.heartRate + " bpm"}
+                                                    customSegmentStops={this.state.heartSegmentStops}
                                                     segmentColors={[
                                                         "#00FF65",
                                                         "#60E065",
                                                         "#FFE71A",
                                                         "#ffa21a",
                                                         "#f44336",
-                                                      ]}
+                                                    ]}
                                                     customSegmentLabels={[
                                                         {
                                                             text: "Excellent",
@@ -276,7 +292,7 @@ class Dashboard extends React.Component {
                                                             color: "white",
                                                         },
                                                     ]}
-                                                />
+                                                />}
                                             </GridItem>
                                         </GridContainer>
                                     </CardBody>
