@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 
-import ReactSpeedometer from "react-d3-speedometer"
+
 import Chart from 'react-apexcharts'
 
 import GridItem from "components/Grid/GridItem.js";
@@ -87,9 +87,9 @@ class Dashboard extends React.Component {
             })
             .then(data => {
 
-                let heartSegmentStops =  [];
+                let heartSegmentStops = [];
 
-                for(let key in data.message.scale) {
+                for (let key in data.message.scale) {
                     key = key + "-";
                     heartSegmentStops.push(parseInt(String(key).split("-")[0]))
                 }
@@ -239,7 +239,7 @@ class Dashboard extends React.Component {
 
                     <GridItem xs={12} sm={12} md={6} style={{ marginTop: "25px" }}>
                         <GridContainer>
-                            <GridItem xs={12} sm={12} md={12}>
+                            <GridItem xs={12} sm={12} md={6}>
                                 <Card profile>
                                     <CardAvatar profile style={{ height: "100px", width: "100px" }}>
                                         <a href="#i" onClick={this.changeProfilePicture}>
@@ -247,53 +247,9 @@ class Dashboard extends React.Component {
                                         </a>
                                     </CardAvatar>
                                     <CardBody profile>
-                                        <GridContainer style={{height: "280px"}}>
-                                            <GridItem xs={12} sm={12} md={12} style={{ color: "#00acc1" }}><h6>Heart Rate</h6></GridItem>
-
-                                            <GridItem xs={12} sm={12} md={12} style={{marginTop: "-30px"}}>
-                                                {this.state.heartRate !== 0 &&
-                                                <ReactSpeedometer
-                                                    minValue={this.state.heartSegmentStops[0]}
-                                                    value={this.state.heartRate}
-                                                    maxValue={this.state.heartSegmentStops[this.state.heartSegmentStops.length-1]}
-                                                    currentValueText={this.state.heartRate + " bpm"}
-                                                    customSegmentStops={this.state.heartSegmentStops}
-                                                    segmentColors={[
-                                                        "#00FF65",
-                                                        "#60E065",
-                                                        "#FFE71A",
-                                                        "#ffa21a",
-                                                        "#f44336",
-                                                    ]}
-                                                    customSegmentLabels={[
-                                                        {
-                                                            text: "Excellent",
-                                                            position: "INSIDE",
-                                                            color: "white",
-                                                        },
-                                                        {
-                                                            text: "Good",
-                                                            position: "INSIDE",
-                                                            color: "white",
-                                                        },
-                                                        {
-                                                            text: "Average",
-                                                            position: "INSIDE",
-                                                            color: "white",
-                                                        },
-                                                        {
-                                                            text: "Fair",
-                                                            position: "INSIDE",
-                                                            color: "white",
-                                                        },
-                                                        {
-                                                            text: "Poor",
-                                                            position: "INSIDE",
-                                                            color: "white",
-                                                        },
-                                                    ]}
-                                                />}
-                                            </GridItem>
+                                        <GridContainer>
+                                            <GridItem xs={12} sm={12} md={12}><h4>{this.authUser.message.heart_rate !== null && this.authUser.message.heart_rate !== "" ? this.authUser.message.heart_rate + " bpm" : "Not found"}</h4></GridItem>
+                                            <GridItem xs={12} sm={12} md={12} style={{ marginTop: "-40px", color: "#00acc1" }}><h6>Heart Rate</h6></GridItem>
                                         </GridContainer>
                                     </CardBody>
                                 </Card>
@@ -319,6 +275,23 @@ class Dashboard extends React.Component {
                                 <Card profile>
                                     <CardAvatar profile style={{ height: "100px", width: "100px" }}>
                                         <a href="#i" onClick={this.changeProfilePicture}>
+                                            <img className="profile-picture" src={metric4} alt="Edit profile" />
+                                        </a>
+                                    </CardAvatar>
+                                    <CardBody profile>
+                                        <GridContainer>
+                                            <GridItem xs={12} sm={12} md={6}><h4>{this.authUser.message.height !== null && this.authUser.message.height !== "" ? this.authUser.message.height + " m" : "Not found"}</h4></GridItem>
+                                            <GridItem xs={12} sm={12} md={6}><h4>{this.authUser.message.current_weight !== null && this.authUser.message.current_weight !== "" ? this.authUser.message.current_weight + " kg" : "Not found"}</h4></GridItem>
+                                            <GridItem xs={12} sm={12} md={6} style={{ marginTop: "-40px", color: "#00acc1" }}><h6>Height</h6></GridItem>
+                                            <GridItem xs={12} sm={12} md={6} style={{ marginTop: "-40px", color: "#00acc1" }}><h6>Weight</h6></GridItem>
+                                        </GridContainer>
+                                    </CardBody>
+                                </Card>
+                            </GridItem>
+                            <GridItem xs={12} sm={12} md={6}>
+                                <Card profile>
+                                    <CardAvatar profile style={{ height: "100px", width: "100px" }}>
+                                        <a href="#i" onClick={this.changeProfilePicture}>
                                             <img className="profile-picture" src={metric3} alt="Edit profile" />
                                         </a>
                                     </CardAvatar>
@@ -333,6 +306,7 @@ class Dashboard extends React.Component {
                             </GridItem>
                         </GridContainer>
                     </GridItem>
+
                     <GridItem xs={12} sm={12} md={6} style={{ marginTop: "25px" }}>
                         <Card>
                             <CardHeader style={this.classes.cardHeader}>
@@ -357,7 +331,6 @@ class Dashboard extends React.Component {
                             </CardBody>
                         </Card>
                     </GridItem>
-
                 </GridContainer>
             </div>
         )

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import ReactSpeedometer from "react-d3-speedometer"
+
 import {
     LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
 } from 'recharts';
@@ -23,7 +25,9 @@ class History extends React.Component {
             nutrient: { name: "Calories", period: "week" },
             nutrientsHistory: utils.defaultHistory,
             body: { name: "Calories", period: "week" },
-            bodyHistory: utils.defaultHistory
+            bodyHistory: utils.defaultHistory,
+            heartSegmentStops: [49, 62, 66, 75, 82, 95],
+            heartRate: 0
         }
 
         this.nutrientsCache = {}
@@ -48,11 +52,13 @@ class History extends React.Component {
         this.toggleBody = this.toggleBody.bind(this);
         this.toggleBodyPeriod = this.toggleBodyPeriod.bind(this);
         this.fetchBody = this.fetchBody.bind(this);
+        this.fetchHeart = this.fetchHeart.bind(this);
     }
 
     componentDidMount() {
         this.fetchNutrients(this.state.nutrient.name, this.state.nutrient.period);
         this.fetchBody(this.state.body.name, this.state.body.period);
+        this.fetchHeart();
     }
 
 
@@ -107,6 +113,41 @@ class History extends React.Component {
                 console.log("Fetch error: " + error);
             })
 
+    }
+
+    fetchHeart() {
+        fetch(baseUri.restApi.heartLabel + this.authUser.message.email, {
+            method: "GET",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": "Token " + this.authUser.token
+            }
+        })
+            .then(response => {
+                if (!response.ok) throw new Error(response.status);
+                else return response.json();
+
+            })
+            .then(data => {
+
+                let heartSegmentStops = [];
+
+                for (let key in data.message.scale) {
+                    key = key + "-";
+                    heartSegmentStops.push(parseInt(String(key).split("-")[0]))
+                }
+                heartSegmentStops.push(99);
+                console.log(heartSegmentStops.sort())
+                this.setState({
+                    heartSegmentStops: heartSegmentStops.sort(),
+                    heartRate: data.message.avg_heart_rate <= 99 ? data.message.avg_heart_rate : 99
+                })
+
+            })
+            .catch(error => {
+                console.log("Fetch error: " + error);
+            })
     }
 
 
@@ -292,6 +333,52 @@ class History extends React.Component {
                             <Line type="monotone" dataKey="value" stroke="#00acc1" activeDot={{ r: 8 }} />
                             <Line type="monotone" dataKey="goal" stroke="red" />
                         </LineChart>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={12} style={{ color: "#00acc1" }}><h6>Heart Rate</h6></GridItem>
+
+                    <GridItem xs={12} sm={12} md={12} style={{ marginTop: "-30px" }}>
+                        {this.state.heartRate !== 0 &&
+                            <ReactSpeedometer
+                                minValue={this.state.heartSegmentStops[0]}
+                                value={this.state.heartRate}
+                                maxValue={this.state.heartSegmentStops[this.state.heartSegmentStops.length - 1]}
+                                currentValueText={this.state.heartRate + " bpm"}
+                                customSegmentStops={this.state.heartSegmentStops}
+                                segmentColors={[
+                                    "#00FF65",
+                                    "#60E065",
+                                    "#FFE71A",
+                                    "#ffa21a",
+                                    "#f44336",
+                                ]}
+                                customSegmentLabels={[
+                                    {
+                                        text: "Excellent",
+                                        position: "INSIDE",
+                                        color: "white",
+                                    },
+                                    {
+                                        text: "Good",
+                                        position: "INSIDE",
+                                        color: "white",
+                                    },
+                                    {
+                                        text: "Average",
+                                        position: "INSIDE",
+                                        color: "white",
+                                    },
+                                    {
+                                        text: "Fair",
+                                        position: "INSIDE",
+                                        color: "white",
+                                    },
+                                    {
+                                        text: "Poor",
+                                        position: "INSIDE",
+                                        color: "white",
+                                    },
+                                ]}
+                            />}
                     </GridItem>
 
                 </GridContainer>
