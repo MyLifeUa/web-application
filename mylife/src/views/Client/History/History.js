@@ -30,6 +30,7 @@ class History extends React.Component {
             heartSegmentStops: [49, 62, 66, 75, 82, 95],
             heartRate: 0,
             heartLabels: [],
+            heartText: null,
             myLifeRate: 0,
             myLifeLabels: []
         };
@@ -43,9 +44,9 @@ class History extends React.Component {
         };
 
         this.myLifeColors = {
-            "Poor":"#0FA3B1",
-            "Average":"#B5E2FA",
-            "Excellent":"#F7A072",
+            "Poor": "#0FA3B1",
+            "Average": "#B5E2FA",
+            "Excellent": "#F7A072",
         }
 
         this.nutrientsCache = {}
@@ -155,19 +156,31 @@ class History extends React.Component {
                 let heartLabels = [];
 
                 for (let key in data.message.scale) {
-                    heartLabels.push(
-                        <div style={{ padding: "5px", height: "30px", width: "120px", backgroundColor: this.heartColors[data.message.scale[key]] }}><strong style={{ color: "white" }}>{key}: {data.message.scale[key]}</strong></div>
-                    )
-                    key = key + "-";
-                    heartSegmentStops.push(parseInt(String(key).split("-")[0]))
-
+                    if(data.message.scale[key] !== "Poor") {
+                        heartLabels.push(
+                            <div style={{ padding: "5px", height: "30px", width: "120px", backgroundColor: this.heartColors[data.message.scale[key]] }}><strong style={{ color: "white" }}>{key}: {data.message.scale[key]}</strong></div>
+                        )
+                        heartSegmentStops.push(parseInt(String(key).split("-")[0]))
+                    }
+                }
+                for (let key in data.message.scale) {
+                    if(data.message.scale[key] === "Poor") {
+                        heartLabels.push(
+                            <div style={{ padding: "5px", height: "30px", width: "120px", backgroundColor: this.heartColors[data.message.scale[key]] }}><strong style={{ color: "white" }}>{key}: {data.message.scale[key]}</strong></div>
+                        )
+                        key = key + "-";
+                        heartSegmentStops.push(parseInt(String(key).split("-")[0]))
+                    }
                 }
                 heartSegmentStops.push(99);
 
                 this.setState({
                     heartSegmentStops: heartSegmentStops.sort(),
-                    heartRate: data.message.avg_heart_rate <= 99 ? data.message.avg_heart_rate : 99,
-                    heartLabels: heartLabels.sort()
+                    heartRate: {
+                        "value": data.message.avg_heart_rate <= 99 ? data.message.avg_heart_rate : 99,
+                        "label": data.message.label
+                    },
+                    heartLabels: heartLabels.sort(),
                 })
 
             })
@@ -198,11 +211,9 @@ class History extends React.Component {
                         <div style={{ padding: "5px", height: "30px", width: "120px", backgroundColor: this.myLifeColors[data.message.scale[key]] }}><strong style={{ color: "white" }}>{key}: {data.message.scale[key]}</strong></div>
                     )
                 }
-                console.log(data.message.current_week.value);
-                console.log(myLifeLabels);
                 this.setState({
                     myLifeLabels: myLifeLabels,
-                    myLifeRate: data.message.current_week.value
+                    myLifeRate: data.message.current_week
                 })
             })
             .catch(error => {
@@ -295,33 +306,40 @@ class History extends React.Component {
                         <h4><i className="fas fa-heartbeat" style={{ color: "#00acc1", marginRight: "5px" }}></i> <strong>Heart history</strong></h4>
                     </GridItem>
                     <GridItem xs={12} sm={12} md={4}>
-                        {this.state.heartRate !== 0 &&
-                            <ReactSpeedometer
-                                minValue={0}
-                                value={this.state.myLifeRate}
-                                maxValue={5}
-                                currentValueText={this.state.myLifeRate + ""}
-                                customSegmentStops={[0, 2, 4, 5]}
-                                segmentColors={[
-                                    "#0FA3B1",
-                                    "#B5E2FA",
-                                    "#F7A072",
-                                ]}
-                                customSegmentLabels={[
-                                    {
-                                        position: "INSIDE",
-                                        color: "white",
-                                    },
-                                    {
-                                        position: "INSIDE",
-                                        color: "white",
-                                    },
-                                    {
-                                        position: "INSIDE",
-                                        color: "white",
-                                    },
-                                ]}
-                            />}
+                        <GridContainer justify="center">
+                            <GridItem xs={12} sm={12} md={12}>
+                                {this.state.heartRate !== 0 &&
+                                    <ReactSpeedometer
+                                        minValue={0}
+                                        value={this.state.myLifeRate.value}
+                                        maxValue={5}
+                                        currentValueText={this.state.myLifeRate.value + ""}
+                                        customSegmentStops={[0, 2, 4, 5]}
+                                        segmentColors={[
+                                            "#0FA3B1",
+                                            "#B5E2FA",
+                                            "#F7A072",
+                                        ]}
+                                        customSegmentLabels={[
+                                            {
+                                                position: "INSIDE",
+                                                color: "white",
+                                            },
+                                            {
+                                                position: "INSIDE",
+                                                color: "white",
+                                            },
+                                            {
+                                                position: "INSIDE",
+                                                color: "white",
+                                            },
+                                        ]}
+                                    />}
+                            </GridItem>
+                            <GridItem xs={12} sm={12} md={12} style={{ marginTop: "-100px" }}>
+                                <span>Your estimate of <strong>{this.state.myLifeRate.value}</strong> is <strong style={{ color: this.myLifeColors[this.state.myLifeRate.label] }}>{this.state.myLifeRate.label}</strong> for your age</span>
+                            </GridItem>
+                        </GridContainer>
                     </GridItem>
                     <GridItem xs={12} sm={12} md={2}>
                         <GridContainer>
@@ -334,42 +352,50 @@ class History extends React.Component {
                     </GridItem>
                     <GridItem xs={12} sm={12} md={4}>
                         {this.state.heartRate !== 0 &&
-                            <ReactSpeedometer
-                                minValue={this.state.heartSegmentStops[0]}
-                                value={this.state.heartRate}
-                                maxValue={this.state.heartSegmentStops[this.state.heartSegmentStops.length - 1]}
-                                currentValueText={this.state.heartRate + " bpm"}
-                                customSegmentStops={this.state.heartSegmentStops}
-                                segmentColors={[
-                                    "#76E880",
-                                    "#99FF33",
-                                    "#99FFFF",
-                                    "#80CCFF",
-                                    "#BB99FF",
-                                ]}
-                                customSegmentLabels={[
-                                    {
-                                        position: "INSIDE",
-                                        color: "white",
-                                    },
-                                    {
-                                        position: "INSIDE",
-                                        color: "white",
-                                    },
-                                    {
-                                        position: "INSIDE",
-                                        color: "white",
-                                    },
-                                    {
-                                        position: "INSIDE",
-                                        color: "white",
-                                    },
-                                    {
-                                        position: "INSIDE",
-                                        color: "white",
-                                    },
-                                ]}
-                            />}
+                            <GridContainer>
+                                <GridItem xs={12} sm={12} md={12}>
+                                    <ReactSpeedometer
+                                        minValue={this.state.heartSegmentStops[0]}
+                                        value={this.state.heartRate.value}
+                                        maxValue={this.state.heartSegmentStops[this.state.heartSegmentStops.length - 1]}
+                                        currentValueText={this.state.heartRate.value + " bpm"}
+                                        customSegmentStops={this.state.heartSegmentStops}
+                                        segmentColors={[
+                                            "#76E880",
+                                            "#99FF33",
+                                            "#99FFFF",
+                                            "#80CCFF",
+                                            "#BB99FF",
+                                        ]}
+                                        customSegmentLabels={[
+                                            {
+                                                position: "INSIDE",
+                                                color: "white",
+                                            },
+                                            {
+                                                position: "INSIDE",
+                                                color: "white",
+                                            },
+                                            {
+                                                position: "INSIDE",
+                                                color: "white",
+                                            },
+                                            {
+                                                position: "INSIDE",
+                                                color: "white",
+                                            },
+                                            {
+                                                position: "INSIDE",
+                                                color: "white",
+                                            },
+                                        ]}
+                                    />
+                                </GridItem>
+                                <GridItem xs={12} sm={12} md={12} style={{ marginTop: "-100px" }}>
+                                    <span>Your estimate of <strong>{this.state.heartRate.value}</strong> is <strong style={{ color: this.heartColors[this.state.heartRate.label] }}>{this.state.heartRate.label}</strong> for your age</span>
+                                </GridItem>
+                            </GridContainer>
+                        }
                     </GridItem>
                     <GridItem xs={12} sm={12} md={2}>
                         <GridContainer>
