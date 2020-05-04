@@ -157,7 +157,7 @@ class History extends React.Component {
                 let heartLabels = [];
 
                 for (let key in data.message.scale) {
-                    if(data.message.scale[key] !== "Poor") {
+                    if (data.message.scale[key] !== "Poor") {
                         heartLabels.push(
                             <div style={{ padding: "5px", height: "30px", width: "120px", backgroundColor: this.heartColors[data.message.scale[key]] }}><strong style={{ color: "white" }}>{key}: {data.message.scale[key]}</strong></div>
                         )
@@ -165,7 +165,7 @@ class History extends React.Component {
                     }
                 }
                 for (let key in data.message.scale) {
-                    if(data.message.scale[key] === "Poor") {
+                    if (data.message.scale[key] === "Poor") {
                         heartLabels.push(
                             <div style={{ padding: "5px", height: "30px", width: "120px", backgroundColor: this.heartColors[data.message.scale[key]] }}><strong style={{ color: "white" }}>{key}: {data.message.scale[key]}</strong></div>
                         )
@@ -305,12 +305,13 @@ class History extends React.Component {
                         <h4><i className="fas fa-heartbeat" style={{ color: "#00acc1", marginRight: "5px" }}></i> <strong>MyLife Metric</strong></h4>
                     </GridItem>
                     <GridItem xs={12} sm={12} md={6}>
-                        <h4><i className="fas fa-heartbeat" style={{ color: "#00acc1", marginRight: "5px" }}></i> <strong>Heart history</strong></h4>
+                        <h4><i className="fas fa-heartbeat" style={{ color: "#00acc1", marginRight: "5px" }}></i> <strong>Heart rate</strong></h4>
                     </GridItem>
                     <GridItem xs={12} sm={12} md={4}>
-                        <GridContainer justify="center">
-                            <GridItem xs={12} sm={12} md={12}>
-                                {this.state.heartRate !== 0 &&
+                        {this.state.heartRate !== 0 &&
+                            <GridContainer justify="center">
+                                <GridItem xs={12} sm={12} md={12}>
+
                                     <ReactSpeedometer
                                         minValue={0}
                                         value={this.state.myLifeRate.value}
@@ -336,12 +337,12 @@ class History extends React.Component {
                                                 color: "white",
                                             },
                                         ]}
-                                    />}
-                            </GridItem>
-                            <GridItem xs={12} sm={12} md={12} style={{ marginTop: "-100px" }}>
-                                <span>Your estimate of <strong>{this.state.myLifeRate.value}</strong> is <strong style={{ color: this.myLifeColors[this.state.myLifeRate.label] }}>{this.state.myLifeRate.label}</strong> for your age.<br />{String(this.state.myLifeIncrease).includes("-") !== false ? <strong style={{color: "red" }}><i className="fas fa-arrow-down"></i> {this.state.myLifeIncrease}% decrease</strong> : <strong style={{color: "#76E880" }}><i className="fas fa-arrow-up"></i> {this.state.myLifeIncrease}% increase</strong>} since last week.</span>
-                            </GridItem>
-                        </GridContainer>
+                                    />
+                                </GridItem>
+                                <GridItem xs={12} sm={12} md={12} style={{ marginTop: "-100px" }}>
+                                    Your estimate of <strong>{this.state.myLifeRate.value}</strong> is <strong style={{ color: this.myLifeColors[this.state.myLifeRate.label], fontWeight: "1200" }}>{this.state.myLifeRate.label}</strong> for your age.<br />{String(this.state.myLifeIncrease).includes("-") !== false ? <strong style={{ color: "red" }}><i className="fas fa-arrow-down"></i> {this.state.myLifeIncrease}% decrease</strong> : <strong style={{ color: "#76E880" }}><i className="fas fa-arrow-up"></i> {this.state.myLifeIncrease}% increase</strong>} since last week.
+                                </GridItem>
+                            </GridContainer>}
                     </GridItem>
                     <GridItem xs={12} sm={12} md={2}>
                         <GridContainer>
@@ -394,7 +395,7 @@ class History extends React.Component {
                                     />
                                 </GridItem>
                                 <GridItem xs={12} sm={12} md={12} style={{ marginTop: "-100px" }}>
-                                    <span>Your estimate of <strong>{this.state.heartRate.value}</strong> is <strong style={{ color: this.heartColors[this.state.heartRate.label] }}>{this.state.heartRate.label}</strong> for your age.</span>
+                                    Your estimate of <strong>{this.state.heartRate.value}</strong> is <strong style={{ color: this.heartColors[this.state.heartRate.label], fontWeight: "1200" }}>{this.state.heartRate.label}</strong> for your age.
                                 </GridItem>
                             </GridContainer>
                         }
