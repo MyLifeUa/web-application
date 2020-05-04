@@ -32,7 +32,8 @@ class History extends React.Component {
             heartLabels: [],
             heartText: null,
             myLifeRate: 0,
-            myLifeLabels: []
+            myLifeLabels: [],
+            myLifeIncrease: 0
         };
 
         this.heartColors = {
@@ -213,7 +214,8 @@ class History extends React.Component {
                 }
                 this.setState({
                     myLifeLabels: myLifeLabels,
-                    myLifeRate: data.message.current_week
+                    myLifeRate: data.message.current_week,
+                    myLifeIncrease: data.message.increase
                 })
             })
             .catch(error => {
@@ -337,7 +339,7 @@ class History extends React.Component {
                                     />}
                             </GridItem>
                             <GridItem xs={12} sm={12} md={12} style={{ marginTop: "-100px" }}>
-                                <span>Your estimate of <strong>{this.state.myLifeRate.value}</strong> is <strong style={{ color: this.myLifeColors[this.state.myLifeRate.label] }}>{this.state.myLifeRate.label}</strong> for your age</span>
+                                <span>Your estimate of <strong>{this.state.myLifeRate.value}</strong> is <strong style={{ color: this.myLifeColors[this.state.myLifeRate.label] }}>{this.state.myLifeRate.label}</strong> for your age.<br />{String(this.state.myLifeIncrease).includes("-") !== false ? <strong style={{color: "red" }}><i className="fas fa-arrow-down"></i> {this.state.myLifeIncrease}% decrease</strong> : <strong style={{color: "#76E880" }}><i className="fas fa-arrow-up"></i> {this.state.myLifeIncrease}% increase</strong>} since last week.</span>
                             </GridItem>
                         </GridContainer>
                     </GridItem>
@@ -392,7 +394,7 @@ class History extends React.Component {
                                     />
                                 </GridItem>
                                 <GridItem xs={12} sm={12} md={12} style={{ marginTop: "-100px" }}>
-                                    <span>Your estimate of <strong>{this.state.heartRate.value}</strong> is <strong style={{ color: this.heartColors[this.state.heartRate.label] }}>{this.state.heartRate.label}</strong> for your age</span>
+                                    <span>Your estimate of <strong>{this.state.heartRate.value}</strong> is <strong style={{ color: this.heartColors[this.state.heartRate.label] }}>{this.state.heartRate.label}</strong> for your age.</span>
                                 </GridItem>
                             </GridContainer>
                         }
