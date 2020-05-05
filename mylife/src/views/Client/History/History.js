@@ -18,6 +18,8 @@ import GridContainer from "components/Grid/GridContainer.js";
 import baseUri from "variables/baseURI";
 import utils from "variables/utils";
 
+import loader from "assets/img/mylife-logo-b.png";
+
 class History extends React.Component {
 
     constructor() {
@@ -33,7 +35,8 @@ class History extends React.Component {
             heartText: null,
             myLifeRate: 0,
             myLifeLabels: [],
-            myLifeIncrease: 0
+            myLifeIncrease: 0,
+            loaded: false
         };
 
         this.heartColors = {
@@ -275,7 +278,8 @@ class History extends React.Component {
                     nutrient: this.state.nutrient,
                     nutrientsHistory: this.state.nutrientsHistory,
                     body: { name: body, period: period },
-                    bodyHistory: bodyHistory
+                    bodyHistory: bodyHistory,
+                    loaded: true
                 })
                 this.bodyCache[body + "" + period] = data.message.history;
 
@@ -295,6 +299,15 @@ class History extends React.Component {
     }
 
     render() {
+        if(!this.state.loaded) return (
+            <GridContainer justify="center">
+                <GridItem xs={12} sm={12} md={5}></GridItem>
+                <GridItem xs={12} sm={12} md={2} style={{marginTop: "100px"}}>
+                    <img className="small-loader2" src={loader} alt="loader" style={{height: "100px"}}/>
+                </GridItem>
+                <GridItem xs={12} sm={12} md={5}></GridItem>
+            </GridContainer>
+        )
         return (
             <div id="history">
                 <GridContainer>
