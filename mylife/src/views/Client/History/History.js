@@ -11,8 +11,6 @@ import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import Card from "components/Card/Card.js";
-import CardBody from "components/Card/CardBody.js";
-import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 
 import baseUri from "variables/baseURI";
