@@ -1,6 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 
+
 import Chart from 'react-apexcharts'
 
 import GridItem from "components/Grid/GridItem.js";
@@ -52,11 +53,14 @@ class Dashboard extends React.Component {
                 }
             },
             nutrientsTotal: [],
-            redirectProfile: false
+            redirectProfile: false,
+            heartSegmentStops: [49, 62, 66, 75, 82, 95],
+            heartRate: 0
+
         };
 
         this.fetchNutrients = this.fetchNutrients.bind(this);
-
+        this.fetchHeart = this.fetchHeart.bind(this);
     }
 
     classes = {
@@ -65,6 +69,41 @@ class Dashboard extends React.Component {
             color: "white",
             fontSize: "18px",
         }
+    }
+
+    fetchHeart() {
+        fetch(baseUri.restApi.heartLabel + this.authUser.message.email, {
+            method: "GET",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": "Token " + this.authUser.token
+            }
+        })
+            .then(response => {
+                if (!response.ok) throw new Error(response.status);
+                else return response.json();
+
+            })
+            .then(data => {
+
+                let heartSegmentStops = [];
+
+                for (let key in data.message.scale) {
+                    key = key + "-";
+                    heartSegmentStops.push(parseInt(String(key).split("-")[0]))
+                }
+                heartSegmentStops.push(99);
+                console.log(heartSegmentStops.sort())
+                this.setState({
+                    heartSegmentStops: heartSegmentStops.sort(),
+                    heartRate: data.message.avg_heart_rate <= 99 ? data.message.avg_heart_rate : 99
+                })
+
+            })
+            .catch(error => {
+                console.log("Fetch error: " + error);
+            })
     }
 
     fetchNutrients() {
@@ -121,8 +160,6 @@ class Dashboard extends React.Component {
             })
             .then(data => {
 
-                console.log(data);
-
                 let nutrients = [
                     [<span><i className="fas fa-circle" style={{ color: "#007280" }}></i> Carbs</span>, data.message.carbs.total, data.message.carbs.goal, String(data.message.carbs.left).includes("-") === true ? <span style={{ color: "red" }}>{String(data.message.carbs.left).substr(1)}</span> : <span style={{ color: "green" }}>{data.message.carbs.left}</span>],
                     [<span><i className="fas fa-circle" style={{ color: "#00acc1" }}></i> Fats</span>, data.message.fat.total, data.message.fat.goal, String(data.message.fat.left).includes("-") === true ? <span style={{ color: "red" }}>{String(data.message.fat.left).substr(1)}</span> : <span style={{ color: "green" }}>{data.message.fat.left}</span>],
@@ -145,10 +182,10 @@ class Dashboard extends React.Component {
                     let nutrients = [
                         [<span><i className="fas fa-circle" style={{ color: "#007280" }}></i> Carbs</span>, 0, 0, 0],
                         [<span><i className="fas fa-circle" style={{ color: "#00acc1" }}></i> Fats</span>, 0, 0, 0],
-                        [<span><i className="fas fa-circle" style={{ color: "#00cde6" }}></i> Proteins</span>, 0,0,0],
-                        [<span><i className="fas fa-circle" style={{ color: "#1ae6ff" }}></i> Calories</span>, 0,0,0]
+                        [<span><i className="fas fa-circle" style={{ color: "#00cde6" }}></i> Proteins</span>, 0, 0, 0],
+                        [<span><i className="fas fa-circle" style={{ color: "#1ae6ff" }}></i> Calories</span>, 0, 0, 0]
                     ];
-    
+
                     this.setState({
                         pieChart: this.state.pieChart,
                         nutrientsTotal: nutrients,
@@ -173,6 +210,7 @@ class Dashboard extends React.Component {
     }
 
     componentDidMount() {
+        this.fetchHeart();
         this.fetchNutrients();
     }
 
@@ -226,7 +264,7 @@ class Dashboard extends React.Component {
                                     <CardBody profile>
                                         <GridContainer>
                                             <GridItem xs={12} sm={12} md={6}><h4>{this.authUser.message.steps !== null && this.authUser.message.steps !== "" ? this.authUser.message.steps : 0}</h4></GridItem>
-                                            <GridItem xs={12} sm={12} md={6}><h4>{this.authUser.message.distance !== null && this.authUser.message.distance !== "" ? String(this.authUser.message.distance).substring(0,4) : 0} km</h4></GridItem>
+                                            <GridItem xs={12} sm={12} md={6}><h4>{this.authUser.message.distance !== null && this.authUser.message.distance !== "" ? String(this.authUser.message.distance).substring(0, 4) : 0} km</h4></GridItem>
                                             <GridItem xs={12} sm={12} md={6} style={{ marginTop: "-40px", color: "#00acc1" }}><h6>Steps</h6></GridItem>
                                             <GridItem xs={12} sm={12} md={6} style={{ marginTop: "-40px", color: "#00acc1" }}><h6>Distance</h6></GridItem>
                                         </GridContainer>
@@ -268,6 +306,7 @@ class Dashboard extends React.Component {
                             </GridItem>
                         </GridContainer>
                     </GridItem>
+
                     <GridItem xs={12} sm={12} md={6} style={{ marginTop: "25px" }}>
                         <Card>
                             <CardHeader style={this.classes.cardHeader}>
@@ -292,7 +331,6 @@ class Dashboard extends React.Component {
                             </CardBody>
                         </Card>
                     </GridItem>
-
                 </GridContainer>
             </div>
         )

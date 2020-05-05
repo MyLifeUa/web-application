@@ -605,6 +605,10 @@ footer ul li a:hover {
 }
 
 
+.small-loader2 {
+  animation: spin 1.5s ease-in-out infinite;
+}
+
 @keyframes spin {
   0% { transform: scale(0.5); }
   50% {transform: scale(1.5);}
