@@ -3,14 +3,25 @@ import React from 'react';
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import IconButton from '@material-ui/core/IconButton';
-import Table from "components/Table/Table.js";
 import ArrowBack from '@material-ui/icons/ArrowBackIos';
+
+import Card from "components/Card/Card.js";
+import CardBody from "components/Card/CardBody.js";
+import CardHeader from "components/Card/CardHeader.js";
 
 import FoodLogs from "views/Client/FoodLogs/FoodLogs.js";
 
 import baseUri from "variables/baseURI.js";
 
 class List extends React.Component {
+
+    classes = {
+        cardHeader: {
+            backgroundColor: "#00acc1",
+            color: "white",
+            fontSize: "18px",
+        }
+    }
 
     constructor() {
         super();
@@ -28,7 +39,8 @@ class List extends React.Component {
     }
 
     componentDidMount() {
-        this.fetchFoodLogs(this.today.toISOString().split("T")[0]);
+        //this.fetchFoodLogs(this.today.toISOString().split("T")[0]);
+        this.fetchFoodLogs("2020-05-05");
     }
 
     fetchFoodLogs(date) {
@@ -69,6 +81,46 @@ class List extends React.Component {
                             <ArrowBack onClick={() => this.toggleReturn()} style={{ color: "#00acc1" }} fontSize="medium" />
                         </IconButton>
                         Review food logs</h3>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={3}>
+                        <Card>
+                            <CardHeader style={this.classes.cardHeader}>
+                                <i className="fas fa-sun"></i> <strong>Breakfast</strong>
+                            </CardHeader>
+                            <CardBody>
+
+                            </CardBody>
+                        </Card>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={3}>
+                        <Card>
+                            <CardHeader style={this.classes.cardHeader}>
+                                <i className="fas fa-utensils"></i> <strong>Lunch</strong>
+                            </CardHeader>
+                            <CardBody>
+                        
+                            </CardBody>
+                        </Card>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={3}>
+                        <Card>
+                            <CardHeader style={this.classes.cardHeader}>
+                                <i className="fas fa-cookie-bite"></i> <strong>Snack</strong>
+                            </CardHeader>
+                            <CardBody>
+                        
+                            </CardBody>
+                        </Card>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={3}>
+                        <Card>
+                            <CardHeader style={this.classes.cardHeader}>
+                                <i className="fas fa-moon"></i> <strong>Dinner</strong>
+                            </CardHeader>
+                            <CardBody>
+                        
+                            </CardBody>
+                        </Card>
                     </GridItem>
                 </GridContainer>
             </div>
