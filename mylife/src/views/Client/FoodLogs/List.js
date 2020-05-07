@@ -47,6 +47,7 @@ class List extends React.Component {
         this.toggleReturn = this.toggleReturn.bind(this);
         this.fetchFoodLogs = this.fetchFoodLogs.bind(this);
         this.onChange = this.onChange.bind(this);
+        this.deleteBreakfast = this.deleteBreakfast.bind(this);
     }
 
     componentDidMount() {
@@ -114,6 +115,42 @@ class List extends React.Component {
         this.fetchFoodLogs(dateString.split("T")[0]);
     }
 
+    deleteBreakfast(meal_id) {
+        
+        fetch(baseUri.restApi.foodLogs + "/" + meal_id, {
+            method: "DELETE",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": "Token " + this.authUser.token
+            }
+        })
+            .then(response => {
+                if (response.status === 204 || response.status === 200) {
+                    
+                    var breakfast = this.state.breakfast;
+                    var meals = [];
+                    this.state.breakfast.meals.forEach(meal => {
+                        if(parseInt(meal.id) !== parseInt(meal_id)) {
+                            meals.push(meal);
+                        }
+                    })
+
+                    breakfast.meals = meals;
+
+                    this.setState({
+                        breakfast: breakfast
+                    })
+                    return
+                    
+                }
+                else throw new Error(response.status)
+            })
+            .catch(error => {
+                console.log("Fetch error: " + error);
+            })
+    }
+
 
     render() {
         if (this.state.return) return <FoodLogs />
@@ -158,7 +195,7 @@ class List extends React.Component {
                                                             <GridItem xs={12} sm={12} md={8} style={{ marginTop: "13px" }}><strong>{meal.meal_name}</strong></GridItem>
                                                             <GridItem xs={12} sm={12} md={4}>
                                                                 <IconButton aria-label="back">
-                                                                    <DeleteForeverIcon onClick={() => this.toggleReturn()} style={{ color: "red" }} fontSize="medium" />
+                                                                    <DeleteForeverIcon onClick={() => this.deleteBreakfast(meal.id)} style={{ color: "white" }} fontSize="medium" />
                                                                 </IconButton>
                                                             </GridItem>
                                                         </GridContainer>
@@ -213,7 +250,7 @@ class List extends React.Component {
                                                             <GridItem xs={12} sm={12} md={8} style={{ marginTop: "13px" }}><strong>{meal.meal_name}</strong></GridItem>
                                                             <GridItem xs={12} sm={12} md={4}>
                                                                 <IconButton aria-label="back">
-                                                                    <DeleteForeverIcon onClick={() => this.toggleReturn()} style={{ color: "red" }} fontSize="medium" />
+                                                                    <DeleteForeverIcon onClick={() => this.toggleReturn()} style={{ color: "white" }} fontSize="medium" />
                                                                 </IconButton>
                                                             </GridItem>
                                                         </GridContainer>
@@ -268,7 +305,7 @@ class List extends React.Component {
                                                             <GridItem xs={12} sm={12} md={8} style={{ marginTop: "13px" }}><strong>{meal.meal_name}</strong></GridItem>
                                                             <GridItem xs={12} sm={12} md={4}>
                                                                 <IconButton aria-label="back">
-                                                                    <DeleteForeverIcon onClick={() => this.toggleReturn()} style={{ color: "red" }} fontSize="medium" />
+                                                                    <DeleteForeverIcon onClick={() => this.toggleReturn()} style={{ color: "white" }} fontSize="medium" />
                                                                 </IconButton>
                                                             </GridItem>
                                                         </GridContainer>
@@ -323,7 +360,7 @@ class List extends React.Component {
                                                             <GridItem xs={12} sm={12} md={8} style={{ marginTop: "13px" }}><strong>{meal.meal_name}</strong></GridItem>
                                                             <GridItem xs={12} sm={12} md={4}>
                                                                 <IconButton aria-label="back">
-                                                                    <DeleteForeverIcon onClick={() => this.toggleReturn()} style={{ color: "red" }} fontSize="medium" />
+                                                                    <DeleteForeverIcon onClick={() => this.toggleReturn()} style={{ color: "white" }} fontSize="medium" />
                                                                 </IconButton>
                                                             </GridItem>
                                                         </GridContainer>
