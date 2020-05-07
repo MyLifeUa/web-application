@@ -5,6 +5,13 @@ import GridContainer from "components/Grid/GridContainer.js";
 import IconButton from '@material-ui/core/IconButton';
 import ArrowBack from '@material-ui/icons/ArrowBackIos';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever.js';
+import Button from "components/CustomButtons/Button.js";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+
 
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
@@ -37,6 +44,7 @@ class List extends React.Component {
             lunch: { total_calories: 0, meals: [] },
             snack: { total_calories: 0, meals: [] },
             dinner: { total_calories: 0, meals: [] },
+            successDialog: false
         }
 
         this.authUser = JSON.parse(localStorage.getItem('authUser'));
@@ -48,6 +56,13 @@ class List extends React.Component {
         this.fetchFoodLogs = this.fetchFoodLogs.bind(this);
         this.onChange = this.onChange.bind(this);
         this.deleteMeal = this.deleteMeal.bind(this);
+        this.toggleSuccessDialog = this.toggleSuccessDialog.bind(this);
+    }
+
+    toggleSuccessDialog() {
+        this.setState({
+            successDialog: !this.state.successDialog
+        })
     }
 
     componentDidMount() {
@@ -129,7 +144,8 @@ class List extends React.Component {
             .then(response => {
                 if (response.status === 204 || response.status === 200) {
                     this.setState({
-                        deleted: true
+                        deleted: true,
+                        successDialog: true
                     })
                 }
                 else throw new Error(response.status)
@@ -140,10 +156,10 @@ class List extends React.Component {
     }
 
     componentDidUpdate() {
-        if(this.state.deleted) {
+        if (this.state.deleted) {
             this.fetchFoodLogs(this.state.today.toISOString().split("T")[0]);
         }
-        
+
     }
 
     render() {
@@ -390,6 +406,19 @@ class List extends React.Component {
                         </Card>
                     </GridItem>
                 </GridContainer>
+                <Dialog
+                    open={this.state.successDialog}
+                    onClose={this.toggleSuccessDialog}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title" style={{ color: "#4caf50" }}>
+                        <i class="fas fa-check-circle"></i> Meal removed with success!
+					</DialogTitle>
+                    <DialogActions>
+                        <Button block onClick={() => this.toggleSuccessDialog()} color="success">Close</Button>
+                    </DialogActions>
+                </Dialog>
             </div>
         )
     }
