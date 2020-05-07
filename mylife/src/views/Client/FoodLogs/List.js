@@ -47,7 +47,7 @@ class List extends React.Component {
         this.toggleReturn = this.toggleReturn.bind(this);
         this.fetchFoodLogs = this.fetchFoodLogs.bind(this);
         this.onChange = this.onChange.bind(this);
-        this.deleteBreakfast = this.deleteBreakfast.bind(this);
+        this.deleteMeal = this.deleteMeal.bind(this);
     }
 
     componentDidMount() {
@@ -81,6 +81,7 @@ class List extends React.Component {
                     lunch: lunch,
                     snack: snack,
                     dinner: dinner,
+                    deleted: false
                 })
             })
             .catch(error => {
@@ -115,8 +116,8 @@ class List extends React.Component {
         this.fetchFoodLogs(dateString.split("T")[0]);
     }
 
-    deleteBreakfast(meal_id) {
-        
+    deleteMeal(meal_id) {
+
         fetch(baseUri.restApi.foodLogs + "/" + meal_id, {
             method: "DELETE",
             headers: {
@@ -127,22 +128,9 @@ class List extends React.Component {
         })
             .then(response => {
                 if (response.status === 204 || response.status === 200) {
-                    
-                    var breakfast = this.state.breakfast;
-                    var meals = [];
-                    this.state.breakfast.meals.forEach(meal => {
-                        if(parseInt(meal.id) !== parseInt(meal_id)) {
-                            meals.push(meal);
-                        }
-                    })
-
-                    breakfast.meals = meals;
-
                     this.setState({
-                        breakfast: breakfast
+                        deleted: true
                     })
-                    return
-                    
                 }
                 else throw new Error(response.status)
             })
@@ -151,6 +139,12 @@ class List extends React.Component {
             })
     }
 
+    componentDidUpdate() {
+        if(this.state.deleted) {
+            this.fetchFoodLogs(this.state.today.toISOString().split("T")[0]);
+        }
+        
+    }
 
     render() {
         if (this.state.return) return <FoodLogs />
@@ -195,7 +189,7 @@ class List extends React.Component {
                                                             <GridItem xs={12} sm={12} md={8} style={{ marginTop: "13px" }}><strong>{meal.meal_name}</strong></GridItem>
                                                             <GridItem xs={12} sm={12} md={4}>
                                                                 <IconButton aria-label="back">
-                                                                    <DeleteForeverIcon onClick={() => this.deleteBreakfast(meal.id)} style={{ color: "white" }} fontSize="medium" />
+                                                                    <DeleteForeverIcon onClick={() => this.deleteMeal(meal.id)} style={{ color: "white" }} fontSize="medium" />
                                                                 </IconButton>
                                                             </GridItem>
                                                         </GridContainer>
@@ -250,7 +244,7 @@ class List extends React.Component {
                                                             <GridItem xs={12} sm={12} md={8} style={{ marginTop: "13px" }}><strong>{meal.meal_name}</strong></GridItem>
                                                             <GridItem xs={12} sm={12} md={4}>
                                                                 <IconButton aria-label="back">
-                                                                    <DeleteForeverIcon onClick={() => this.toggleReturn()} style={{ color: "white" }} fontSize="medium" />
+                                                                    <DeleteForeverIcon onClick={() => this.deleteMeal(meal.id)} style={{ color: "white" }} fontSize="medium" />
                                                                 </IconButton>
                                                             </GridItem>
                                                         </GridContainer>
@@ -305,7 +299,7 @@ class List extends React.Component {
                                                             <GridItem xs={12} sm={12} md={8} style={{ marginTop: "13px" }}><strong>{meal.meal_name}</strong></GridItem>
                                                             <GridItem xs={12} sm={12} md={4}>
                                                                 <IconButton aria-label="back">
-                                                                    <DeleteForeverIcon onClick={() => this.toggleReturn()} style={{ color: "white" }} fontSize="medium" />
+                                                                    <DeleteForeverIcon onClick={() => this.deleteMeal(meal.id)} style={{ color: "white" }} fontSize="medium" />
                                                                 </IconButton>
                                                             </GridItem>
                                                         </GridContainer>
@@ -360,7 +354,7 @@ class List extends React.Component {
                                                             <GridItem xs={12} sm={12} md={8} style={{ marginTop: "13px" }}><strong>{meal.meal_name}</strong></GridItem>
                                                             <GridItem xs={12} sm={12} md={4}>
                                                                 <IconButton aria-label="back">
-                                                                    <DeleteForeverIcon onClick={() => this.toggleReturn()} style={{ color: "white" }} fontSize="medium" />
+                                                                    <DeleteForeverIcon onClick={() => this.deleteMeal(meal.id)} style={{ color: "white" }} fontSize="medium" />
                                                                 </IconButton>
                                                             </GridItem>
                                                         </GridContainer>
