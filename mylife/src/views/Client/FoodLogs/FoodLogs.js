@@ -59,6 +59,7 @@ class FoodLogs extends React.Component {
                             </CardBody>
                         </Card>
                     </GridItem>
+                    
                 </GridContainer>
             </div>
         );

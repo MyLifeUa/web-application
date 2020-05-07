@@ -3,6 +3,7 @@ import React from 'react';
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import IconButton from '@material-ui/core/IconButton';
+import Button from "components/CustomButtons/Button.js";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
@@ -13,7 +14,8 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Slider from '@material-ui/core/Slider';
-
+import CustomInput from "components/CustomInput/CustomInput.js";
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import FoodLogs from "views/Client/FoodLogs/FoodLogs.js";
 
 class Insert extends React.Component {
@@ -29,10 +31,22 @@ class Insert extends React.Component {
     constructor() {
         super();
 
+        this.today = new Date();
+        let mealType = "snack";
+        if(6 <= parseInt(this.today.getHours()) && parseInt(this.today.getHours()) <= 11) {
+            mealType = "breakfast";
+        }
+        else if(12 <= parseInt(this.today.getHours()) && parseInt(this.today.getHours()) <= 15) {
+            mealType = "lunch";
+        }
+        else if(19 <= parseInt(this.today.getHours()) && parseInt(this.today.getHours()) <= 22) {
+            mealType = "dinner";
+        }
+
         this.state = {
             return: false,
             date: new Date(),
-            mealType: "breakfast",
+            mealType: mealType,
             servings: 1
         }
 
@@ -76,7 +90,9 @@ class Insert extends React.Component {
     }
 
     changeTypeMeal(event) {
-        alert(event.target.value);
+        this.setState({
+            mealType: event.target.value
+        })
     }
 
     onChange = (jsDate, dateString) => {
@@ -84,11 +100,9 @@ class Insert extends React.Component {
         this.setState({
             date: new Date(dateString.split("T")[0])
         })
-        alert(document.getElementById("slider").value)
     }
 
     handleSliderChange = (event, newValue) => {
-        alert(newValue);
         this.setState({
             servings: newValue
         })
@@ -141,7 +155,7 @@ class Insert extends React.Component {
                                     <GridItem xs={12} sm={12} md={2}>
                                         <h4 style={{ color: "#00acc1" }}>SERVINGS: </h4>
                                     </GridItem>
-                                    <GridItem xs={12} sm={12} md={3} style={{marginTop: "22px"}}>
+                                    <GridItem xs={12} sm={12} md={3} style={{ marginTop: "22px" }}>
                                         <Slider
                                             defaultValue={this.state.servings}
                                             onChange={this.handleSliderChange}
@@ -159,10 +173,19 @@ class Insert extends React.Component {
                                     <GridItem xs={12} sm={12} md={1}>
                                         <h4 style={{ color: "#00acc1" }}>MEAL: </h4>
                                     </GridItem>
-                                    <GridItem xs={12} sm={12} md={3}>
-                                        <h4>Day: </h4>
+                                    <GridItem xs={12} sm={12} md={3} style={{marginTop: "-20px"}}>
+                                        <CustomInput
+                                            labelText=""
+                                            id="meal-name"
+                                            formControlProps={{
+                                                fullWidth: true
+                                            }}
+                                        />
                                     </GridItem>
-                                    <GridItem xs={12} sm={12} md={8}></GridItem>
+                                    <GridItem xs={12} sm={12} md={5}></GridItem>
+                                    <GridItem xs={12} sm={12} md={3} style={{marginTop: "10px"}}>
+                                        <Button color="info" block round><AddCircleIcon /> Add food log</Button>
+                                    </GridItem>
                                 </GridContainer>
                             </CardBody>
                         </Card>
