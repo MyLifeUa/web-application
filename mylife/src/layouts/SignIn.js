@@ -45,7 +45,6 @@ class SignIn extends React.Component {
                 var currentUser = { "role": data.role, "userInfo": data.data, "token": data.token }
 
                 localStorage.setItem('currentUser', JSON.stringify(currentUser))
-
                 this.setState({
                     redirect: true,
                     currentUser: JSON.parse(localStorage.getItem('currentUser')).role

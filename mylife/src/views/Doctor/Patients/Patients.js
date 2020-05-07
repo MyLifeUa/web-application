@@ -86,7 +86,7 @@ class Patients extends React.Component {
             body: JSON.stringify({ client: this.state.currentPatient })
         })
             .then(response => {
-                if (response.status === 204) {
+                if (response.status === 204 || response.status === 200) {
                     var patients = [];
                     for (var i = 0; i < this.state.patients.length; i++) {
                         if (this.state.patients[i][2] !== this.state.currentPatient)
