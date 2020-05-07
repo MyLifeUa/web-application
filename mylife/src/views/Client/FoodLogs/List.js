@@ -44,7 +44,7 @@ class List extends React.Component {
 
     componentDidMount() {
         //this.fetchFoodLogs(this.today.toISOString().split("T")[0]);
-        this.fetchFoodLogs("2020-05-06");
+        this.fetchFoodLogs("2020-05-05");
     }
 
     fetchFoodLogs(date) {
