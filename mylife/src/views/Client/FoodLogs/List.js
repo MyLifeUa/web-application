@@ -27,7 +27,11 @@ class List extends React.Component {
         super();
 
         this.state = {
-            return: false
+            return: false,
+            breakfast: { meals: [] },
+            lunch: { meals: [] },
+            snack: { meals: [] },
+            dinner: { meals: [] },
         }
 
         this.authUser = JSON.parse(localStorage.getItem('authUser'));
@@ -40,7 +44,7 @@ class List extends React.Component {
 
     componentDidMount() {
         //this.fetchFoodLogs(this.today.toISOString().split("T")[0]);
-        this.fetchFoodLogs("2020-05-05");
+        this.fetchFoodLogs("2020-05-06");
     }
 
     fetchFoodLogs(date) {
@@ -58,7 +62,19 @@ class List extends React.Component {
 
             })
             .then(data => {
-                console.log(data);
+
+                let breakfast = data.message.breakfast;
+                let lunch = data.message.lunch;
+                let snack = data.message.snack;
+                let dinner = data.message.dinner;
+
+                console.log(breakfast);
+                this.setState({
+                    breakfast: breakfast,
+                    lunch: lunch,
+                    snack: snack,
+                    dinner: dinner,
+                })
             })
             .catch(error => {
                 console.log("Fetch error: " + error);
@@ -88,7 +104,8 @@ class List extends React.Component {
                                 <i className="fas fa-sun"></i> <strong>Breakfast</strong>
                             </CardHeader>
                             <CardBody>
-
+                                {this.state.breakfast.meals.length === 0 ?
+                                    <h4>There are no meals!</h4> : <h1>Hello</h1>}
                             </CardBody>
                         </Card>
                     </GridItem>
@@ -98,7 +115,8 @@ class List extends React.Component {
                                 <i className="fas fa-utensils"></i> <strong>Lunch</strong>
                             </CardHeader>
                             <CardBody>
-                        
+                                {this.state.lunch.meals.length === 0 ?
+                                    <h4>There are no meals!</h4> : <h1>Hello</h1>}
                             </CardBody>
                         </Card>
                     </GridItem>
@@ -108,7 +126,8 @@ class List extends React.Component {
                                 <i className="fas fa-cookie-bite"></i> <strong>Snack</strong>
                             </CardHeader>
                             <CardBody>
-                        
+                                {this.state.snack.meals.length === 0 ?
+                                    <h4>There are no meals!</h4> : <h1>Hello</h1>}
                             </CardBody>
                         </Card>
                     </GridItem>
@@ -118,7 +137,8 @@ class List extends React.Component {
                                 <i className="fas fa-moon"></i> <strong>Dinner</strong>
                             </CardHeader>
                             <CardBody>
-                        
+                                {this.state.dinner.meals.length === 0 ?
+                                    <h4>There are no meals!</h4> : <h1>Hello</h1>}
                             </CardBody>
                         </Card>
                     </GridItem>
