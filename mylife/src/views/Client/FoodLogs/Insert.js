@@ -17,6 +17,9 @@ import Slider from '@material-ui/core/Slider';
 import CustomInput from "components/CustomInput/CustomInput.js";
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import FoodLogs from "views/Client/FoodLogs/FoodLogs.js";
+import SnackbarContent from "components/Snackbar/SnackbarContent.js";
+
+import baseUri from "variables/baseURI.js";
 
 class Insert extends React.Component {
 
@@ -33,26 +36,27 @@ class Insert extends React.Component {
 
         this.today = new Date();
         let mealType = "snack";
-        if(6 <= parseInt(this.today.getHours()) && parseInt(this.today.getHours()) <= 11) {
+        if (6 <= parseInt(this.today.getHours()) && parseInt(this.today.getHours()) <= 11) {
             mealType = "breakfast";
         }
-        else if(12 <= parseInt(this.today.getHours()) && parseInt(this.today.getHours()) <= 15) {
+        else if (12 <= parseInt(this.today.getHours()) && parseInt(this.today.getHours()) <= 15) {
             mealType = "lunch";
         }
-        else if(19 <= parseInt(this.today.getHours()) && parseInt(this.today.getHours()) <= 22) {
+        else if (19 <= parseInt(this.today.getHours()) && parseInt(this.today.getHours()) <= 22) {
             mealType = "dinner";
         }
 
         this.state = {
             return: false,
-            date: new Date(),
+            date: (new Date()).toISOString().split('T')[0],
             mealType: mealType,
-            servings: 1
+            servings: 1,
+            mealName: "Hamburguer",
+            message: 'Please, insert a meal name!',
+            color: 'danger',
         }
 
         this.authUser = JSON.parse(localStorage.getItem('authUser'));
-
-        this.date = this.state.date.toISOString().split('T')[0];
 
         this.servings = [
             {
@@ -81,6 +85,52 @@ class Insert extends React.Component {
         this.changeTypeMeal = this.changeTypeMeal.bind(this);
         this.handleSliderChange = this.handleSliderChange.bind(this);
         this.onChange = this.onChange.bind(this);
+        this.addFoodLog = this.addFoodLog.bind(this);
+    }
+
+    addFoodLog() {
+        console.log(this.state)
+        let mealName = document.getElementById("meal-name").value;
+        if(mealName === "") {
+            this.setState({
+                mealName: ""
+            });
+            return;
+        }
+
+        const payload = {
+            day: this.state.date,
+            type_of_meal: this.state.mealType,
+            number_of_servings: parseInt(this.state.servings),
+            meal: this.state.mealName
+        }
+
+        fetch(baseUri.restApi.foodLogs , {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": "Token " + this.authUser.token
+            },
+            body: JSON.stringify(payload)
+        })
+            .then(response => {
+                if (!response.ok) throw new Error(response.status);
+                else return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                this.setState({
+                    mealName: "",
+                    message: "Food log added with success!",
+                    color: "success"
+                })
+
+            })
+            .catch(error => {
+                console.log("Fetch error: " + error);
+            })
+
     }
 
     toggleReturn() {
@@ -98,7 +148,7 @@ class Insert extends React.Component {
     onChange = (jsDate, dateString) => {
         document.getElementById("birth-date").value = dateString.split("T")[0];
         this.setState({
-            date: new Date(dateString.split("T")[0])
+            date: dateString.split("T")[0]
         })
     }
 
@@ -133,7 +183,7 @@ class Insert extends React.Component {
                                         <DatePickerInput
                                             locale="en-SG"
                                             id="birth-date"
-                                            value={this.date}
+                                            value={this.state.date}
                                             onChange={this.onChange}
                                         />
                                     </GridItem>
@@ -173,7 +223,7 @@ class Insert extends React.Component {
                                     <GridItem xs={12} sm={12} md={1}>
                                         <h4 style={{ color: "#00acc1" }}>MEAL: </h4>
                                     </GridItem>
-                                    <GridItem xs={12} sm={12} md={3} style={{marginTop: "-20px"}}>
+                                    <GridItem xs={12} sm={12} md={3} style={{ marginTop: "-20px" }}>
                                         <CustomInput
                                             labelText=""
                                             id="meal-name"
@@ -183,13 +233,21 @@ class Insert extends React.Component {
                                         />
                                     </GridItem>
                                     <GridItem xs={12} sm={12} md={5}></GridItem>
-                                    <GridItem xs={12} sm={12} md={3} style={{marginTop: "10px"}}>
-                                        <Button color="info" block round><AddCircleIcon /> Add food log</Button>
+                                    <GridItem xs={12} sm={12} md={3} style={{ marginTop: "10px" }}>
+                                        <Button color="info" block round onClick={this.addFoodLog}><AddCircleIcon /> Add food log</Button>
                                     </GridItem>
                                 </GridContainer>
                             </CardBody>
                         </Card>
                     </GridItem>
+                    {this.state.mealName === "" &&
+                        <GridItem xs={12} sm={12} md={4}>
+                            <SnackbarContent
+                                message={this.state.message}
+                                color={this.state.color}
+                            />
+                        </GridItem>
+                    }
                 </GridContainer>
             </div>
         )
