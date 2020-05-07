@@ -12,6 +12,7 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
+import Slider from '@material-ui/core/Slider';
 
 import FoodLogs from "views/Client/FoodLogs/FoodLogs.js";
 
@@ -31,15 +32,40 @@ class Insert extends React.Component {
         this.state = {
             return: false,
             date: new Date(),
-            mealType: "breakfast"
+            mealType: "breakfast",
+            servings: 1
         }
 
         this.authUser = JSON.parse(localStorage.getItem('authUser'));
 
         this.date = this.state.date.toISOString().split('T')[0];
 
+        this.servings = [
+            {
+                value: 1,
+                label: '1',
+            },
+            {
+                value: 2,
+                label: '2',
+            },
+            {
+                value: 3,
+                label: '3',
+            },
+            {
+                value: 4,
+                label: '4',
+            },
+            {
+                value: 5,
+                label: '5',
+            },
+        ]
+
         this.toggleReturn = this.toggleReturn.bind(this);
         this.changeTypeMeal = this.changeTypeMeal.bind(this);
+        this.handleSliderChange = this.handleSliderChange.bind(this);
         this.onChange = this.onChange.bind(this);
     }
 
@@ -58,8 +84,15 @@ class Insert extends React.Component {
         this.setState({
             date: new Date(dateString.split("T")[0])
         })
-        alert(document.getElementById("meal-type").value)
+        alert(document.getElementById("slider").value)
     }
+
+    handleSliderChange = (event, newValue) => {
+        alert(newValue);
+        this.setState({
+            servings: newValue
+        })
+    };
 
     render() {
         if (this.state.return) return <FoodLogs />
@@ -94,7 +127,7 @@ class Insert extends React.Component {
                                     <GridItem xs={12} sm={12} md={2}>
                                         <h4 style={{ color: "#00acc1" }}>TYPE OF MEAL: </h4>
                                     </GridItem>
-                                    <GridItem xs={12} sm={12} md={5} style={{marginTop: "20px"}}>
+                                    <GridItem xs={12} sm={12} md={5} style={{ marginTop: "18px" }}>
                                         <FormControl component="fieldset">
                                             <RadioGroup row aria-label="position" name="position" defaultValue={this.state.mealType}>
                                                 <FormControlLabel value="breakfast" control={<Radio color="primary" onChange={this.changeTypeMeal} />} label="Breakfast" />
@@ -105,13 +138,24 @@ class Insert extends React.Component {
                                         </FormControl>
                                     </GridItem>
                                     <GridItem xs={12} sm={12} md={5}></GridItem>
-                                    <GridItem xs={12} sm={12} md={3}>
+                                    <GridItem xs={12} sm={12} md={2}>
                                         <h4 style={{ color: "#00acc1" }}>SERVINGS: </h4>
                                     </GridItem>
-                                    <GridItem xs={12} sm={12} md={3}>
-                                        <h4>Day: </h4>
+                                    <GridItem xs={12} sm={12} md={3} style={{marginTop: "22px"}}>
+                                        <Slider
+                                            defaultValue={this.state.servings}
+                                            onChange={this.handleSliderChange}
+                                            getAriaValueText={this.valuetext}
+                                            id="slider"
+                                            aria-labelledby="discrete-slider-custom"
+                                            step={0.5}
+                                            min={1}
+                                            max={5}
+                                            valueLabelDisplay="auto"
+                                            marks={this.servings}
+                                        />
                                     </GridItem>
-                                    <GridItem xs={12} sm={12} md={6}></GridItem>
+                                    <GridItem xs={12} sm={12} md={7}></GridItem>
                                     <GridItem xs={12} sm={12} md={1}>
                                         <h4 style={{ color: "#00acc1" }}>MEAL: </h4>
                                     </GridItem>
