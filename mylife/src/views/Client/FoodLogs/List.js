@@ -28,10 +28,10 @@ class List extends React.Component {
 
         this.state = {
             return: false,
-            breakfast: { meals: [] },
-            lunch: { meals: [] },
-            snack: { meals: [] },
-            dinner: { meals: [] },
+            breakfast: { total_calories: 0, meals: [] },
+            lunch: { total_calories: 0, meals: [] },
+            snack: { total_calories: 0, meals: [] },
+            dinner: { total_calories: 0, meals: [] },
         }
 
         this.authUser = JSON.parse(localStorage.getItem('authUser'));
@@ -68,7 +68,7 @@ class List extends React.Component {
                 let snack = data.message.snack;
                 let dinner = data.message.dinner;
 
-                console.log(breakfast);
+                console.log(data.message);
                 this.setState({
                     breakfast: breakfast,
                     lunch: lunch,
@@ -103,9 +103,46 @@ class List extends React.Component {
                             <CardHeader style={this.classes.cardHeader}>
                                 <i className="fas fa-sun"></i> <strong>Breakfast</strong>
                             </CardHeader>
-                            <CardBody>
+                            <CardBody profile>
                                 {this.state.breakfast.meals.length === 0 ?
-                                    <h4>There are no meals!</h4> : <h1>Hello</h1>}
+                                    <h4>There are no meals!</h4>
+                                    :
+                                    <GridContainer>
+                                        <GridItem xs={12} sm={12} md={12}><h6><strong style={{ color: "#00acc1" }}>Total calories:</strong> {this.state.breakfast.total_calories} cal</h6></GridItem>
+                                        <GridItem xs={12} sm={12} md={12} style={{ marginTop: "-50px" }}><h6><strong style={{ color: "#00acc1" }}>Meals:</strong></h6></GridItem>
+                                        {this.state.breakfast.meals.map((meal, key) => {
+                                            return <GridItem xs={12} sm={12} md={12} style={{ marginTop: "-40px" }}>
+                                                <Card style={{ backgroundColor: "#eee" }}>
+                                                    <CardHeader style={{ backgroundColor: "#00acc1", color: "white" }}>
+                                                        <strong>{meal.meal_name}</strong>
+                                                    </CardHeader>
+                                                    <CardBody>
+                                                        <GridContainer>
+                                                            <GridItem xs={12} sm={12} md={12}>
+                                                                <strong>Category:</strong> {meal.meal_category}
+                                                            </GridItem>
+                                                            <GridItem xs={12} sm={12} md={12}>
+                                                                <strong>Servings:</strong> {meal.number_of_servings}
+                                                            </GridItem>
+                                                            <GridItem xs={12} sm={12} md={12}>
+                                                                <strong>Calories:</strong> {String(meal.calories).substring(0, 6)}
+                                                            </GridItem>
+                                                            <GridItem xs={12} sm={12} md={12}>
+                                                                <strong>Carbs:</strong> {String(meal.carbs).substring(0, 6)}
+                                                            </GridItem>
+                                                            <GridItem xs={12} sm={12} md={12}>
+                                                                <strong>Fat:</strong> {String(meal.fat).substring(0, 6)}
+                                                            </GridItem>
+                                                            <GridItem xs={12} sm={12} md={12}>
+                                                                <strong>Proteins:</strong> {String(meal.proteins).substring(0, 6)}
+                                                            </GridItem>
+                                                        </GridContainer>
+                                                    </CardBody>
+                                                </Card>
+                                            </GridItem>
+                                        })}
+                                    </GridContainer>
+                                }
                             </CardBody>
                         </Card>
                     </GridItem>
@@ -116,7 +153,44 @@ class List extends React.Component {
                             </CardHeader>
                             <CardBody>
                                 {this.state.lunch.meals.length === 0 ?
-                                    <h4>There are no meals!</h4> : <h1>Hello</h1>}
+                                    <h4>There are no meals!</h4>
+                                    :
+                                    <GridContainer>
+                                        <GridItem xs={12} sm={12} md={12}><h6><span style={{ color: "#00acc1" }}>Total calories:</span> {this.state.lunch.total_calories} cal</h6></GridItem>
+                                        <GridItem xs={12} sm={12} md={12} style={{ marginTop: "-50px" }}><h6><span style={{ color: "#00acc1" }}>Meals:</span></h6></GridItem>
+                                        {this.state.lunch.meals.map((meal, key) => {
+                                            return <GridItem xs={12} sm={12} md={12} style={{ marginTop: "-40px" }}>
+                                                <Card style={{ backgroundColor: "#eee" }}>
+                                                    <CardHeader style={{ backgroundColor: "#00acc1", color: "white" }}>
+                                                        <strong>{meal.meal_name}</strong>
+                                                    </CardHeader>
+                                                    <CardBody>
+                                                        <GridContainer>
+                                                            <GridItem xs={12} sm={12} md={12}>
+                                                                <strong>Category:</strong> {meal.meal_category}
+                                                            </GridItem>
+                                                            <GridItem xs={12} sm={12} md={12}>
+                                                                <strong>Servings:</strong> {meal.number_of_servings}
+                                                            </GridItem>
+                                                            <GridItem xs={12} sm={12} md={12}>
+                                                                <strong>Calories:</strong> {String(meal.calories).substring(0, 6)}
+                                                            </GridItem>
+                                                            <GridItem xs={12} sm={12} md={12}>
+                                                                <strong>Carbs:</strong> {String(meal.carbs).substring(0, 6)}
+                                                            </GridItem>
+                                                            <GridItem xs={12} sm={12} md={12}>
+                                                                <strong>Fat:</strong> {String(meal.fat).substring(0, 6)}
+                                                            </GridItem>
+                                                            <GridItem xs={12} sm={12} md={12}>
+                                                                <strong>Proteins:</strong> {String(meal.proteins).substring(0, 6)}
+                                                            </GridItem>
+                                                        </GridContainer>
+                                                    </CardBody>
+                                                </Card>
+                                            </GridItem>
+                                        })}
+                                    </GridContainer>
+                                }
                             </CardBody>
                         </Card>
                     </GridItem>
@@ -127,7 +201,44 @@ class List extends React.Component {
                             </CardHeader>
                             <CardBody>
                                 {this.state.snack.meals.length === 0 ?
-                                    <h4>There are no meals!</h4> : <h1>Hello</h1>}
+                                    <h4>There are no meals!</h4>
+                                    :
+                                    <GridContainer>
+                                        <GridItem xs={12} sm={12} md={12}><h6><span style={{ color: "#00acc1" }}>Total calories:</span> {this.state.snack.total_calories} cal</h6></GridItem>
+                                        <GridItem xs={12} sm={12} md={12} style={{ marginTop: "-50px" }}><h6><span style={{ color: "#00acc1" }}>Meals:</span></h6></GridItem>
+                                        {this.state.snack.meals.map((meal, key) => {
+                                            return <GridItem xs={12} sm={12} md={12} style={{ marginTop: "-40px" }}>
+                                                <Card style={{ backgroundColor: "#eee" }}>
+                                                    <CardHeader style={{ backgroundColor: "#00acc1", color: "white" }}>
+                                                        <strong>{meal.meal_name}</strong>
+                                                    </CardHeader>
+                                                    <CardBody>
+                                                        <GridContainer>
+                                                            <GridItem xs={12} sm={12} md={12}>
+                                                                <strong>Category:</strong> {meal.meal_category}
+                                                            </GridItem>
+                                                            <GridItem xs={12} sm={12} md={12}>
+                                                                <strong>Servings:</strong> {meal.number_of_servings}
+                                                            </GridItem>
+                                                            <GridItem xs={12} sm={12} md={12}>
+                                                                <strong>Calories:</strong> {String(meal.calories).substring(0, 6)}
+                                                            </GridItem>
+                                                            <GridItem xs={12} sm={12} md={12}>
+                                                                <strong>Carbs:</strong> {String(meal.carbs).substring(0, 6)}
+                                                            </GridItem>
+                                                            <GridItem xs={12} sm={12} md={12}>
+                                                                <strong>Fat:</strong> {String(meal.fat).substring(0, 6)}
+                                                            </GridItem>
+                                                            <GridItem xs={12} sm={12} md={12}>
+                                                                <strong>Proteins:</strong> {String(meal.proteins).substring(0, 6)}
+                                                            </GridItem>
+                                                        </GridContainer>
+                                                    </CardBody>
+                                                </Card>
+                                            </GridItem>
+                                        })}
+                                    </GridContainer>
+                                }
                             </CardBody>
                         </Card>
                     </GridItem>
@@ -138,7 +249,44 @@ class List extends React.Component {
                             </CardHeader>
                             <CardBody>
                                 {this.state.dinner.meals.length === 0 ?
-                                    <h4>There are no meals!</h4> : <h1>Hello</h1>}
+                                    <h4>There are no meals!</h4>
+                                    :
+                                    <GridContainer>
+                                        <GridItem xs={12} sm={12} md={12}><h6><span style={{ color: "#00acc1" }}>Total calories:</span> {this.state.dinner.total_calories} cal</h6></GridItem>
+                                        <GridItem xs={12} sm={12} md={12} style={{ marginTop: "-50px" }}><h6><span style={{ color: "#00acc1" }}>Meals:</span></h6></GridItem>
+                                        {this.state.dinner.meals.map((meal, key) => {
+                                            return <GridItem xs={12} sm={12} md={12} style={{ marginTop: "-40px" }}>
+                                                <Card style={{ backgroundColor: "#eee" }}>
+                                                    <CardHeader style={{ backgroundColor: "#00acc1", color: "white" }}>
+                                                        <strong>{meal.meal_name}</strong>
+                                                    </CardHeader>
+                                                    <CardBody>
+                                                        <GridContainer>
+                                                            <GridItem xs={12} sm={12} md={12}>
+                                                                <strong>Category:</strong> {meal.meal_category}
+                                                            </GridItem>
+                                                            <GridItem xs={12} sm={12} md={12}>
+                                                                <strong>Servings:</strong> {meal.number_of_servings}
+                                                            </GridItem>
+                                                            <GridItem xs={12} sm={12} md={12}>
+                                                                <strong>Calories:</strong> {String(meal.calories).substring(0, 6)}
+                                                            </GridItem>
+                                                            <GridItem xs={12} sm={12} md={12}>
+                                                                <strong>Carbs:</strong> {String(meal.carbs).substring(0, 6)}
+                                                            </GridItem>
+                                                            <GridItem xs={12} sm={12} md={12}>
+                                                                <strong>Fat:</strong> {String(meal.fat).substring(0, 6)}
+                                                            </GridItem>
+                                                            <GridItem xs={12} sm={12} md={12}>
+                                                                <strong>Proteins:</strong> {String(meal.proteins).substring(0, 6)}
+                                                            </GridItem>
+                                                        </GridContainer>
+                                                    </CardBody>
+                                                </Card>
+                                            </GridItem>
+                                        })}
+                                    </GridContainer>
+                                }
                             </CardBody>
                         </Card>
                     </GridItem>
