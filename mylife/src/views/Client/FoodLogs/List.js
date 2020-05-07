@@ -8,8 +8,11 @@ import ArrowBack from '@material-ui/icons/ArrowBackIos';
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
+import { DatePickerInput } from 'rc-datepicker';
 
 import FoodLogs from "views/Client/FoodLogs/FoodLogs.js";
+
+import utils from "variables/utils.js";
 
 import baseUri from "variables/baseURI.js";
 
@@ -28,6 +31,7 @@ class List extends React.Component {
 
         this.state = {
             return: false,
+            today: new Date(),
             breakfast: { total_calories: 0, meals: [] },
             lunch: { total_calories: 0, meals: [] },
             snack: { total_calories: 0, meals: [] },
@@ -36,15 +40,16 @@ class List extends React.Component {
 
         this.authUser = JSON.parse(localStorage.getItem('authUser'));
 
-        this.today = new Date();
+        this.date = this.state.today.toISOString().split('T')[0];
 
+        this.dayLabel = this.dayLabel.bind(this);
         this.toggleReturn = this.toggleReturn.bind(this);
         this.fetchFoodLogs = this.fetchFoodLogs.bind(this);
+        this.onChange = this.onChange.bind(this);
     }
 
     componentDidMount() {
-        //this.fetchFoodLogs(this.today.toISOString().split("T")[0]);
-        this.fetchFoodLogs("2020-05-05");
+        this.fetchFoodLogs(this.state.today.toISOString().split("T")[0]);
     }
 
     fetchFoodLogs(date) {
@@ -87,6 +92,28 @@ class List extends React.Component {
         })
     }
 
+    dayLabel() {
+        switch (parseInt(String(this.state.today.getUTCDate()).charAt(String(this.state.today.getUTCDate()).length - 1))) {
+            case 1:
+                return "st"
+            case 2:
+                return "nd"
+            case 3:
+                return "rd"
+            default:
+                return "th"
+        }
+    }
+
+    onChange = (jsDate, dateString) => {
+        document.getElementById("birth-date").value = dateString.split("T")[0];
+        this.setState({
+            today: new Date(dateString.split("T")[0])
+        })
+        this.fetchFoodLogs(dateString.split("T")[0]);
+    }
+
+
     render() {
         if (this.state.return) return <FoodLogs />
         return (
@@ -98,7 +125,19 @@ class List extends React.Component {
                         </IconButton>
                         Review food logs</h3>
                     </GridItem>
-                    <GridItem xs={12} sm={12} md={3}>
+                    <GridItem xs={12} sm={12} md={3} style={{ marginTop: "-5px" }}>
+                        <p><i className="fas fa-calendar-alt" style={{ color: "#00acc1" }}></i> {utils.weekday[this.state.today.getDay()]}, {this.state.today.getUTCDate()}{this.dayLabel()} of {utils.monthNames[this.state.today.getMonth()] + " " + this.state.today.getFullYear()}</p>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={2}>
+                        <DatePickerInput
+                            locale="en-SG"
+                            id="birth-date"
+                            value={this.date}
+                            onChange={this.onChange}
+                        />
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={7}></GridItem>
+                    <GridItem xs={12} sm={12} md={12}>
                         <Card>
                             <CardHeader style={this.classes.cardHeader}>
                                 <i className="fas fa-sun"></i> <strong>Breakfast</strong>
@@ -111,7 +150,7 @@ class List extends React.Component {
                                         <GridItem xs={12} sm={12} md={12}><h6><strong style={{ color: "#00acc1" }}>Total calories:</strong> {this.state.breakfast.total_calories} cal</h6></GridItem>
                                         <GridItem xs={12} sm={12} md={12} style={{ marginTop: "-50px" }}><h6><strong style={{ color: "#00acc1" }}>Meals:</strong></h6></GridItem>
                                         {this.state.breakfast.meals.map((meal, key) => {
-                                            return <GridItem xs={12} sm={12} md={12} style={{ marginTop: "-40px" }}>
+                                            return <GridItem xs={12} sm={12} md={3} style={{ marginTop: "-40px" }}>
                                                 <Card style={{ backgroundColor: "#eee" }}>
                                                     <CardHeader style={{ backgroundColor: "#00acc1", color: "white" }}>
                                                         <strong>{meal.meal_name}</strong>
@@ -146,7 +185,7 @@ class List extends React.Component {
                             </CardBody>
                         </Card>
                     </GridItem>
-                    <GridItem xs={12} sm={12} md={3}>
+                    <GridItem xs={12} sm={12} md={12}>
                         <Card>
                             <CardHeader style={this.classes.cardHeader}>
                                 <i className="fas fa-utensils"></i> <strong>Lunch</strong>
@@ -159,7 +198,7 @@ class List extends React.Component {
                                         <GridItem xs={12} sm={12} md={12}><h6><span style={{ color: "#00acc1" }}>Total calories:</span> {this.state.lunch.total_calories} cal</h6></GridItem>
                                         <GridItem xs={12} sm={12} md={12} style={{ marginTop: "-50px" }}><h6><span style={{ color: "#00acc1" }}>Meals:</span></h6></GridItem>
                                         {this.state.lunch.meals.map((meal, key) => {
-                                            return <GridItem xs={12} sm={12} md={12} style={{ marginTop: "-40px" }}>
+                                            return <GridItem xs={12} sm={12} md={3} style={{ marginTop: "-40px" }}>
                                                 <Card style={{ backgroundColor: "#eee" }}>
                                                     <CardHeader style={{ backgroundColor: "#00acc1", color: "white" }}>
                                                         <strong>{meal.meal_name}</strong>
@@ -194,7 +233,7 @@ class List extends React.Component {
                             </CardBody>
                         </Card>
                     </GridItem>
-                    <GridItem xs={12} sm={12} md={3}>
+                    <GridItem xs={12} sm={12} md={12}>
                         <Card>
                             <CardHeader style={this.classes.cardHeader}>
                                 <i className="fas fa-cookie-bite"></i> <strong>Snack</strong>
@@ -207,7 +246,7 @@ class List extends React.Component {
                                         <GridItem xs={12} sm={12} md={12}><h6><span style={{ color: "#00acc1" }}>Total calories:</span> {this.state.snack.total_calories} cal</h6></GridItem>
                                         <GridItem xs={12} sm={12} md={12} style={{ marginTop: "-50px" }}><h6><span style={{ color: "#00acc1" }}>Meals:</span></h6></GridItem>
                                         {this.state.snack.meals.map((meal, key) => {
-                                            return <GridItem xs={12} sm={12} md={12} style={{ marginTop: "-40px" }}>
+                                            return <GridItem xs={12} sm={12} md={3} style={{ marginTop: "-40px" }}>
                                                 <Card style={{ backgroundColor: "#eee" }}>
                                                     <CardHeader style={{ backgroundColor: "#00acc1", color: "white" }}>
                                                         <strong>{meal.meal_name}</strong>
@@ -242,7 +281,7 @@ class List extends React.Component {
                             </CardBody>
                         </Card>
                     </GridItem>
-                    <GridItem xs={12} sm={12} md={3}>
+                    <GridItem xs={12} sm={12} md={12}>
                         <Card>
                             <CardHeader style={this.classes.cardHeader}>
                                 <i className="fas fa-moon"></i> <strong>Dinner</strong>
@@ -255,7 +294,7 @@ class List extends React.Component {
                                         <GridItem xs={12} sm={12} md={12}><h6><span style={{ color: "#00acc1" }}>Total calories:</span> {this.state.dinner.total_calories} cal</h6></GridItem>
                                         <GridItem xs={12} sm={12} md={12} style={{ marginTop: "-50px" }}><h6><span style={{ color: "#00acc1" }}>Meals:</span></h6></GridItem>
                                         {this.state.dinner.meals.map((meal, key) => {
-                                            return <GridItem xs={12} sm={12} md={12} style={{ marginTop: "-40px" }}>
+                                            return <GridItem xs={12} sm={12} md={3} style={{ marginTop: "-40px" }}>
                                                 <Card style={{ backgroundColor: "#eee" }}>
                                                     <CardHeader style={{ backgroundColor: "#00acc1", color: "white" }}>
                                                         <strong>{meal.meal_name}</strong>
