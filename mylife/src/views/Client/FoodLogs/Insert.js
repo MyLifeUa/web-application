@@ -52,8 +52,9 @@ class Insert extends React.Component {
             mealType: mealType,
             servings: 1,
             mealName: "Hamburguer",
-            message: 'Please, insert a meal name!',
+            message: 'Meal not found!',
             color: 'danger',
+            meals: []
         }
 
         this.authUser = JSON.parse(localStorage.getItem('authUser'));
@@ -86,14 +87,54 @@ class Insert extends React.Component {
         this.handleSliderChange = this.handleSliderChange.bind(this);
         this.onChange = this.onChange.bind(this);
         this.addFoodLog = this.addFoodLog.bind(this);
+        this.fetchMeals = this.fetchMeals.bind(this);
+    }
+
+    fetchMeals() {
+        fetch(baseUri.restApi.meals, {
+            method: "GET",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": "Token " + this.authUser.token
+            },
+        })
+            .then(response => {
+                if (!response.ok) throw new Error(response.status);
+                else return response.json();
+            })
+            .then(data => {
+                this.setState({
+                    meals: data.message
+                })
+            })
+            .catch(error => {
+                console.log("Fetch error: " + error);
+            })
+    }
+
+    componentDidMount() {
+        this.fetchMeals();
     }
 
     addFoodLog() {
-        console.log(this.state)
+
         let mealName = document.getElementById("meal-name").value;
-        if(mealName === "") {
+        let found = false;
+        let meal_id = -1;
+        this.state.meals.forEach(meal => {
+
+            if (meal.name === mealName) {
+                meal_id = meal.id;
+                found = true;
+            }
+        })
+
+        if (!found) {
             this.setState({
-                mealName: ""
+                mealName: "",
+                message: "Meal not found!",
+                color: "danger"
             });
             return;
         }
@@ -102,10 +143,12 @@ class Insert extends React.Component {
             day: this.state.date,
             type_of_meal: this.state.mealType,
             number_of_servings: parseInt(this.state.servings),
-            meal: this.state.mealName
+            meal: parseInt(meal_id) // actually, the id
         }
 
-        fetch(baseUri.restApi.foodLogs , {
+        console.log(payload);
+
+        fetch(baseUri.restApi.foodLogs, {
             method: "POST",
             headers: {
                 "Accept": "application/json",
@@ -119,7 +162,6 @@ class Insert extends React.Component {
                 else return response.json();
             })
             .then(data => {
-                console.log(data);
                 this.setState({
                     mealName: "",
                     message: "Food log added with success!",
@@ -130,7 +172,6 @@ class Insert extends React.Component {
             .catch(error => {
                 console.log("Fetch error: " + error);
             })
-
     }
 
     toggleReturn() {
