@@ -12,9 +12,12 @@ class Insert extends React.Component {
 
     constructor() {
         super();
+        
         this.state = {
             return: false
         }
+
+        this.authUser = JSON.parse(localStorage.getItem('authUser'));
 
         this.toggleReturn = this.toggleReturn.bind(this);
     }
