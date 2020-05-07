@@ -4,6 +4,7 @@ import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import IconButton from '@material-ui/core/IconButton';
 import ArrowBack from '@material-ui/icons/ArrowBackIos';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever.js';
 
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
@@ -153,7 +154,14 @@ class List extends React.Component {
                                             return <GridItem xs={12} sm={12} md={3} style={{ marginTop: "-40px" }}>
                                                 <Card style={{ backgroundColor: "#eee" }}>
                                                     <CardHeader style={{ backgroundColor: "#00acc1", color: "white" }}>
-                                                        <strong>{meal.meal_name}</strong>
+                                                        <GridContainer>
+                                                            <GridItem xs={12} sm={12} md={8} style={{ marginTop: "13px" }}><strong>{meal.meal_name}</strong></GridItem>
+                                                            <GridItem xs={12} sm={12} md={4}>
+                                                                <IconButton aria-label="back">
+                                                                    <DeleteForeverIcon onClick={() => this.toggleReturn()} style={{ color: "red" }} fontSize="medium" />
+                                                                </IconButton>
+                                                            </GridItem>
+                                                        </GridContainer>
                                                     </CardHeader>
                                                     <CardBody>
                                                         <GridContainer>
@@ -201,7 +209,14 @@ class List extends React.Component {
                                             return <GridItem xs={12} sm={12} md={3} style={{ marginTop: "-40px" }}>
                                                 <Card style={{ backgroundColor: "#eee" }}>
                                                     <CardHeader style={{ backgroundColor: "#00acc1", color: "white" }}>
-                                                        <strong>{meal.meal_name}</strong>
+                                                        <GridContainer>
+                                                            <GridItem xs={12} sm={12} md={8} style={{ marginTop: "13px" }}><strong>{meal.meal_name}</strong></GridItem>
+                                                            <GridItem xs={12} sm={12} md={4}>
+                                                                <IconButton aria-label="back">
+                                                                    <DeleteForeverIcon onClick={() => this.toggleReturn()} style={{ color: "red" }} fontSize="medium" />
+                                                                </IconButton>
+                                                            </GridItem>
+                                                        </GridContainer>
                                                     </CardHeader>
                                                     <CardBody>
                                                         <GridContainer>
@@ -249,7 +264,14 @@ class List extends React.Component {
                                             return <GridItem xs={12} sm={12} md={3} style={{ marginTop: "-40px" }}>
                                                 <Card style={{ backgroundColor: "#eee" }}>
                                                     <CardHeader style={{ backgroundColor: "#00acc1", color: "white" }}>
-                                                        <strong>{meal.meal_name}</strong>
+                                                        <GridContainer>
+                                                            <GridItem xs={12} sm={12} md={8} style={{ marginTop: "13px" }}><strong>{meal.meal_name}</strong></GridItem>
+                                                            <GridItem xs={12} sm={12} md={4}>
+                                                                <IconButton aria-label="back">
+                                                                    <DeleteForeverIcon onClick={() => this.toggleReturn()} style={{ color: "red" }} fontSize="medium" />
+                                                                </IconButton>
+                                                            </GridItem>
+                                                        </GridContainer>
                                                     </CardHeader>
                                                     <CardBody>
                                                         <GridContainer>
@@ -297,7 +319,14 @@ class List extends React.Component {
                                             return <GridItem xs={12} sm={12} md={3} style={{ marginTop: "-40px" }}>
                                                 <Card style={{ backgroundColor: "#eee" }}>
                                                     <CardHeader style={{ backgroundColor: "#00acc1", color: "white" }}>
-                                                        <strong>{meal.meal_name}</strong>
+                                                        <GridContainer>
+                                                            <GridItem xs={12} sm={12} md={8} style={{ marginTop: "13px" }}><strong>{meal.meal_name}</strong></GridItem>
+                                                            <GridItem xs={12} sm={12} md={4}>
+                                                                <IconButton aria-label="back">
+                                                                    <DeleteForeverIcon onClick={() => this.toggleReturn()} style={{ color: "red" }} fontSize="medium" />
+                                                                </IconButton>
+                                                            </GridItem>
+                                                        </GridContainer>
                                                     </CardHeader>
                                                     <CardBody>
                                                         <GridContainer>

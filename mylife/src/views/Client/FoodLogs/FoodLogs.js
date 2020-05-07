@@ -54,7 +54,7 @@ class FoodLogs extends React.Component {
                             </CardAvatar>
                             <CardBody profile>
                                 <Button color="info" round onClick={() => this.setState({ page: 2 })}>
-                                    Insert new food log
+                                    insert a new food log
                                 </Button>
                             </CardBody>
                         </Card>
