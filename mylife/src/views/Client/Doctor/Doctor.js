@@ -87,7 +87,7 @@ class Doctor extends React.Component {
             body: JSON.stringify({ client: this.state.authUser.message.email, doctor: this.state.doctor.email })
         })
             .then(response => {
-                if (response.status === 204) {
+                if (response.status === 204 || response.status === 200) {
 
                     var authUser = JSON.parse(localStorage.getItem('authUser'));
                     authUser.token = response.json().token

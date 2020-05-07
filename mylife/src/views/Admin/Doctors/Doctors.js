@@ -77,7 +77,7 @@ class Doctors extends React.Component {
             }
         })
             .then(response => {
-                if (response.status === 204) {
+                if (response.status === 204 || response.status === 200) {
                     var doctors = [];
                     for (var i = 0; i < this.state.doctors.length; i++) {
                         if (this.state.doctors[i][2] !== this.state.currentDoctor)
