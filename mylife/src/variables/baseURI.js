@@ -14,6 +14,8 @@ export default {
         nutrientsRatio: 'http://mednat.ieeta.pt:8442/health-stats/nutrients/ratio/',
         nutrientsTotal: 'http://mednat.ieeta.pt:8442/health-stats/nutrients/total/',
         heartLabel: 'http://mednat.ieeta.pt:8442/health-stats/body/heart-rate/',
-        myLifeLabel: 'http://mednat.ieeta.pt:8442/health-stats/my-life/'
+        myLifeLabel: 'http://mednat.ieeta.pt:8442/health-stats/my-life/',
+        foodLogs: 'http://mednat.ieeta.pt:8442/food-logs',
+        meals: 'http://mednat.ieeta.pt:8442/meals'
     }
 }

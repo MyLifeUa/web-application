@@ -19,6 +19,7 @@
 import Dashboard from "@material-ui/icons/Dashboard";
 import Person from "@material-ui/icons/Person";
 import Timeline from "@material-ui/icons/Timeline";
+import FoodIcon from "@material-ui/icons/Fastfood";
 // core components/views for Admin layout
 import DashboardPage from "views/Client/Dashboard/Dashboard.js";
 
@@ -27,6 +28,7 @@ import LocalHospitalIcon from '@material-ui/icons/LocalHospital';
 
 import Profile from "views/Client/Profile/Profile.js";
 import History from "views/Client/History/History.js"
+import FoodLogs from "views/Client/FoodLogs/FoodLogs.js";
 import Doctor from "views/Client/Doctor/Doctor.js";
 
 const dashboardRoutes = [
@@ -51,6 +53,13 @@ const dashboardRoutes = [
     name: "Health History",
     icon: Timeline,
     component: History,
+    layout: "/client"
+  },
+  {
+    path: "/food-logs",
+    name: "Food Logs",
+    icon: FoodIcon,
+    component: FoodLogs,
     layout: "/client"
   },
   {
