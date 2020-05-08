@@ -88,7 +88,6 @@ class List extends React.Component {
                 let snack = data.message.snack;
                 let dinner = data.message.dinner;
 
-                console.log(data.message);
                 this.setState({
                     breakfast: breakfast,
                     lunch: lunch,

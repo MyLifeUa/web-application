@@ -146,8 +146,6 @@ class Insert extends React.Component {
             meal: parseInt(meal_id) // actually, the id
         }
 
-        console.log(payload);
-
         fetch(baseUri.restApi.foodLogs, {
             method: "POST",
             headers: {
