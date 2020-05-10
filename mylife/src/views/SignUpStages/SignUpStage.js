@@ -63,9 +63,9 @@ class SecondStage extends React.Component {
             <div>
                 <GridContainer justify="center">
                     <GridItem xs={5} sm={5} md={10}>
-                        <h4 style={{ color: "#00acc1", textAlign: "center" }}>Do you have any of the following health problems?</h4>
+                        <h4 style={{ color: "#00acc1"}}>Do you have any of the following health problems?</h4>
                     </GridItem>
-                    <GridItem xs={5} sm={5} md={5}>
+                    <GridItem xs={5} sm={5} md={5} style={{marginBottom: "20px"}}>
                         <FormControlLabel
                             control={
                                 <Checkbox
@@ -80,7 +80,7 @@ class SecondStage extends React.Component {
                         />
 
                     </GridItem>
-                    <GridItem xs={5} sm={5} md={5}>
+                    <GridItem xs={5} sm={5} md={5} style={{marginBottom: "20px"}}>
                         <FormControlLabel
                             control={
                                 <Checkbox
