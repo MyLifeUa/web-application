@@ -6,6 +6,10 @@ import 'rc-datepicker/lib/style.css';
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+
 function FirstStage() {
     return (
         <div>
@@ -21,6 +25,83 @@ function FirstStage() {
 }
 
 class SecondStage extends React.Component {
+
+    constructor() {
+        super();
+        this.state = {
+            is_diabetic: false,
+            has_high_colesterol: false
+        }
+
+        localStorage.setItem('healthProblems', JSON.stringify(this.state));
+        this.toggleDiabetics = this.toggleDiabetics.bind(this);
+        this.toggleHighColesterol = this.toggleHighColesterol.bind(this);
+    }
+
+
+    toggleDiabetics() {
+        this.setState({
+            is_diabetic: !this.state.is_diabetic,
+            has_high_colesterol: this.state.has_high_colesterol
+        })
+    }
+
+    toggleHighColesterol() {
+        this.setState({
+            is_diabetic: this.state.is_diabetic,
+            has_high_colesterol: !this.state.has_high_colesterol
+        })
+    }
+
+    componentDidUpdate() {
+        localStorage.setItem('healthProblems', JSON.stringify(this.state));
+    }
+
+
+    render() {
+        return (
+            <div>
+                <GridContainer justify="center">
+                    <GridItem xs={5} sm={5} md={10}>
+                        <h4 style={{ color: "#00acc1", textAlign: "center" }}>Do you have any of the following health problems?</h4>
+                    </GridItem>
+                    <GridItem xs={5} sm={5} md={5}>
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    id="is_diabetic"
+                                    checked={this.state.is_diabetic}
+                                    onChange={this.toggleDiabetics}
+                                    name="checkedB"
+                                    color="primary"
+                                />
+                            }
+                            label="Diabetes"
+                        />
+
+                    </GridItem>
+                    <GridItem xs={5} sm={5} md={5}>
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    id="has_high_colesterol"
+                                    checked={this.state.has_high_colesterol}
+                                    onChange={this.toggleHighColesterol}
+                                    name="checkedB"
+                                    color="primary"
+                                />
+                            }
+                            label="High Colesterol"
+                        />
+                    </GridItem>
+                </GridContainer>
+            </div>
+        )
+    }
+
+}
+
+class ThirdStage extends React.Component {
 
     constructor() {
         super();
@@ -60,7 +141,7 @@ class SecondStage extends React.Component {
                             <option value="F">Female</option>
                         </select>
                     </GridItem>
-                    
+
                     <GridItem xs={5} sm={5} md={5}><input id="current-weight" class="form-input" placeholder="Current weight (kg) *" type="text" /></GridItem>
                     <GridItem xs={5} sm={5} md={5}><input id="goal-weight" class="form-input" placeholder="What is your goal weight? (kg) *" type="text" /></GridItem>
                 </GridContainer>
@@ -70,4 +151,4 @@ class SecondStage extends React.Component {
 }
 
 export default FirstStage;
-export { SecondStage };
+export { SecondStage, ThirdStage };
