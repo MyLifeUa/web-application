@@ -412,10 +412,12 @@ export default class Profile extends React.Component {
 								<GridContainer>
 									<GridItem xs={12} sm={12} md={12}><h3>{this.state.authUser.role === "doctor" ? "Dr." : ""} {this.state.authUser.message.name}</h3></GridItem>
 									<GridItem xs={12} sm={12} md={12}><a href={"mailto:" + this.state.authUser.message.email}><strong>{this.state.authUser.message.email}</strong></a></GridItem>
-									<GridItem xs={12} sm={12} md={12}><p style={{ fontSize: "17px" }}><i style={{ color: "#00acc1", marginRight: "3px" }} class="fas fa-ruler-vertical"></i> {this.state.authUser.message.height} cm</p></GridItem>
-									<GridItem xs={12} sm={12} md={12}><p style={{ fontSize: "17px" }}><i style={{ color: "#00acc1", marginRight: "3px" }} class="fas fa-weight"></i>  {this.state.authUser.message.current_weight} kg</p></GridItem>
-									<GridItem xs={12} sm={12} md={12}><p style={{ fontSize: "17px" }}><i style={{ color: "#00acc1", marginRight: "3px" }} class="fas fa-phone"></i> {this.state.authUser.message.phone_number}</p></GridItem>
-									<GridItem xs={12} sm={12} md={12}><p style={{ fontSize: "17px" }}><i style={{ color: "#00acc1", marginRight: "3px" }} class={this.state.authUser.message.sex === "M" ? "fas fa-male" : "fas fa-female"}></i> {this.state.authUser.message.sex === "M" ? "Male" : "Female"}</p></GridItem>
+									<GridItem xs={12} sm={12} md={6}><p style={{ fontSize: "17px" }}><i style={{ color: "#00acc1", marginRight: "3px" }} class="fas fa-ruler-vertical"></i> {this.state.authUser.message.height} cm</p></GridItem>
+									<GridItem xs={12} sm={12} md={6}><p style={{ fontSize: "17px" }}><i style={{ color: "#00acc1", marginRight: "3px" }} class="fas fa-weight"></i>  {this.state.authUser.message.current_weight} kg</p></GridItem>
+									<GridItem xs={12} sm={12} md={6}><p style={{ fontSize: "17px" }}><i style={{ color: "#00acc1", marginRight: "3px" }} class="fas fa-phone"></i> {this.state.authUser.message.phone_number}</p></GridItem>
+									<GridItem xs={12} sm={12} md={6}><p style={{ fontSize: "17px" }}><i style={{ color: "#00acc1", marginRight: "3px" }} class={this.state.authUser.message.sex === "M" ? "fas fa-male" : "fas fa-female"}></i> {this.state.authUser.message.sex === "M" ? "Male" : "Female"}</p></GridItem>
+									<GridItem xs={12} sm={12} md={12}><p style={{ fontSize: "17px" }}><i style={{ color: "#00acc1", marginRight: "3px" }} class="fas fa-candy-cane"></i> {this.state.authUser.message.is_diabetic === true ? "Is Diabetic" : "Is not diabetic"}</p></GridItem>
+									<GridItem xs={12} sm={12} md={12}><p style={{ fontSize: "17px" }}><i style={{ color: "#00acc1", marginRight: "3px" }} class="fas fa-heartbeat"></i> {this.state.authUser.message.has_high_colesterol === true ? "Has high colesterol" : "Has not high colesterol"}</p></GridItem>
 								</GridContainer>
 							</CardBody>
 						</Card>
