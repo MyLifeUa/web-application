@@ -5,7 +5,7 @@ import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import Button from "components/CustomButtons/Button.js";
 
-import FirstStage, { SecondStage } from "views/SignUpStages/SignUpStage.js";
+import FirstStage, { SecondStage, ThirdStage } from "views/SignUpStages/SignUpStage.js";
 
 import config from "variables/config.js";
 import baseURI from "variables/baseURI.js";
@@ -37,7 +37,9 @@ class SignUp extends React.Component {
         photo: config.defaultUser,
         current_weight: null,
         weight_goal: null,
-        sex: "M"
+        sex: "M",
+        is_diabetic: false,
+        has_high_colesterol: false
     }
 
     validEmail = (email) => {
@@ -251,12 +253,13 @@ class SignUp extends React.Component {
         return true;
 
     }
+    
 
     clickNext() {
 
         if ((this.state.currentStage === 1 &&
             !this.validateFirstStage()) ||
-            (this.state.currentStage === 2 &&
+            (this.state.currentStage === 3 &&
                 !this.validateSecondStage())) {
             document.getElementById("errorMessage").class = "error-message";
             document.getElementById("errorMessage").style.visibility = "";
@@ -266,16 +269,22 @@ class SignUp extends React.Component {
         document.getElementById("errorMessage").style.visibility = "hidden";
 
         this.setState({
-            currentStage: this.state.currentStage !== 2 ? this.state.currentStage + 1 : 2
+            currentStage: this.state.currentStage !== 3 ? this.state.currentStage + 1 : 3
         })
 
         // fetch POST sign up
-        if (this.state.currentStage === 2)
+        if (this.state.currentStage === 3) {
             this.signupPOST();
+        }
+            
 
     }
 
     signupPOST = () => {
+
+        let healthProblems = JSON.parse(localStorage.getItem('healthProblems'));
+        this.signupInfo.is_diabetic = healthProblems.is_diabetic;
+        this.signupInfo.has_high_colesterol = healthProblems.has_high_colesterol;
 
         fetch(baseURI.restApi.signup, {
             method: "POST",
@@ -327,6 +336,8 @@ class SignUp extends React.Component {
                 return <FirstStage />
             case 2:
                 return <SecondStage />
+            case 3:
+                return <ThirdStage />
             default:
                 return <FirstStage />
         }
@@ -353,7 +364,7 @@ class SignUp extends React.Component {
                                 <GridContainer justify="center">
                                     <GridItem xs={10} sm={10} md={10}>
                                         <Button id="btn" color="info" block type="button" onClick={this.clickNext}>
-                                            {this.state.currentStage === 1 ? <span>Next <i class="fas fa-arrow-right"></i></span> : <span>Sign Up <i class="fas fa-user-plus"></i></span>}
+                                            {this.state.currentStage !== 3 ? <span>Next <i class="fas fa-arrow-right"></i></span> : <span>Sign Up <i class="fas fa-user-plus"></i></span>}
                                         </Button>
                                     </GridItem>
                                     <GridItem xs={10} sm={10} md={10}>
